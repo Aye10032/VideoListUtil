@@ -22,7 +22,7 @@ public interface IVideoDao {
             "\t\"parent\"\tTEXT NOT NULL,\n" +
             "\t\"parent_id\"\tINTEGER NOT NULL,\n" +
             "\t\"has_done\"\tINTEGER NOT NULL,\n" +
-            "\t\"md5\"\tTEXT NOT NULL,\n" +
+            "\t\"md5\"\tTEXT,\n" +
             "\tPRIMARY KEY(\"id\" AUTOINCREMENT)\n" +
             ")")
     void createVideoTable();
