@@ -1,6 +1,8 @@
 package com.aye10032;
 
 import com.aye10032.background.ListVideos;
+import com.aye10032.config.ConfigIO;
+import com.aye10032.config.ConfigSet;
 import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.Video;
@@ -71,5 +73,15 @@ public class TestClass {
         video.setMd5("aaaaaaa");
 
         dao.insert(video);
+    }
+
+    @Test
+    public void TestJson(){
+//        ConfigSet configSet = new ConfigSet();
+//        configSet.setUse_md5(true);
+//        ConfigIO.saveConfig(configSet);
+
+        ConfigSet configSet = ConfigIO.loadConfig();
+        System.out.println(configSet.isUse_md5());
     }
 }

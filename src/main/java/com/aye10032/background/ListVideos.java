@@ -1,5 +1,6 @@
 package com.aye10032.background;
 
+import com.aye10032.config.ConfigIO;
 import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.Video;
@@ -35,20 +36,23 @@ public class ListVideos {
         File[] fs = file.listFiles();
         for (File f : Objects.requireNonNull(fs)) {
             if (f.isDirectory()) {
-                System.out.println(f.getParentFile().getName() + " <-" + f.getName());
+//                System.out.println(f.getParentFile().getName() + " <-" + f.getName());
                 getList(f, new_id);
             }
             if (f.isFile()) {
-                String md5 = DigestUtils.md5Hex(new FileInputStream(f));
-                System.out.println(f.getParentFile().getName() + " <-" + f.getName());
-                System.out.println("        " + md5);
+//                System.out.println(f.getParentFile().getName() + " <-" + f.getName());
+//                System.out.println("        " + md5);
 
                 Video video = new Video();
                 video.setName(f.getName());
                 video.setParent(f.getParentFile().getName());
                 video.setParent_id(new_id);
                 video.setHas_done(0);
-                video.setMd5(md5);
+
+                if (ConfigIO.loadConfig().isUse_md5()) {
+                    String md5 = DigestUtils.md5Hex(new FileInputStream(f));
+                    video.setMd5(md5);
+                }
 
                 dao.insert(video);
             }
@@ -74,16 +78,18 @@ public class ListVideos {
                 getList(f, new_id);
             }
             if (f.isFile()) {
-                String md5 = DigestUtils.md5Hex(new FileInputStream(f));
-                System.out.println(f.getParentFile().getName() + " <-" + f.getName());
-                System.out.println("        " + md5);
-
+//                String md5 = DigestUtils.md5Hex(new FileInputStream(f));
+//                System.out.println(f.getParentFile().getName() + " <-" + f.getName());
+//                System.out.println("        " + md5);
                 Video video = new Video();
                 video.setName(f.getName());
                 video.setParent(f.getParentFile().getName());
                 video.setParent_id(new_id);
                 video.setHas_done(0);
-                video.setMd5(md5);
+                if (ConfigIO.loadConfig().isUse_md5()) {
+                    String md5 = DigestUtils.md5Hex(new FileInputStream(f));
+                    video.setMd5(md5);
+                }
 
                 dao.insert(video);
             }
