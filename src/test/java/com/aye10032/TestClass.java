@@ -1,7 +1,8 @@
 package com.aye10032;
 
 import com.aye10032.background.ListVideos;
-import com.aye10032.database.dao.VideoDaoImpl;
+import com.aye10032.database.dao.DaoImpl;
+import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.Video;
 import org.junit.jupiter.api.Test;
 
@@ -25,13 +26,50 @@ public class TestClass {
     }
 
     @Test
-    public void TestDataBase(){
-        VideoDaoImpl videoDao = new VideoDaoImpl();
+    public void TestCreatTable(){
+        File file = new File("videolist.db");
+        if (!file.exists()){
+            System.out.println("未找到");
 
-        List<Video> list = videoDao.getAll();
+            DaoImpl dao = new DaoImpl();
 
-        for (Video video:list){
-            System.out.println(video);
+            dao.createVideoTable();
+            dao.creatDirectoryTable();
+        }else {
+            System.out.println("find");
         }
+    }
+
+    @Test
+    public void TestDataBase() {
+        DaoImpl dao = new DaoImpl();
+
+//        List<Video> list = dao.getAllVideo();
+//
+//        for (Video video:list){
+//            System.out.println(video);
+//        }
+
+        Directory directory = new Directory();
+        directory.setName("2021计算机组成原理");
+        directory.setParent("E:\\考研");
+        directory.setIs_root(1);
+        directory.setAvailable(0);
+
+        dao.insert(directory);
+
+        List<Directory> list = dao.selectWithName("2021计算机组成原理");
+        for (Directory dio : list) {
+            System.out.println(dio);
+        }
+
+        Video video = new Video();
+        video.setName("test name");
+        video.setParent("2021计算机组成原理");
+        video.setParent_id(list.get(0).getId());
+        video.setHas_done(0);
+        video.setMd5("aaaaaaa");
+
+        dao.insert(video);
     }
 }

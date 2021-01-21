@@ -25,5 +25,6 @@
     <!-- 映射文件 -->
     <mappers>
         <mapper class="com.aye10032.database.dao.IVideoDao"/>
+        <mapper class="com.aye10032.database.dao.IDirectoryDao"/>
     </mappers>
 </configuration>

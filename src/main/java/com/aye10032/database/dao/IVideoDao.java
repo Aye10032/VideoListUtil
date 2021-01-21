@@ -1,7 +1,10 @@
 package com.aye10032.database.dao;
 
 import com.aye10032.database.pojo.Video;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -13,7 +16,23 @@ import java.util.List;
  **/
 public interface IVideoDao {
 
+    @Update("CREATE TABLE \"video_table\" (\n" +
+            "\t\"id\"\tINTEGER NOT NULL UNIQUE,\n" +
+            "\t\"name\"\tTEXT NOT NULL,\n" +
+            "\t\"parent\"\tTEXT NOT NULL,\n" +
+            "\t\"parent_id\"\tINTEGER NOT NULL,\n" +
+            "\t\"has_done\"\tINTEGER NOT NULL,\n" +
+            "\t\"md5\"\tTEXT NOT NULL,\n" +
+            "\tPRIMARY KEY(\"id\" AUTOINCREMENT)\n" +
+            ")")
+    void createVideoTable();
+
     @Select("SELECT * FROM video_table")
-    List<Video> getAll();
+    List<Video> getAllVideo();
+
+    @Insert("INSERT INTO 'video_table'('name','parent','parent_id','has_done','md5') VALUES " +
+            "(#{name}, #{parent}, #{parent_id}, #{has_done}, #{md5});")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    Integer insert(Video video);
 
 }
