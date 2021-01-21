@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!-- 加载数据库配置 -->
+    <properties resource="db.properties" />
+
+    <!-- 打印sql日志 -->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <environments default="sqlite">
+        <environment id="sqlite">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 映射文件 -->
+    <mappers>
+        <mapper class="com.aye10032.database.dao.IVideoDao"/>
+    </mappers>
+</configuration>
