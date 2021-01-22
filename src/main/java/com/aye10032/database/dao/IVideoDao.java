@@ -21,8 +21,11 @@ public interface IVideoDao {
             "\t\"name\"\tTEXT NOT NULL,\n" +
             "\t\"parent\"\tTEXT NOT NULL,\n" +
             "\t\"parent_id\"\tINTEGER NOT NULL,\n" +
-            "\t\"has_done\"\tINTEGER NOT NULL,\n" +
+            "\t\"root\"\tTEXT NOT NULL,\n" +
+            "\t\"root_id\"\tINTEGER NOT NULL,\n" +
+            "\t\"has_done\"\tBLOB NOT NULL,\n" +
             "\t\"md5\"\tTEXT,\n" +
+            "\t\"date\"\tBLOB,\n" +
             "\tPRIMARY KEY(\"id\" AUTOINCREMENT)\n" +
             ")")
     void createVideoTable();

@@ -19,10 +19,14 @@ public interface IDirectoryDao {
     @Update("CREATE TABLE \"directory_table\" (\n" +
             "\t\"id\"\tINTEGER NOT NULL UNIQUE,\n" +
             "\t\"name\"\tTEXT NOT NULL,\n" +
-            "\t\"is_root\"\tINTEGER NOT NULL,\n" +
+            "\t\"is_root\"\tBLOB NOT NULL,\n" +
             "\t\"parent\"\tTEXT NOT NULL,\n" +
             "\t\"parent_id\"\tINTEGER,\n" +
-            "\t\"available\"\tINTEGER NOT NULL,\n" +
+            "\t\"root\"\tTEXT,\n" +
+            "\t\"root_id\"\tTEXT,\n" +
+            "\t\"available\"\tBLOB NOT NULL,\n" +
+            "\t\"creat_date\"\tBLOB NOT NULL,\n" +
+            "\t\"update_date\"\tBLOB NOT NULL,\n" +
             "\tPRIMARY KEY(\"id\" AUTOINCREMENT)\n" +
             ")")
     void creatDirectoryTable();
@@ -40,4 +44,7 @@ public interface IDirectoryDao {
 
     @Select("SELECT * FROM directory_table WHERE name=#{name}")
     List<Directory> selectWithName(String name);
+
+    @Select("SELECT * FROM directory_table WHERE parent_id=#{id}")
+    List<Directory> selectWithParentID(Integer id);
 }

@@ -1,5 +1,7 @@
 package com.aye10032.database.pojo;
 
+import java.util.Date;
+
 /**
  * @program: VideoListUtil
  * @description: directory_table对应类
@@ -9,10 +11,14 @@ package com.aye10032.database.pojo;
 public class Directory {
     private Integer id;
     private String name;
-    private Integer is_root;
+    private boolean is_root;
     private String parent;
     private Integer parent_id;
-    private Integer available;
+    private String root;
+    private String root_id;
+    private boolean available;
+    private Date creat_date;
+    private Date update_date;
 
     public void setId(Integer id) {
         this.id = id;
@@ -22,7 +28,7 @@ public class Directory {
         this.name = name;
     }
 
-    public void setIs_root(Integer is_root) {
+    public void setIs_root(boolean is_root) {
         this.is_root = is_root;
     }
 
@@ -34,8 +40,24 @@ public class Directory {
         this.parent_id = parent_id;
     }
 
-    public void setAvailable(Integer available) {
+    public void setRoot(String root) {
+        this.root = root;
+    }
+
+    public void setRoot_id(String root_id) {
+        this.root_id = root_id;
+    }
+
+    public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public void setCreat_date(Date creat_date) {
+        this.creat_date = creat_date;
+    }
+
+    public void setUpdate_date(Date update_date) {
+        this.update_date = update_date;
     }
 
     public Integer getId() {
@@ -46,7 +68,7 @@ public class Directory {
         return name;
     }
 
-    public Integer getIs_root() {
+    public boolean isIs_root() {
         return is_root;
     }
 
@@ -58,8 +80,24 @@ public class Directory {
         return parent_id;
     }
 
-    public Integer getAvailable() {
+    public String getRoot() {
+        return root;
+    }
+
+    public String getRoot_id() {
+        return root_id;
+    }
+
+    public boolean isAvailable() {
         return available;
+    }
+
+    public Date getCreat_date() {
+        return creat_date;
+    }
+
+    public Date getUpdate_date() {
+        return update_date;
     }
 
     @Override
@@ -70,7 +108,11 @@ public class Directory {
                 ", is_root=" + is_root +
                 ", parent='" + parent + '\'' +
                 ", parent_id=" + parent_id +
+                ", root='" + root + '\'' +
+                ", root_id='" + root_id + '\'' +
                 ", available=" + available +
+                ", creat_date=" + creat_date +
+                ", update_date=" + update_date +
                 '}';
     }
 }
