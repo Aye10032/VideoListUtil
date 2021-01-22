@@ -23,7 +23,7 @@ public interface IDirectoryDao {
             "\t\"parent\"\tTEXT NOT NULL,\n" +
             "\t\"parent_id\"\tINTEGER,\n" +
             "\t\"root\"\tTEXT,\n" +
-            "\t\"root_id\"\tTEXT,\n" +
+            "\t\"root_id\"\tINTEGER,\n" +
             "\t\"available\"\tBLOB NOT NULL,\n" +
             "\t\"creat_date\"\tBLOB NOT NULL,\n" +
             "\t\"update_date\"\tBLOB NOT NULL,\n" +
@@ -42,6 +42,9 @@ public interface IDirectoryDao {
 
     @Select("SELECT * FROM directory_table WHERE is_root=1")
     List<Directory> getRoots();
+
+    @Select("SELECT * FROM directory_table WHERE id=#{id}")
+    List<Directory> selectDirectoryWithID(Integer id);
 
     @Select("SELECT * FROM directory_table WHERE name=#{name}")
     List<Directory> selectWithName(String name);

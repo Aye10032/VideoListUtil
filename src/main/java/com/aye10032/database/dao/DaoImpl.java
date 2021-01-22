@@ -129,6 +129,21 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
     }
 
     @Override
+    public List<Directory> selectDirectoryWithID(Integer id) {
+        List<Directory> list = null;
+
+        initSession();
+
+        IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
+
+        list = dao.selectDirectoryWithID(id);
+
+        closeAll();
+
+        return list;
+    }
+
+    @Override
     public List<Directory> selectWithName(String name) {
         List<Directory> list = null;
 
@@ -137,6 +152,21 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
 
         list = dao.selectWithName(name);
+
+        closeAll();
+
+        return list;
+    }
+
+    @Override
+    public List<Directory> selectWithParentID(Integer id) {
+        List<Directory> list = null;
+
+        initSession();
+
+        IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
+
+        list = dao.selectWithParentID(id);
 
         closeAll();
 

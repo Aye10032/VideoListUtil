@@ -15,7 +15,7 @@ public class Directory {
     private String parent;
     private Integer parent_id;
     private String root;
-    private String root_id;
+    private Integer root_id;
     private boolean available;
     private Date creat_date;
     private Date update_date;
@@ -44,7 +44,7 @@ public class Directory {
         this.root = root;
     }
 
-    public void setRoot_id(String root_id) {
+    public void setRoot_id(Integer root_id) {
         this.root_id = root_id;
     }
 
@@ -84,7 +84,7 @@ public class Directory {
         return root;
     }
 
-    public String getRoot_id() {
+    public Integer getRoot_id() {
         return root_id;
     }
 
