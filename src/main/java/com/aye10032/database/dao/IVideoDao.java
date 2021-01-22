@@ -33,8 +33,9 @@ public interface IVideoDao {
     @Select("SELECT * FROM video_table")
     List<Video> getAllVideo();
 
-    @Insert("INSERT INTO 'video_table'('name','parent','parent_id','has_done','md5') VALUES " +
-            "(#{name}, #{parent}, #{parent_id}, #{has_done}, #{md5});")
+    @Insert("INSERT INTO 'video_table'" +
+            "('name','parent','parent_id','root','root_id','has_done','md5','date') VALUES " +
+            "(#{name}, #{parent}, #{parent_id}, #{root}, #{root_id}, #{has_done}, #{md5}, #{date});")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     Integer insert(Video video);
 

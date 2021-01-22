@@ -34,8 +34,9 @@ public interface IDirectoryDao {
     @Select("SELECT * FROM directory_table")
     List<Directory> getAllDirectory();
 
-    @Insert("INSERT INTO 'directory_table'('name','is_root','parent','parent_id','available') VALUES" +
-            " (#{name}, #{is_root}, #{parent}, #{parent_id}, #{available})")
+    @Insert("INSERT INTO 'directory_table'" +
+            "('name','is_root','parent','parent_id','root','root_id','available','creat_date','update_date') VALUES" +
+            " (#{name}, #{is_root}, #{parent}, #{parent_id}, #{root}, #{root_id}, #{available}, #{creat_date}, #{update_date})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     Integer insert(Directory directory);
 
