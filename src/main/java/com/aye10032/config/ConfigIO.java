@@ -49,6 +49,8 @@ public class ConfigIO {
 
     public static void initConfig(){
         ConfigSet configSet = new ConfigSet();
+        configSet.setWINDOW_HEIGHT(500);
+        configSet.setWINDOW_WIDTH(600);
         configSet.setUse_md5(false);
 
         saveConfig(configSet);

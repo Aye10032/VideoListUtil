@@ -1,5 +1,7 @@
 package com.aye10032.gui;
 
+import com.aye10032.config.ConfigIO;
+import com.aye10032.config.ConfigSet;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -16,6 +18,10 @@ import java.awt.event.ActionListener;
 public class MainWindow extends JFrame{
 
     public MainWindow() {
+        initFrame();
+    }
+
+    private void initFrame(){
         JPanel panel = new JPanel(new MigLayout("debug", "[] [] []", "[] []"));
 
         JMenuBar menuBar = new JMenuBar();
@@ -36,11 +42,32 @@ public class MainWindow extends JFrame{
         menu1.addSeparator();
         menu1.add(item4);
 
-        add(panel, BorderLayout.CENTER);
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout());
 
+        contentPane.add(panel, BorderLayout.CENTER);
+
+        item1.addActionListener(e -> OpenNewProject());
     }
 
-    private void initFrame(){
+    private void OpenNewProject(){
+        ProjectWindow.setDefaultLookAndFeelDecorated(true);
+        ProjectWindow window = new ProjectWindow();
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
+
+        ConfigSet config = ConfigIO.loadConfig();
+        int windowWidth = (int) config.getWINDOW_WIDTH();
+        int windowHeight = (int) config.getWINDOW_HEIGHT();
+
+        window.setTitle("刷课工具箱");
+        Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/aye10032/icon.png").getFile());
+        window.setIconImage(icon);
+        window.setBounds((screenWidth - windowWidth) / 2, (screenHeight - windowHeight) / 2, windowWidth, windowHeight);
+        window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        window.setVisible(true);
 
     }
 }
