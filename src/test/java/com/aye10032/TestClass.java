@@ -6,6 +6,7 @@ import com.aye10032.config.ConfigSet;
 import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.Video;
+import org.apache.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -83,5 +84,12 @@ public class TestClass {
 
         ConfigSet configSet = ConfigIO.loadConfig();
         System.out.println(configSet.isUse_md5());
+    }
+
+    @Test
+    public void TestLog(){
+        Logger logger = Logger.getLogger(TestClass.class);
+
+        logger.info("test");
     }
 }
