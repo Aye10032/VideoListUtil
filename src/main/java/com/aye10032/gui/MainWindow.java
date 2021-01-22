@@ -54,19 +54,6 @@ public class MainWindow extends JFrame{
         ProjectWindow.setDefaultLookAndFeelDecorated(true);
         ProjectWindow window = new ProjectWindow();
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenWidth = screenSize.width;
-        int screenHeight = screenSize.height;
-
-        ConfigSet config = ConfigIO.loadConfig();
-        int windowWidth = (int) config.getWINDOW_WIDTH();
-        int windowHeight = (int) config.getWINDOW_HEIGHT();
-
-        window.setTitle("刷课工具箱");
-        Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/aye10032/icon.png").getFile());
-        window.setIconImage(icon);
-        window.setBounds((screenWidth - windowWidth) / 2, (screenHeight - windowHeight) / 2, windowWidth, windowHeight);
-        window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         window.setVisible(true);
 
     }
