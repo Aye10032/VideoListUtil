@@ -1,5 +1,7 @@
 package com.aye10032;
 
+import com.aye10032.config.ConfigIO;
+import com.aye10032.config.ConfigSet;
 import com.aye10032.gui.MainWindow;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.extras.FlatSVGUtils;
@@ -43,8 +45,10 @@ public class MainRun {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = screenSize.width;
         int screenHeight = screenSize.height;
-        int windowWidth = 600;
-        int windowHeight = 500;
+
+        ConfigSet config = ConfigIO.loadConfig();
+        int windowWidth = (int) config.getWINDOW_WIDTH();
+        int windowHeight = (int) config.getWINDOW_HEIGHT();
 
         MainWindow.setDefaultLookAndFeelDecorated(true);
         MainWindow window = new MainWindow();
