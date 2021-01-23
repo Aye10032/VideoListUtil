@@ -6,9 +6,13 @@ import com.aye10032.config.ConfigSet;
 import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.Video;
+import com.aye10032.gui.ProjectWindow;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -20,6 +24,10 @@ import java.util.List;
  * @create: 2021-01-21 15:22
  **/
 public class TestClass {
+
+    public static void main(String[] args) {
+        new TestClass().GUITest();
+    }
 
     @Test
     public void TestFileList() throws IOException {
@@ -56,8 +64,8 @@ public class TestClass {
         Directory directory = new Directory();
         directory.setName("2021计算机组成原理");
         directory.setParent("E:\\考研");
-        directory.setIs_root(1);
-        directory.setAvailable(0);
+        directory.setIs_root(true);
+        directory.setAvailable(true);
 
         dao.insert(directory);
 
@@ -70,7 +78,7 @@ public class TestClass {
         video.setName("test name");
         video.setParent("2021计算机组成原理");
         video.setParent_id(list.get(0).getId());
-        video.setHas_done(0);
+        video.setHas_done(false);
         video.setMd5("aaaaaaa");
 
         dao.insert(video);
@@ -91,5 +99,32 @@ public class TestClass {
         Logger logger = Logger.getLogger(TestClass.class);
 
         logger.info("test");
+    }
+
+    @Test
+    public void GUITest(){
+        try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            UIManager.put("Button.arc", 6);
+            UIManager.put("Component.arc", 6);
+            UIManager.put("CheckBox.arc", 6);
+            UIManager.put("ProgressBar.arc", 6);
+            UIManager.put("CheckBox.icon.style", "filled");
+            UIManager.put("Component.arrowType", "triangle");
+            UIManager.put("Component.focusWidth", 2);
+            UIManager.put("ScrollBar.showButtons", true);
+            UIManager.put("ScrollBar.width", 16);
+            UIManager.put("ScrollBar.thumbArc", 6);
+            UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
+
+            UIManager.put("TitlePane.menuBarEmbedded", true);
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize LaF");
+        }
+
+        ProjectWindow.setDefaultLookAndFeelDecorated(true);
+        ProjectWindow window = new ProjectWindow();
+
+        window.setVisible(true);
     }
 }

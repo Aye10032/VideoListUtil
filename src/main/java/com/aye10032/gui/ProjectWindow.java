@@ -43,9 +43,9 @@ public class ProjectWindow extends JFrame {
     }
 
     private void initFrame() {
-        LC layC = new LC().fill().debug();
+        LC layC = new LC().fill();
         AC colC = new AC().align("center", 0).grow(50, 1).fill(1).gap("15", 0, 1).count(3);
-        AC rowC = new AC().grow(100, 2).gap("15", 0, 1, 2).count(3);
+        AC rowC = new AC().grow(100, 2).gap("20", 0, 1, 2).count(3);
         JPanel panel = new JPanel(new MigLayout(layC, colC, rowC));
 
         JLabel search_icon = new JLabel();
@@ -56,10 +56,15 @@ public class ProjectWindow extends JFrame {
         sort_button.setIcon(new FlatSVGIcon("com/aye10032/icon/listFiles.svg"));
 
         {
-            JPanel list_panel = new JPanel(new MigLayout(new LC().fill().debug()));
+            JPanel list_panel = new JPanel(new MigLayout(new LC().fill().debug(), new AC(), new AC().gap("15")));
 
-            for (int i = 0; i < 4; i++) {
-                list_panel.add(cardPanel(i,"computer", 80, "path"),new CC().growX().wrap());
+            for (int i = 0; i < 5; i++) {
+                list_panel.add(
+                        cardPanel(i, "2021计算机组成原理", 80, "E:\\考研\\2021计算机组成原理", true),
+                        new CC().wrap().alignX("center").growX());
+                list_panel.add(
+                        cardPanel(i, "05 高数", 80, "E:\\考研\\高数", false),
+                        new CC().wrap().alignX("center").growX());
             }
 
             scrollPane = new JScrollPane(list_panel);
@@ -78,9 +83,15 @@ public class ProjectWindow extends JFrame {
         contentPane.add(panel, BorderLayout.CENTER);
     }
 
-    private JPanel cardPanel(Integer id, String name, int percent, String path){
-        LC layC = new LC().fill().debug();
-        AC colC = new AC().count(5).gap("10").grow(50, 1).fill(1);
+    private JPanel cardPanel(Integer id, String name, int percent, String path, boolean done) {
+        LC layC = new LC().fill().wrap();
+        AC colC = new AC()
+                .gap("10")
+                .grow()
+                .shrink(200, 2, 3).shrink(100, 0, 1).shrink(25, 4, 5)
+                .fill()
+                .size("100px", 2, 3)
+                .align("right", 0, 4).align("center", 5);
         AC rowC = new AC().count(2);
         JPanel panel = new JPanel(new MigLayout(layC, colC, rowC));
 
@@ -91,17 +102,22 @@ public class ProjectWindow extends JFrame {
         progressBar.setValue(percent);
         JLabel percent_label = new JLabel(Integer.toString(percent));
         JLabel path_label = new JLabel(path);
-        JCheckBox done_button = new JCheckBox();
+        JLabel done_label = new JLabel();
+        if (done) {
+            done_label.setIcon(new FlatSVGIcon("com/aye10032/icon/selected.svg"));
+        } else {
+            done_label.setIcon(new FlatSVGIcon("com/aye10032/icon/close.svg"));
+        }
         JButton set_button = new JButton();
         set_button.setIcon(new FlatSVGIcon("com/aye10032/icon/setting.svg"));
 
-        panel.add(name_label);
+        panel.add(name_label, new CC());
         panel.add(id_label, new CC());
-        panel.add(progressBar,new CC());
-        panel.add(percent_label, new CC().wrap());
-        panel.add(path_label, new CC().spanX(3));
-        panel.add(done_button);
-        panel.add(set_button, new CC().split());
+        panel.add(progressBar, new CC().spanX(2).growX());
+        panel.add(percent_label, new CC().skip().wrap());
+        panel.add(path_label, new CC().spanX(2).growX());
+        panel.add(done_label, new CC().skip(2));
+        panel.add(set_button, new CC());
 
         return panel;
     }
