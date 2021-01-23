@@ -60,7 +60,7 @@ public class ProjectWindow extends JFrame {
         sort_button.setIcon(new FlatSVGIcon("com/aye10032/icon/listFiles.svg"));
 
         {
-            JPanel list_panel = new JPanel(new MigLayout(new LC().fillX(), new AC().gap("10"), new AC().gap("10")));
+            JPanel list_panel = new JPanel(new MigLayout(new LC().fillX(), new AC(), new AC()));
 
             List<Directory> roots = ListVideos.getRoots();
 
@@ -72,14 +72,6 @@ public class ProjectWindow extends JFrame {
                 list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
             }
 
-            for (int i = 0; i < 5; i++) {
-                list_panel.add(
-                        cardPanel(i, "2021计算机组成原理", 80, "E:\\考研\\2021计算机组成原理", false),
-                        new CC().wrap().growX().gapY("5", "5"));
-                list_panel.add(
-                        cardPanel(i, "05 高数", 1000, "E:\\考研\\高数", true),
-                        new CC().wrap().growX().gapY("5", "5"));
-            }
 
             scrollPane = new JScrollPane(list_panel);
         }
