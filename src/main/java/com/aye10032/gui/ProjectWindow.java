@@ -1,9 +1,12 @@
 package com.aye10032.gui;
 
+import com.aye10032.background.ListVideos;
+import com.aye10032.background.PercentCalculate;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.config.LocalConfig;
 import com.aye10032.config.LocalConfig.*;
+import com.aye10032.database.pojo.Directory;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.extras.FlatSVGUtils;
 import com.formdev.flatlaf.icons.FlatCheckBoxIcon;
@@ -15,6 +18,7 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * @program: VideoListUtil
@@ -45,7 +49,7 @@ public class ProjectWindow extends JFrame {
     private void initFrame() {
         LC layC = new LC().fill();
         AC colC = new AC().align("center", 0).grow(50, 1).fill(1).gap("15", 0, 1).count(3);
-        AC rowC = new AC().grow(100, 2).gap("20", 0, 1, 2).count(3);
+        AC rowC = new AC().grow(100, 1).gap("15", 0, 1).count(2);
         JPanel panel = new JPanel(new MigLayout(layC, colC, rowC));
 
         JLabel search_icon = new JLabel();
@@ -56,26 +60,35 @@ public class ProjectWindow extends JFrame {
         sort_button.setIcon(new FlatSVGIcon("com/aye10032/icon/listFiles.svg"));
 
         {
-            JPanel list_panel = new JPanel(new MigLayout(new LC().fill().debug(), new AC(), new AC().gap("15")));
+            JPanel list_panel = new JPanel(new MigLayout(new LC().fillX(), new AC().gap("10"), new AC().gap("10")));
+
+            List<Directory> roots = ListVideos.getRoots();
+
+            for (Directory directory : roots) {
+                Integer id = directory.getId();
+                int percent = PercentCalculate.getProjectPercent(id);
+                JPanel card_panel = cardPanel(id, directory.getName(), percent,
+                        directory.getParent() + "\\" + directory.getName(), percent == 1000);
+                list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
+            }
 
             for (int i = 0; i < 5; i++) {
                 list_panel.add(
-                        cardPanel(i, "2021计算机组成原理", 80, "E:\\考研\\2021计算机组成原理", true),
-                        new CC().wrap().alignX("center").growX());
+                        cardPanel(i, "2021计算机组成原理", 80, "E:\\考研\\2021计算机组成原理", false),
+                        new CC().wrap().growX().gapY("5", "5"));
                 list_panel.add(
-                        cardPanel(i, "05 高数", 80, "E:\\考研\\高数", false),
-                        new CC().wrap().alignX("center").growX());
+                        cardPanel(i, "05 高数", 1000, "E:\\考研\\高数", true),
+                        new CC().wrap().growX().gapY("5", "5"));
             }
 
             scrollPane = new JScrollPane(list_panel);
         }
 
-        panel.add(search_icon, new CC().growY());
-        panel.add(search_input, new CC().growX());
-        panel.add(sort_button, new CC().wrap());
-        panel.add(new JSeparator(), new CC().spanX().growX());
-
-        panel.add(scrollPane, new CC().spanX().growX().spanY().growY());
+        panel.add(search_icon, new CC().growY().gapTop("15"));
+        panel.add(search_input, new CC().growX().gapTop("15"));
+        panel.add(sort_button, new CC().gapTop("15").wrap());
+//        panel.add(new JSeparator(), new CC().spanX().growX().growY().height("20px").wrap());
+        panel.add(scrollPane, new CC().spanX().growX().spanY().growY().gapTop("20").gapBottom("10"));
 
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
@@ -90,18 +103,20 @@ public class ProjectWindow extends JFrame {
                 .grow()
                 .shrink(200, 2, 3).shrink(100, 0, 1).shrink(25, 4, 5)
                 .fill()
-                .size("100px", 2, 3)
+                .size("100px", 2, 3).size("50px",5)
                 .align("right", 0, 4).align("center", 5);
         AC rowC = new AC().count(2);
         JPanel panel = new JPanel(new MigLayout(layC, colC, rowC));
 
         JLabel name_label = new JLabel(name);
+        name_label.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
         JLabel id_label = new JLabel(id.toString());
         id_label.setVisible(false);
-        JProgressBar progressBar = new JProgressBar();
+        JProgressBar progressBar = new JProgressBar(0, 1000);
         progressBar.setValue(percent);
-        JLabel percent_label = new JLabel(Integer.toString(percent));
+        JLabel percent_label = new JLabel(percent * 0.1 + "%");
         JLabel path_label = new JLabel(path);
+        path_label.setForeground(Color.DARK_GRAY);
         JLabel done_label = new JLabel();
         if (done) {
             done_label.setIcon(new FlatSVGIcon("com/aye10032/icon/selected.svg"));

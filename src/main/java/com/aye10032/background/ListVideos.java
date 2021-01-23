@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -172,6 +173,15 @@ public class ListVideos {
         Integer id = dao.insert(video);
 
         return id;
+    }
+
+    public static List<Directory> getRoots(){
+        List<Directory> list = null;
+        DaoImpl dao = new DaoImpl();
+
+        list = dao.getRoots();
+
+        return list;
     }
 
 }

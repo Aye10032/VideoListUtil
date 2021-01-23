@@ -31,7 +31,7 @@ public class TestClass {
 
     @Test
     public void TestFileList() throws IOException {
-        String path = "E:\\考研\\2021计算机组成原理";
+        String path = "E:\\考研\\2021考研操作系统";
 
         ListVideos.getList(new File(path));
     }
