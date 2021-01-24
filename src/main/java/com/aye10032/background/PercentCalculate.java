@@ -3,6 +3,7 @@ package com.aye10032.background;
 import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.Video;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -14,24 +15,31 @@ import java.util.List;
  **/
 public class PercentCalculate {
 
-    public static int getProjectPercent(Integer root_id){
+    private static Logger logger = Logger.getLogger(PercentCalculate.class);
+
+    public static int getProjectPercent(Integer root_id) {
         DaoImpl dao = new DaoImpl();
 
         List<Video> list = dao.selectWithRoot(root_id);
 
         int done_count = 0;
 
-        for (Video video:list){
-            if (video.isHas_done()){
+        for (Video video : list) {
+            if (video.isHas_done()) {
                 done_count += 1;
             }
         }
 
-        int percent = (int)(done_count / list.size())*10;
+        int percent = (int) (done_count / list.size()) * 1000;
+
+        logger.debug("已看完：" + done_count);
+        logger.debug("总计：" + list.size());
+        logger.debug("计算得：" + percent);
+
         return percent;
     }
 
-    public static void getPercent(String parent_file){
+    public static void getPercent(String parent_file) {
 
     }
 
