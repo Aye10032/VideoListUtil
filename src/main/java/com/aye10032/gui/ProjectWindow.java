@@ -61,6 +61,16 @@ public class ProjectWindow extends JFrame {
         JButton sort_button = new JButton();
         sort_button.setIcon(new FlatSVGIcon("com/aye10032/icon/listFiles.svg"));
 
+        JPopupMenu sort_menu = new JPopupMenu();
+        JCheckBoxMenuItem hide_item = new JCheckBoxMenuItem("显示隐藏项");
+        JCheckBoxMenuItem finish_item = new JCheckBoxMenuItem("显示已完成");
+        finish_item.setState(true);
+        JMenu sort_type_menu = new JMenu("排序方式");
+        sort_menu.add(hide_item);
+        sort_menu.add(finish_item);
+        sort_menu.add(new JSeparator());
+        sort_menu.add(sort_type_menu);
+
         JScrollPane scrollPane;
         {
             list_panel = new JPanel(new MigLayout(new LC().fillX(), new AC(), new AC()));
@@ -97,6 +107,14 @@ public class ProjectWindow extends JFrame {
                     list_panel.removeAll();
                     search(search_input.getText());
                 }
+            }
+        });
+
+        sort_button.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sort_menu.show(sort_button, 0, sort_button.getY());
+                sort_menu.setVisible(true);
             }
         });
     }
@@ -177,7 +195,7 @@ public class ProjectWindow extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     logger.debug(set_menu.getWidth());
-                    set_menu.show(set_button, -50, set_button.getY());
+                    set_menu.show(set_button, 0, set_button.getY());
                     set_menu.setVisible(true);
                 }
             });
@@ -188,7 +206,7 @@ public class ProjectWindow extends JFrame {
                     int result = JOptionPane.showConfirmDialog(null,
                             "将会隐藏这个项目（但不会从数据库中删除，要删除项目，\n可选择删除选项），确定要隐藏这个项目吗？", "提示", JOptionPane.YES_NO_OPTION);
                     logger.debug(result);
-                    if (result == 0){
+                    if (result == 0) {
                         ListVideos.hideRoot(Integer.parseInt(id_label.getText()));
                     }
                 }
@@ -200,7 +218,7 @@ public class ProjectWindow extends JFrame {
                     int result = JOptionPane.showConfirmDialog(null,
                             "会将整个项目的所有视频设为已观看状态，确定吗？", "提示", JOptionPane.YES_NO_OPTION);
                     logger.debug(result);
-                    if (result == 0){
+                    if (result == 0) {
                         ListVideos.setProjectDone(Integer.parseInt(id_label.getText()));
                     }
                 }
@@ -224,7 +242,7 @@ public class ProjectWindow extends JFrame {
         update_panel();
     }
 
-    public void update_panel(){
+    public void update_panel() {
         list_panel.updateUI();
         list_panel.invalidate();
         list_panel.validate();
