@@ -5,19 +5,17 @@ import com.aye10032.background.PercentCalculate;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.config.LocalConfig;
-import com.aye10032.config.LocalConfig.*;
 import com.aye10032.database.pojo.Directory;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.formdev.flatlaf.extras.FlatSVGUtils;
-import com.formdev.flatlaf.icons.FlatCheckBoxIcon;
-import javafx.scene.control.RadioButton;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
 
 /**
@@ -28,7 +26,12 @@ import java.util.List;
  **/
 public class ProjectWindow extends JFrame {
 
+    Logger logger;
+
+    private JPanel list_panel;
+
     public ProjectWindow() {
+        logger = Logger.getLogger(ProjectWindow.class);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = screenSize.width;
         int screenHeight = screenSize.height;
@@ -55,12 +58,12 @@ public class ProjectWindow extends JFrame {
         JLabel search_icon = new JLabel();
         search_icon.setIcon(new FlatSVGIcon("com/aye10032/icon/search.svg"));
         JTextField search_input = new JTextField();
-        JScrollPane scrollPane;
         JButton sort_button = new JButton();
         sort_button.setIcon(new FlatSVGIcon("com/aye10032/icon/listFiles.svg"));
 
+        JScrollPane scrollPane;
         {
-            JPanel list_panel = new JPanel(new MigLayout(new LC().fillX(), new AC(), new AC()));
+            list_panel = new JPanel(new MigLayout(new LC().fillX(), new AC(), new AC()));
 
             List<Directory> roots = ListVideos.getRoots();
 
@@ -71,7 +74,6 @@ public class ProjectWindow extends JFrame {
                         directory.getParent() + "\\" + directory.getName(), percent == 1000);
                 list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
             }
-
 
             scrollPane = new JScrollPane(list_panel);
         }
@@ -86,6 +88,17 @@ public class ProjectWindow extends JFrame {
         contentPane.setLayout(new BorderLayout());
 
         contentPane.add(panel, BorderLayout.CENTER);
+
+        search_input.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+                    logger.debug(search_input.getText());
+                    list_panel.removeAll();
+                    search(search_input.getText());
+                }
+            }
+        });
     }
 
     private JPanel cardPanel(Integer id, String name, int percent, String path, boolean done) {
@@ -95,7 +108,7 @@ public class ProjectWindow extends JFrame {
                 .grow()
                 .shrink(200, 2, 3).shrink(100, 0, 1).shrink(25, 4, 5)
                 .fill()
-                .size("100px", 2, 3).size("50px",5)
+                .size("100px", 2, 3).size("50px", 5)
                 .align("right", 0, 4).align("center", 5);
         AC rowC = new AC().count(2);
         JPanel panel = new JPanel(new MigLayout(layC, colC, rowC));
@@ -118,6 +131,18 @@ public class ProjectWindow extends JFrame {
         JButton set_button = new JButton();
         set_button.setIcon(new FlatSVGIcon("com/aye10032/icon/setting.svg"));
 
+        JPopupMenu set_menu = new JPopupMenu();
+        JMenuItem done_item = new JMenuItem("全部完成");
+        JMenuItem hide_item = new JMenuItem("隐藏");
+        JMenuItem del_item = new JMenuItem("删除");
+        if (done) {
+            done_item.setEnabled(false);
+        }
+        set_menu.add(done_item);
+        set_menu.add(hide_item);
+        set_menu.add(new JSeparator());
+        set_menu.add(del_item);
+
         panel.add(name_label, new CC());
         panel.add(id_label, new CC());
         panel.add(progressBar, new CC().spanX(2).growX());
@@ -126,7 +151,89 @@ public class ProjectWindow extends JFrame {
         panel.add(done_label, new CC().skip(2));
         panel.add(set_button, new CC());
 
+        {
+            name_label.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    onSelectProject(id_label.getText());
+                }
+            });
+
+            id_label.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    onSelectProject(id_label.getText());
+                }
+            });
+
+            path_label.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    onSelectProject(id_label.getText());
+                }
+            });
+
+            set_button.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    logger.debug(set_menu.getWidth());
+                    set_menu.show(set_button, -50, set_button.getY());
+                    set_menu.setVisible(true);
+                }
+            });
+
+            hide_item.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int result = JOptionPane.showConfirmDialog(null,
+                            "将会隐藏这个项目（但不会从数据库中删除，要删除项目，\n可选择删除选项），确定要隐藏这个项目吗？", "提示", JOptionPane.YES_NO_OPTION);
+                    logger.debug(result);
+                    if (result == 0){
+                        ListVideos.hideRoot(Integer.parseInt(id_label.getText()));
+                    }
+                }
+            });
+
+            done_item.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int result = JOptionPane.showConfirmDialog(null,
+                            "会将整个项目的所有视频设为已观看状态，确定吗？", "提示", JOptionPane.YES_NO_OPTION);
+                    logger.debug(result);
+                    if (result == 0){
+
+                    }
+                }
+            });
+        }
         return panel;
     }
 
+    private void search(String key_word) {
+        List<Directory> roots = ListVideos.getRoots();
+
+        for (Directory directory : roots) {
+            if (directory.getName().contains(key_word)) {
+                Integer id = directory.getId();
+                int percent = PercentCalculate.getProjectPercent(id);
+                JPanel card_panel = cardPanel(id, directory.getName(), percent,
+                        directory.getParent() + "\\" + directory.getName(), percent == 1000);
+                list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
+            }
+        }
+        update_panel();
+    }
+
+    public void update_panel(){
+        list_panel.updateUI();
+        list_panel.invalidate();
+        list_panel.validate();
+        list_panel.repaint();
+        repaint();
+    }
+
+    private void onSelectProject(String id) {
+        int ID = Integer.parseInt(id);
+        logger.debug("ID is " + ID);
+    }
 }

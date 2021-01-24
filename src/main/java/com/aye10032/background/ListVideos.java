@@ -175,13 +175,22 @@ public class ListVideos {
         return id;
     }
 
-    public static List<Directory> getRoots(){
+    public static List<Directory> getRoots() {
         List<Directory> list = null;
         DaoImpl dao = new DaoImpl();
 
         list = dao.getRoots();
 
         return list;
+    }
+
+    public static void hideRoot(Integer root_id) {
+        DaoImpl dao = new DaoImpl();
+        dao.updateHideRoot(root_id);
+    }
+
+    public void setProjectDone(Integer root_id) {
+
     }
 
 }

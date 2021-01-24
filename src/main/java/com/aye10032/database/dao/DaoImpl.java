@@ -185,5 +185,23 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
         return list;
     }
 
+    @Override
+    public void updateHide(Integer parent_id, boolean done) {
+        initSession();
+        IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
+
+        dao.updateHide(parent_id, done);
+        session.commit();
+    }
+
+    @Override
+    public void updateHideRoot(Integer root_id) {
+        initSession();
+        IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
+
+        dao.updateHideRoot(root_id);
+        session.commit();
+    }
+
 
 }

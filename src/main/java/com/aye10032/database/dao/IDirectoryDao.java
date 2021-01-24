@@ -40,7 +40,7 @@ public interface IDirectoryDao {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     Integer insert(Directory directory);
 
-    @Select("SELECT * FROM directory_table WHERE is_root=1")
+    @Select("SELECT * FROM directory_table WHERE is_root=1 AND available=1")
     List<Directory> getRoots();
 
     @Select("SELECT * FROM directory_table WHERE id=#{id}")
@@ -51,4 +51,10 @@ public interface IDirectoryDao {
 
     @Select("SELECT * FROM directory_table WHERE parent_id=#{id}")
     List<Directory> selectWithParentID(Integer id);
+
+    @Select("UPDATE directory_table available=#{done} WHERE id={parent_id}")
+    void updateHide(Integer parent_id, boolean done);
+
+    @Update("UPDATE directory_table SET available=0 WHERE id=#{root_id} OR root_id=#{root_id}")
+    void updateHideRoot(Integer root_id);
 }
