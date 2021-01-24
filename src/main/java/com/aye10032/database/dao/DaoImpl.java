@@ -96,6 +96,33 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
     }
 
     @Override
+    public void setRootVideoDone(Video video) {
+        initSession();
+        IVideoDao dao = session.getMapper(IVideoDao.class);
+
+        dao.setRootVideoDone(video);
+        session.commit();
+    }
+
+    @Override
+    public void setParentVideoDone(Video video) {
+        initSession();
+        IVideoDao dao = session.getMapper(IVideoDao.class);
+
+        dao.setParentVideoDone(video);
+        session.commit();
+    }
+
+    @Override
+    public void setVideoDone(Video video) {
+        initSession();
+        IVideoDao dao = session.getMapper(IVideoDao.class);
+
+        dao.setVideoDone(video);
+        session.commit();
+    }
+
+    @Override
     public void creatDirectoryTable() {
         initSession();
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);

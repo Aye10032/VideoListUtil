@@ -42,4 +42,13 @@ public interface IVideoDao {
     @Select("SELECT * FROM video_table WHERE root_id=#{root_id}")
     List<Video> selectWithRoot(Integer root_id);
 
+    @Update("UPDATE video_table SET has_done=#{has_done}, date=#{date} WHERE root_id=#{root_id}")
+    void setRootVideoDone(Video video);
+
+    @Update("UPDATE video_table SET has_done=#{has_done}, date=#{date} WHERE parent_id=#{parent_id}")
+    void setParentVideoDone(Video video);
+
+    @Update("UPDATE video_table SET has_done=#{has_done}, date=#{date} WHERE id=#{id}")
+    void setVideoDone(Video video);
+
 }

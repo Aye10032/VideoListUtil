@@ -201,7 +201,7 @@ public class ProjectWindow extends JFrame {
                             "会将整个项目的所有视频设为已观看状态，确定吗？", "提示", JOptionPane.YES_NO_OPTION);
                     logger.debug(result);
                     if (result == 0){
-
+                        ListVideos.setProjectDone(Integer.parseInt(id_label.getText()));
                     }
                 }
             });

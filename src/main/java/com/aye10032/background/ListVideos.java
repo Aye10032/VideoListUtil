@@ -190,14 +190,20 @@ public class ListVideos {
         Directory directory = new Directory();
         directory.setRoot_id(root_id);
         directory.setAvailable(false);
-        Date date = new Date();
-        directory.setUpdate_date(date);
+        directory.setUpdate_date(new Date());
 
         dao.updateRootAvailable(directory);
     }
 
-    public void setProjectDone(Integer root_id) {
+    public static void setProjectDone(Integer root_id) {
+        DaoImpl dao = new DaoImpl();
 
+        Video video = new Video();
+        video.setHas_done(true);
+        video.setRoot_id(root_id);
+        video.setDate(new Date());
+
+        dao.setRootVideoDone(video);
     }
 
 }
