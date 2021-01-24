@@ -195,11 +195,11 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
     }
 
     @Override
-    public void updateHideRoot(Integer root_id) {
+    public void updateRootAvailable(Directory directory) {
         initSession();
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
 
-        dao.updateHideRoot(root_id);
+        dao.updateRootAvailable(directory);
         session.commit();
     }
 

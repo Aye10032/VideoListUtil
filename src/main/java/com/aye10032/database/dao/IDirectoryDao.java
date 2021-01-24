@@ -55,6 +55,6 @@ public interface IDirectoryDao {
     @Select("UPDATE directory_table available=#{done} WHERE id={parent_id}")
     void updateHide(Integer parent_id, boolean done);
 
-    @Update("UPDATE directory_table SET available=0 WHERE id=#{root_id} OR root_id=#{root_id}")
-    void updateHideRoot(Integer root_id);
+    @Update("UPDATE directory_table SET available=#{available}, update_date=#{update_date} WHERE id=#{root_id} OR root_id=#{root_id}")
+    void updateRootAvailable(Directory directory);
 }
