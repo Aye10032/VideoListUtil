@@ -29,6 +29,7 @@ public class ProjectWindow extends JFrame {
 
     Logger logger;
 
+    private JTextField search_input;
     private JCheckBoxMenuItem hide_item;
     private JCheckBoxMenuItem finish_item;
     private JPanel list_panel;
@@ -60,7 +61,7 @@ public class ProjectWindow extends JFrame {
 
         JLabel search_icon = new JLabel();
         search_icon.setIcon(new FlatSVGIcon("com/aye10032/icon/search.svg"));
-        JTextField search_input = new JTextField();
+        search_input = new JTextField();
         JButton sort_button = new JButton();
         sort_button.setIcon(new FlatSVGIcon("com/aye10032/icon/listFiles.svg"));
 
@@ -108,7 +109,7 @@ public class ProjectWindow extends JFrame {
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                     logger.debug(search_input.getText());
                     list_panel.removeAll();
-                    search(search_input.getText());
+                    search();
                 }
             }
         });
@@ -212,7 +213,7 @@ public class ProjectWindow extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String msg = "";
                     boolean now_stat = hide_item.getState();
-                    logger.debug("hidden_item: "+ now_stat);
+                    logger.debug("hidden_item: " + now_stat);
 
                     if (now_stat) {
                         msg = "将会隐藏这个项目（但不会从数据库中删除，要删除项目，可\n选择删除选项），确定要隐藏这个项目吗？";
@@ -223,7 +224,8 @@ public class ProjectWindow extends JFrame {
                     logger.debug(result);
                     if (result == 0) {
                         ListVideos.setRootHidden(Integer.parseInt(id_label.getText()), !now_stat);
-                    }else {
+                        update_list();
+                    } else {
                         hide_item.setState(!now_stat);
                     }
                 }
@@ -244,11 +246,11 @@ public class ProjectWindow extends JFrame {
         return panel;
     }
 
-    private void search(String key_word) {
+    private void search() {
         List<Directory> roots = ListVideos.getRoots();
 
         for (Directory directory : roots) {
-            if (directory.getName().contains(key_word)) {
+            if (directory.getName().contains(search_input.getText())) {
                 Integer id = directory.getId();
                 int percent = PercentCalculate.getProjectPercent(id);
                 JPanel card_panel = cardPanel(id, directory.getName(), percent,
@@ -273,13 +275,19 @@ public class ProjectWindow extends JFrame {
         for (Directory directory : list) {
             Integer id = directory.getId();
             int percent = PercentCalculate.getProjectPercent(id);
+
             if (!finish_item.getState() && percent == 1000) {
                 continue;
-            } else {
-                JPanel card_panel = cardPanel(id, directory.getName(), percent,
-                        directory.getParent() + "\\" + directory.getName(), percent == 1000, directory.isAvailable());
-                list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
+            } else if (search_input.getText() != null
+                    && !search_input.getText().equals("")
+                    && !directory.getName().contains(search_input.getText())) {
+                continue;
             }
+
+            JPanel card_panel = cardPanel(id, directory.getName(), percent,
+                    directory.getParent() + "\\" + directory.getName(), percent == 1000, directory.isAvailable());
+            list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
+
         }
         update_panel();
     }
