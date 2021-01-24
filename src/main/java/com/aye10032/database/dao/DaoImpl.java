@@ -102,6 +102,7 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
 
         dao.setRootVideoDone(video);
         session.commit();
+        closeAll();
     }
 
     @Override
@@ -111,6 +112,7 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
 
         dao.setParentVideoDone(video);
         session.commit();
+        closeAll();
     }
 
     @Override
@@ -120,6 +122,7 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
 
         dao.setVideoDone(video);
         session.commit();
+        closeAll();
     }
 
     @Override
@@ -162,6 +165,18 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
 
         list = dao.getRoots();
 
+        closeAll();
+
+        return list;
+    }
+
+    @Override
+    public List<Directory> getAllRoots() {
+        List<Directory> list = null;
+        initSession();
+        IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
+
+        list = dao.getAllRoots();
         closeAll();
 
         return list;

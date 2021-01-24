@@ -43,6 +43,9 @@ public interface IDirectoryDao {
     @Select("SELECT * FROM directory_table WHERE is_root=1 AND available=1")
     List<Directory> getRoots();
 
+    @Select("SELECT * FROM directory_table WHERE is_root=1")
+    List<Directory> getAllRoots();
+
     @Select("SELECT * FROM directory_table WHERE id=#{id}")
     List<Directory> selectDirectoryWithID(Integer id);
 

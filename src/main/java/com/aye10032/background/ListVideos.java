@@ -184,12 +184,12 @@ public class ListVideos {
         return list;
     }
 
-    public static void hideRoot(Integer root_id) {
+    public static void setRootHidden(Integer root_id, boolean hide) {
         DaoImpl dao = new DaoImpl();
 
         Directory directory = new Directory();
         directory.setRoot_id(root_id);
-        directory.setAvailable(false);
+        directory.setAvailable(hide);
         directory.setUpdate_date(new Date());
 
         dao.updateRootAvailable(directory);

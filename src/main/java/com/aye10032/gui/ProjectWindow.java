@@ -5,6 +5,7 @@ import com.aye10032.background.PercentCalculate;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.config.LocalConfig;
+import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.layout.AC;
@@ -28,6 +29,8 @@ public class ProjectWindow extends JFrame {
 
     Logger logger;
 
+    private JCheckBoxMenuItem hide_item;
+    private JCheckBoxMenuItem finish_item;
     private JPanel list_panel;
 
     public ProjectWindow() {
@@ -62,8 +65,8 @@ public class ProjectWindow extends JFrame {
         sort_button.setIcon(new FlatSVGIcon("com/aye10032/icon/listFiles.svg"));
 
         JPopupMenu sort_menu = new JPopupMenu();
-        JCheckBoxMenuItem hide_item = new JCheckBoxMenuItem("显示隐藏项");
-        JCheckBoxMenuItem finish_item = new JCheckBoxMenuItem("显示已完成");
+        hide_item = new JCheckBoxMenuItem("显示隐藏项");
+        finish_item = new JCheckBoxMenuItem("显示已完成");
         finish_item.setState(true);
         JMenu sort_type_menu = new JMenu("排序方式");
         sort_menu.add(hide_item);
@@ -81,7 +84,7 @@ public class ProjectWindow extends JFrame {
                 Integer id = directory.getId();
                 int percent = PercentCalculate.getProjectPercent(id);
                 JPanel card_panel = cardPanel(id, directory.getName(), percent,
-                        directory.getParent() + "\\" + directory.getName(), percent == 1000);
+                        directory.getParent() + "\\" + directory.getName(), percent == 1000, directory.isAvailable());
                 list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
             }
 
@@ -117,9 +120,12 @@ public class ProjectWindow extends JFrame {
                 sort_menu.setVisible(true);
             }
         });
+
+        hide_item.addActionListener(e -> update_list());
+        finish_item.addActionListener(e -> update_list());
     }
 
-    private JPanel cardPanel(Integer id, String name, int percent, String path, boolean done) {
+    private JPanel cardPanel(Integer id, String name, int percent, String path, boolean done, boolean hide) {
         LC layC = new LC().fill().wrap();
         AC colC = new AC()
                 .gap("10")
@@ -151,7 +157,8 @@ public class ProjectWindow extends JFrame {
 
         JPopupMenu set_menu = new JPopupMenu();
         JMenuItem done_item = new JMenuItem("全部完成");
-        JMenuItem hide_item = new JMenuItem("隐藏");
+        JCheckBoxMenuItem hide_item = new JCheckBoxMenuItem("隐藏");
+        hide_item.setState(!hide);
         JMenuItem del_item = new JMenuItem("删除");
         if (done) {
             done_item.setEnabled(false);
@@ -203,11 +210,21 @@ public class ProjectWindow extends JFrame {
             hide_item.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    int result = JOptionPane.showConfirmDialog(null,
-                            "将会隐藏这个项目（但不会从数据库中删除，要删除项目，\n可选择删除选项），确定要隐藏这个项目吗？", "提示", JOptionPane.YES_NO_OPTION);
+                    String msg = "";
+                    boolean now_stat = hide_item.getState();
+                    logger.debug("hidden_item: "+ now_stat);
+
+                    if (now_stat) {
+                        msg = "将会隐藏这个项目（但不会从数据库中删除，要删除项目，可\n选择删除选项），确定要隐藏这个项目吗？";
+                    } else {
+                        msg = "将会重新显示这个项目，确定吗？";
+                    }
+                    int result = JOptionPane.showConfirmDialog(null, msg, "提示", JOptionPane.YES_NO_OPTION);
                     logger.debug(result);
                     if (result == 0) {
-                        ListVideos.hideRoot(Integer.parseInt(id_label.getText()));
+                        ListVideos.setRootHidden(Integer.parseInt(id_label.getText()), !now_stat);
+                    }else {
+                        hide_item.setState(!now_stat);
                     }
                 }
             });
@@ -235,14 +252,39 @@ public class ProjectWindow extends JFrame {
                 Integer id = directory.getId();
                 int percent = PercentCalculate.getProjectPercent(id);
                 JPanel card_panel = cardPanel(id, directory.getName(), percent,
-                        directory.getParent() + "\\" + directory.getName(), percent == 1000);
+                        directory.getParent() + "\\" + directory.getName(), percent == 1000, directory.isAvailable());
                 list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
             }
         }
         update_panel();
     }
 
-    public void update_panel() {
+    private void update_list() {
+        List<Directory> list = null;
+        DaoImpl dao = new DaoImpl();
+        if (hide_item.getState()) {
+            list = dao.getAllRoots();
+        } else {
+            list = dao.getRoots();
+        }
+
+        list_panel.removeAll();
+
+        for (Directory directory : list) {
+            Integer id = directory.getId();
+            int percent = PercentCalculate.getProjectPercent(id);
+            if (!finish_item.getState() && percent == 1000) {
+                continue;
+            } else {
+                JPanel card_panel = cardPanel(id, directory.getName(), percent,
+                        directory.getParent() + "\\" + directory.getName(), percent == 1000, directory.isAvailable());
+                list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
+            }
+        }
+        update_panel();
+    }
+
+    private void update_panel() {
         list_panel.updateUI();
         list_panel.invalidate();
         list_panel.validate();
