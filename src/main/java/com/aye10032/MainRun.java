@@ -1,5 +1,6 @@
 package com.aye10032;
 
+import com.aye10032.background.ProjectInit;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.gui.MainWindow;
@@ -18,6 +19,7 @@ import java.awt.*;
 public class MainRun {
 
     public static void main(String[] args) {
+        ProjectInit.init();
         new MainRun();
     }
 
