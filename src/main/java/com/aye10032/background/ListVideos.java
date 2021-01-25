@@ -7,6 +7,7 @@ import com.aye10032.database.pojo.Video;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,14 +24,8 @@ import java.util.Objects;
 public class ListVideos {
     private static final Logger logger = Logger.getLogger(ListVideos.class);
 
-    public static void getList(File file) throws IOException {
+    public static void getList(File file, JTextArea log_area) throws IOException {
         DaoImpl dao = new DaoImpl();
-
-//        Directory directory = new Directory();
-//        directory.setName(file.getName());
-//        directory.setIs_root(1);
-//        directory.setParent(file.getParentFile().getAbsolutePath());
-//        directory.setAvailable(1);
 
         Integer new_id = addDirectory(
                 dao, file.getName(), true, file.getParentFile().getAbsolutePath(), null,
@@ -39,17 +34,14 @@ public class ListVideos {
         File[] fs = file.listFiles();
         for (File f : Objects.requireNonNull(fs)) {
             if (f.isDirectory()) {
+                log_area.append(f.getParentFile().getName() + " <-" + f.getName() + "\n");
                 logger.info(f.getParentFile().getName() + " <-" + f.getName());
-                getList(f, new_id);
+                getList(f, new_id, log_area);
             }
             if (f.isFile()) {
+                log_area.append(f.getParentFile().getName() + " <-" + f.getName() + "\n");
                 logger.info(f.getParentFile().getName() + " <-" + f.getName());
 
-//                Video video = new Video();
-//                video.setName(f.getName());
-//                video.setParent(f.getParentFile().getName());
-//                video.setParent_id(new_id);
-//                video.setHas_done(0);
                 String md5 = null;
                 if (ConfigIO.loadConfig().isUse_md5()) {
                     md5 = DigestUtils.md5Hex(new FileInputStream(f));
@@ -57,18 +49,22 @@ public class ListVideos {
                 addVideo(dao, f.getName(), f.getParentFile().getName(), new_id,
                         f.getParentFile().getName(), new_id, false, md5);
             }
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            log_area.updateUI();
+            log_area.invalidate();
+            log_area.validate();
+            log_area.repaint();
         }
     }
 
-    public static void getList(File file, Integer parent_id) throws IOException {
+    public static void getList(File file, Integer parent_id, JTextArea log_area) throws IOException {
         DaoImpl dao = new DaoImpl();
 
-//        Directory directory = new Directory();
-//        directory.setName(file.getName());
-//        directory.setIs_root(0);
-//        directory.setParent(file.getParentFile().getName());
-//        directory.setParent_id(parent_id);
-//        directory.setAvailable(1);
         Directory parent = dao.selectDirectoryWithID(parent_id).get(0);
         String root = null;
         Integer root_id = null;
@@ -86,24 +82,30 @@ public class ListVideos {
         File[] fs = file.listFiles();
         for (File f : Objects.requireNonNull(fs)) {
             if (f.isDirectory()) {
+                log_area.append(f.getParentFile().getName() + " <-" + f.getName() + "\n");
                 logger.info(f.getParentFile().getName() + " <-" + f.getName());
-                getList(f, new_id);
+                getList(f, new_id, log_area);
             }
             if (f.isFile()) {
 //                String md5 = DigestUtils.md5Hex(new FileInputStream(f));
+                log_area.append(f.getParentFile().getName() + " <-" + f.getName() + "\n");
                 logger.info(f.getParentFile().getName() + " <-" + f.getName());
-//                System.out.println("        " + md5);
-//                Video video = new Video();
-//                video.setName(f.getName());
-//                video.setParent(f.getParentFile().getName());
-//                video.setParent_id(new_id);
-//                video.setHas_done(0);
+
                 String md5 = null;
                 if (ConfigIO.loadConfig().isUse_md5()) {
                     md5 = DigestUtils.md5Hex(new FileInputStream(f));
                 }
                 addVideo(dao, f.getName(), f.getParentFile().getName(), new_id, root, root_id, false, md5);
             }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            log_area.updateUI();
+            log_area.invalidate();
+            log_area.validate();
+            log_area.repaint();
         }
     }
 

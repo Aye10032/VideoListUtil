@@ -12,5 +12,7 @@ public class LocalConfig {
 
     public static final double PROJECT_WINDOW_WIDTH_PROPORTION = 0.7;
     public static final double PROJECT_WINDOW_HEIGHT_PROPORTION = 1.2;
+    public static final double NEW_PROJECT_WINDOW_WIDTH_PROPORTION = 0.55;
+    public static final double NEW_PROJECT_WINDOW_HEIGHT_PROPORTION = 0.6;
 
 }

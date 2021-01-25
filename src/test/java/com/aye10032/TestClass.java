@@ -33,7 +33,7 @@ public class TestClass {
     public void TestFileList() throws IOException {
         String path = "E:\\考研\\2021考研操作系统";
 
-        ListVideos.getList(new File(path));
+//        ListVideos.getList(new File(path));
     }
 
     @Test
