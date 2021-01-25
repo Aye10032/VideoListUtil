@@ -24,7 +24,7 @@ import java.util.Objects;
 public class ListVideos {
     private static final Logger logger = Logger.getLogger(ListVideos.class);
 
-    public static void getList(File file, JTextArea log_area) throws IOException {
+    public static Integer getList(File file, JTextArea log_area) throws IOException {
         DaoImpl dao = new DaoImpl();
 
         Integer new_id = addDirectory(
@@ -60,6 +60,8 @@ public class ListVideos {
             log_area.validate();
             log_area.repaint();
         }
+
+        return new_id;
     }
 
     public static void getList(File file, Integer parent_id, JTextArea log_area) throws IOException {

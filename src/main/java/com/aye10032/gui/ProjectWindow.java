@@ -302,6 +302,10 @@ public class ProjectWindow extends JFrame {
 
     private void onSelectProject(String id) {
         int ID = Integer.parseInt(id);
+
+        ConfigSet config = ConfigIO.loadConfig();
+        config.addHistory(ID);
+        ConfigIO.saveConfig(config);
         logger.debug("ID is " + ID);
     }
 }

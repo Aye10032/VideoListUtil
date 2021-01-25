@@ -6,6 +6,8 @@ import org.apache.commons.io.FileUtils;
 import javax.print.attribute.standard.Finishings;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * @program: VideoListUtil
@@ -52,6 +54,7 @@ public class ConfigIO {
         configSet.setWINDOW_HEIGHT(900);
         configSet.setWINDOW_WIDTH(600);
         configSet.setUse_md5(false);
+        configSet.setHistory_id(new LinkedList<>());
 
         saveConfig(configSet);
     }

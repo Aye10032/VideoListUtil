@@ -226,11 +226,6 @@ public class MainWindow extends JFrame {
         jfc.showDialog(new JLabel(), "选择项目");
         File file = jfc.getSelectedFile();
 
-//        try {
-//            ListVideos.getList(file);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         NewProjectWindow window = new NewProjectWindow(file);
         window.setVisible(true);
     }

@@ -1,5 +1,8 @@
 package com.aye10032.config;
 
+import java.util.ArrayList;
+import java.util.Queue;
+
 /**
  * @program: VideoListUtil
  * @description: 程序设置信息
@@ -12,6 +15,8 @@ public class ConfigSet {
 
     private boolean use_md5;
 
+    private Queue<Integer> history_id;
+
     public double getWINDOW_WIDTH() {
         return WINDOW_WIDTH;
     }
@@ -22,6 +27,10 @@ public class ConfigSet {
 
     public boolean isUse_md5() {
         return use_md5;
+    }
+
+    public Queue<Integer> getHistory_id() {
+        return history_id;
     }
 
     public void setWINDOW_WIDTH(double WINDOW_WIDTH) {
@@ -36,12 +45,25 @@ public class ConfigSet {
         this.use_md5 = use_md5;
     }
 
+    public void setHistory_id(Queue<Integer> history_id) {
+        this.history_id = history_id;
+    }
+
     @Override
     public String toString() {
         return "ConfigSet{" +
                 "WINDOW_WIDTH=" + WINDOW_WIDTH +
                 ", WINDOW_HEIGHT=" + WINDOW_HEIGHT +
                 ", use_md5=" + use_md5 +
+                ", history_id=" + history_id +
                 '}';
+    }
+
+    public void addHistory(Integer new_id) {
+        if (this.history_id.size() == 5){
+            this.history_id.poll();
+        }
+
+        this.history_id.offer(new_id);
     }
 }

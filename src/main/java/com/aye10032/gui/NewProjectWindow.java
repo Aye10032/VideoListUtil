@@ -54,11 +54,15 @@ public class NewProjectWindow extends JFrame {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Integer id = null;
                 try {
-                    ListVideos.getList(file, log_area);
+                    id = ListVideos.getList(file, log_area);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                ConfigSet config = ConfigIO.loadConfig();
+                config.addHistory(id);
+                ConfigIO.saveConfig(config);
                 progressBar.setIndeterminate(false);
                 progressBar.setValue(100);
                 progressBar.setString("加载完毕");
