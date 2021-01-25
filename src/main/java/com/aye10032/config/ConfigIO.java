@@ -51,8 +51,8 @@ public class ConfigIO {
 
     public static void initConfig(){
         ConfigSet configSet = new ConfigSet();
-        configSet.setWINDOW_HEIGHT(900);
-        configSet.setWINDOW_WIDTH(600);
+        configSet.setWINDOW_HEIGHT(600);
+        configSet.setWINDOW_WIDTH(900);
         configSet.setUse_md5(false);
         configSet.setHistory_id(new LinkedList<>());
 
