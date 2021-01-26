@@ -40,6 +40,9 @@ public class MainWindow extends JFrame {
     private Integer ID;
     private Logger logger;
 
+    private JMenu open_menu;
+
+    private JPanel list_panel1;
     private JPanel project_tree_panel;
 
     public MainWindow(Integer id) {
@@ -65,7 +68,7 @@ public class MainWindow extends JFrame {
             menuBar.add(menu3);
             JMenuItem new_item = new JMenuItem("新建项目");
             JMenuItem open_item = new JMenuItem("打开...");
-            JMenu open_menu = new JMenu("打开最近");
+            open_menu = new JMenu("打开最近");
             JMenuItem exit_item = new JMenuItem("退出");
             file_menu.add(new_item);
             file_menu.add(open_item);
@@ -103,7 +106,7 @@ public class MainWindow extends JFrame {
             {
                 project_tree_panel = new JPanel(new MigLayout(new LC().fill().wrap().debug()));
 
-                JPanel list_panel1 = new JPanel(new MigLayout(new LC().fillX()));
+                list_panel1 = new JPanel(new MigLayout(new LC().fillX()));
 
                 List<Directory> parents = ListVideos.getDirectoryWithRoot(ID);
 
@@ -121,6 +124,7 @@ public class MainWindow extends JFrame {
                 }
 
                 JScrollPane sp1 = new JScrollPane(list_panel1);
+//                sp1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                 project_tree_panel.add(sp1, new CC().spanX().spanY().growX().growY());
             }
 
@@ -157,7 +161,7 @@ public class MainWindow extends JFrame {
 
         panel.removeAll();
 
-        switch (panel_type){
+        switch (panel_type) {
             case PROJECT_SIDE_PANEL:
                 list = ListVideos.getDirectoryWithRoot(ID);
         }
@@ -185,8 +189,34 @@ public class MainWindow extends JFrame {
         repaint();
     }
 
+    private void update_history_menu(){
+        open_menu.removeAll();
+        List<Integer> id_queue = ConfigIO.loadConfig().getHistory_id();
+        for (Integer id : id_queue) {
+            if (!id.equals(ID)) {
+                JMenuItem project_item = new JMenuItem(ListVideos.getDirectory(id).get(0).getName());
+                open_menu.add(project_item);
+
+                project_item.addActionListener(new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        onSelectProject(id + "");
+                    }
+                });
+            }
+        }
+    }
+
     private void onSelectProject(String id) {
-        int ID = Integer.parseInt(id);
+        this.ID = Integer.parseInt(id);
+
+        ConfigSet config = ConfigIO.loadConfig();
+        config.addHistory(ID);
+        ConfigIO.saveConfig(config);
+
+        update_list(list_panel1, PROJECT_SIDE_PANEL);
+        update_history_menu();
+        setTitle(ListVideos.getDirectory(ID).get(0).getName());
         logger.debug("ID is " + ID);
     }
 
@@ -211,7 +241,8 @@ public class MainWindow extends JFrame {
         Integer open_id = window.getSelect_id();
         if (open_id != -1) {
             this.ID = open_id;
-            update_list(project_tree_panel, PROJECT_SIDE_PANEL);
+            update_list(list_panel1, PROJECT_SIDE_PANEL);
+            setTitle(ListVideos.getDirectory(ID).get(0).getName());
         }
     }
 

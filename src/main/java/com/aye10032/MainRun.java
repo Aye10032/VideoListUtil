@@ -1,5 +1,6 @@
 package com.aye10032;
 
+import com.aye10032.background.ListVideos;
 import com.aye10032.background.ProjectInit;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
@@ -54,13 +55,15 @@ public class MainRun {
 
         List<Integer> history = config.getHistory_id();
         Integer last_id = -1;
+        String title = "规划工具箱";
         if (history.size() != 0){
             last_id = history.get(history.size() - 1);
+            title = ListVideos.getDirectory(last_id).get(0).getName();
         }
 
         MainWindow.setDefaultLookAndFeelDecorated(true);
         MainWindow window = new MainWindow(last_id);
-        window.setTitle("刷课工具箱");
+        window.setTitle(title);
         Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/aye10032/icon.png").getFile());
         window.setIconImage(icon);
         window.setBounds((screenWidth - windowWidth) / 2, (screenHeight - windowHeight) / 2, windowWidth, windowHeight);
