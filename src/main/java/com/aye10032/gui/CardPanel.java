@@ -73,7 +73,7 @@ public class CardPanel {
         panel.add(id_label, new CC().split(2).growX());
         panel.add(done_label, new CC().alignX("right"));
 
-        panel.setComponentPopupMenu(set_menu);
+//        panel.setComponentPopupMenu(set_menu);
 
         return panel;
     }

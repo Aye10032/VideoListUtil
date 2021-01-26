@@ -42,7 +42,10 @@ public class MainWindow extends JFrame {
 
     private JMenu open_menu;
 
+    private JSplitPane main_panel;
+    private JTabbedPane project_tab;
     private JPanel list_panel1;
+    private JPanel list_panel2;
 
     public MainWindow(Integer id) {
         this.ID = id;
@@ -84,7 +87,7 @@ public class MainWindow extends JFrame {
                     project_item.addActionListener(new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            onSelectProject(id + "");
+                            onSelectProject(id);
                         }
                     });
                 }
@@ -95,12 +98,12 @@ public class MainWindow extends JFrame {
             exit_item.addActionListener(e -> Exit());
         }
 
-        JSplitPane main_panel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        main_panel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
         panel.add(main_panel, new CC().growY().growX().spanY().spanX());
 
         {
-            JTabbedPane project_tab = new JTabbedPane();
+            project_tab = new JTabbedPane();
 
             JPanel project_tree_panel;
             {
@@ -118,7 +121,7 @@ public class MainWindow extends JFrame {
                     card_panel.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
-                            onSelectProject(id + "");
+                            onSelectParent(id);
                         }
                     });
                     list_panel1.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
@@ -132,6 +135,31 @@ public class MainWindow extends JFrame {
             JPanel roots_panel;
             {
                 roots_panel = new JPanel(new MigLayout(new LC().fill().wrap()));
+
+                list_panel2 = new JPanel(new MigLayout(new LC().fillX()));
+                list_panel2.setBackground(Color.WHITE);
+
+                List<Directory> roots = null;
+                DaoImpl dao = new DaoImpl();
+                roots = dao.getRoots();
+
+                for (Directory directory : roots) {
+                    Integer id = directory.getId();
+                    int percent = PercentCalculate.getProjectPercent(id);
+                    JPanel card_panel = cardPanel(id, directory.getName(), percent, percent == 1000);
+                    card_panel.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            onSelectProject(id);
+                            project_tab.setSelectedIndex(0);
+                        }
+                    });
+                    list_panel2.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
+                }
+
+                JScrollPane sp2 = new JScrollPane(list_panel2);
+//                sp1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                roots_panel.add(sp2, new CC().spanX().spanY().growX().growY());
             }
 
             project_tab.add("此项目", project_tree_panel);
@@ -174,7 +202,7 @@ public class MainWindow extends JFrame {
             card_panel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    onSelectParent(id);
+                    onSelectProject(id);
                 }
             });
             panel.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
@@ -201,15 +229,15 @@ public class MainWindow extends JFrame {
                 project_item.addActionListener(new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        onSelectProject(id + "");
+                        onSelectProject(id);
                     }
                 });
             }
         }
     }
 
-    private void onSelectProject(String id) {
-        this.ID = Integer.parseInt(id);
+    private void onSelectProject(Integer id) {
+        this.ID = id;
 
         ConfigSet config = ConfigIO.loadConfig();
         config.addHistory(ID);
