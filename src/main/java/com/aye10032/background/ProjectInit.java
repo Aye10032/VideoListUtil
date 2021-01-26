@@ -5,6 +5,7 @@ import com.aye10032.database.dao.DaoImpl;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.aye10032.config.ConfigIO.saveConfig;
@@ -39,7 +40,7 @@ public class ProjectInit {
         configSet.setWINDOW_WIDTH(900);
         configSet.setUse_md5(false);
         configSet.setOpen_recent(false);
-        configSet.setHistory_id(new LinkedList<>());
+        configSet.setHistory_id(new ArrayList<>());
 
         saveConfig(configSet);
     }

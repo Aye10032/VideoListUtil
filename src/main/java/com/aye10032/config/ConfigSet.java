@@ -1,6 +1,7 @@
 package com.aye10032.config;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -16,7 +17,7 @@ public class ConfigSet {
     private boolean use_md5;
     private boolean open_recent;
 
-    private Queue<Integer> history_id;
+    private List<Integer> history_id;
 
     public double getWINDOW_WIDTH() {
         return WINDOW_WIDTH;
@@ -34,7 +35,7 @@ public class ConfigSet {
         return open_recent;
     }
 
-    public Queue<Integer> getHistory_id() {
+    public List<Integer> getHistory_id() {
         return history_id;
     }
 
@@ -54,7 +55,7 @@ public class ConfigSet {
         this.open_recent = open_recent;
     }
 
-    public void setHistory_id(Queue<Integer> history_id) {
+    public void setHistory_id(List<Integer> history_id) {
         this.history_id = history_id;
     }
 
@@ -70,10 +71,14 @@ public class ConfigSet {
     }
 
     public void addHistory(Integer new_id) {
+
+        if (this.history_id.contains(new_id)){
+            history_id.remove(new_id);
+        }
         if (this.history_id.size() == 6){
-            this.history_id.poll();
+            this.history_id.remove(5);
         }
 
-        this.history_id.offer(new_id);
+        this.history_id.add(new_id);
     }
 }

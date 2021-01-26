@@ -72,9 +72,8 @@ public class MainWindow extends JFrame {
             file_menu.addSeparator();
             file_menu.add(exit_item);
 
-            Queue<Integer> id_queue = ConfigIO.loadConfig().getHistory_id();
-            for (int i = 0; i < id_queue.size(); i++) {
-                Integer id = id_queue.poll();
+            List<Integer> id_queue = ConfigIO.loadConfig().getHistory_id();
+            for (Integer id : id_queue) {
                 if (!id.equals(ID)) {
                     JMenuItem project_item = new JMenuItem(ListVideos.getDirectory(id).get(0).getName());
                     open_menu.add(project_item);
