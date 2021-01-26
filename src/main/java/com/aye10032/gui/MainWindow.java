@@ -38,12 +38,11 @@ import static com.aye10032.gui.CardPanel.cardPanel;
 public class MainWindow extends JFrame {
 
     private Integer ID;
-    private Logger logger;
+    private final Logger logger;
 
     private JMenu open_menu;
 
     private JPanel list_panel1;
-    private JPanel project_tree_panel;
 
     public MainWindow(Integer id) {
         this.ID = id;
@@ -103,10 +102,12 @@ public class MainWindow extends JFrame {
         {
             JTabbedPane project_tab = new JTabbedPane();
 
+            JPanel project_tree_panel;
             {
-                project_tree_panel = new JPanel(new MigLayout(new LC().fill().wrap().debug()));
+                project_tree_panel = new JPanel(new MigLayout(new LC().fill().wrap()));
 
                 list_panel1 = new JPanel(new MigLayout(new LC().fillX()));
+                list_panel1.setBackground(Color.WHITE);
 
                 List<Directory> parents = ListVideos.getDirectoryWithRoot(ID);
 
@@ -120,7 +121,7 @@ public class MainWindow extends JFrame {
                             onSelectProject(id + "");
                         }
                     });
-                    list_panel1.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
+                    list_panel1.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
                 }
 
                 JScrollPane sp1 = new JScrollPane(list_panel1);
@@ -173,10 +174,10 @@ public class MainWindow extends JFrame {
             card_panel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    onSelectProject(id + "");
+                    onSelectParent(id);
                 }
             });
-            panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
+            panel.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
         }
         update_panel(panel);
     }
@@ -189,7 +190,7 @@ public class MainWindow extends JFrame {
         repaint();
     }
 
-    private void update_history_menu(){
+    private void update_history_menu() {
         open_menu.removeAll();
         List<Integer> id_queue = ConfigIO.loadConfig().getHistory_id();
         for (Integer id : id_queue) {
@@ -218,6 +219,10 @@ public class MainWindow extends JFrame {
         update_history_menu();
         setTitle(ListVideos.getDirectory(ID).get(0).getName());
         logger.debug("ID is " + ID);
+    }
+
+    private void onSelectParent(Integer id) {
+        logger.info("选择了:" + id);
     }
 
     private void CreatNewProject() {
