@@ -25,7 +25,7 @@ import java.util.List;
  * @author: Aye10032
  * @create: 2021-01-21 23:51
  **/
-public class ProjectWindow extends JFrame {
+public class ProjectWindow extends JDialog {
 
     Logger logger;
 
@@ -33,6 +33,8 @@ public class ProjectWindow extends JFrame {
     private JCheckBoxMenuItem hide_item;
     private JCheckBoxMenuItem finish_item;
     private JPanel list_panel;
+
+    private int select_id = -1;
 
     public ProjectWindow() {
         logger = Logger.getLogger(ProjectWindow.class);
@@ -306,6 +308,13 @@ public class ProjectWindow extends JFrame {
         ConfigSet config = ConfigIO.loadConfig();
         config.addHistory(ID);
         ConfigIO.saveConfig(config);
+
+        this.select_id = ID;
         logger.debug("ID is " + ID);
+        dispose();
+    }
+
+    public int getSelect_id() {
+        return select_id;
     }
 }

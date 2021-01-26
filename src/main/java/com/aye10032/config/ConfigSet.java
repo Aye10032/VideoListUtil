@@ -76,7 +76,7 @@ public class ConfigSet {
             history_id.remove(new_id);
         }
         if (this.history_id.size() == 6){
-            this.history_id.remove(5);
+            this.history_id.remove(0);
         }
 
         this.history_id.add(new_id);

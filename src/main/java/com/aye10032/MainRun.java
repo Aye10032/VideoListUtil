@@ -5,10 +5,10 @@ import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.gui.MainWindow;
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.formdev.flatlaf.extras.FlatSVGUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * @program: VideoListUtil
@@ -23,7 +23,7 @@ public class MainRun {
         new MainRun();
     }
 
-    public MainRun(){
+    public MainRun() {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
             UIManager.put("Button.arc", 6);
@@ -51,7 +51,12 @@ public class MainRun {
         ConfigSet config = ConfigIO.loadConfig();
         int windowWidth = (int) config.getWINDOW_WIDTH();
         int windowHeight = (int) config.getWINDOW_HEIGHT();
-        Integer last_id = config.getHistory_id().peek();
+
+        List<Integer> history = config.getHistory_id();
+        Integer last_id = -1;
+        if (history.size() != 0){
+            last_id = history.get(history.size() - 1);
+        }
 
         MainWindow.setDefaultLookAndFeelDecorated(true);
         MainWindow window = new MainWindow(last_id);

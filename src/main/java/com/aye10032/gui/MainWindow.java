@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Queue;
 
+import static com.aye10032.config.LocalConfig.PROJECT_SIDE_PANEL;
 import static com.aye10032.gui.CardPanel.cardPanel;
 
 /**
@@ -81,7 +82,7 @@ public class MainWindow extends JFrame {
                     project_item.addActionListener(new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            onSelectProject(id+"");
+                            onSelectProject(id + "");
                         }
                     });
                 }
@@ -113,7 +114,7 @@ public class MainWindow extends JFrame {
                     card_panel.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
-                            onSelectProject(id+"");
+                            onSelectProject(id + "");
                         }
                     });
                     list_panel1.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
@@ -151,21 +152,27 @@ public class MainWindow extends JFrame {
     }
 
 
-
     private void update_list(JPanel panel, int panel_type) {
         List<Directory> list = null;
-        DaoImpl dao = new DaoImpl();
 
         panel.removeAll();
 
+        switch (panel_type){
+            case PROJECT_SIDE_PANEL:
+                list = ListVideos.getDirectoryWithRoot(ID);
+        }
+
         for (Directory directory : list) {
             Integer id = directory.getId();
-            int percent = PercentCalculate.getProjectPercent(id);
-
-
+            int percent = PercentCalculate.getPercent(id);
             JPanel card_panel = cardPanel(id, directory.getName(), percent, percent == 1000);
+            card_panel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    onSelectProject(id + "");
+                }
+            });
             panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
-
         }
         update_panel(panel);
     }
@@ -198,8 +205,14 @@ public class MainWindow extends JFrame {
     private void OpenNewProject() {
         ProjectWindow.setDefaultLookAndFeelDecorated(true);
         ProjectWindow window = new ProjectWindow();
-
+        window.setModal(true);
         window.setVisible(true);
+
+        Integer open_id = window.getSelect_id();
+        if (open_id != -1) {
+            this.ID = open_id;
+            update_list(project_tree_panel, PROJECT_SIDE_PANEL);
+        }
     }
 
     private void Exit() {

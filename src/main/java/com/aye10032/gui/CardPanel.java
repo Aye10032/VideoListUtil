@@ -1,5 +1,6 @@
 package com.aye10032.gui;
 
+import com.aye10032.util.Util;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
@@ -12,6 +13,7 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 /**
  * @program: VideoListUtil
@@ -29,12 +31,21 @@ public class CardPanel {
         AC rowC = new AC();
         JPanel panel = new JPanel(new MigLayout(layC, colC, rowC));
         panel.setBorder(new EtchedBorder());
-
+        if (name.length() > 10) {
+            List<String> names = Util.getStrList(name, 15);
+            StringBuilder builder = new StringBuilder();
+            builder.append("<html><body>");
+            for (String sub_name : names) {
+                builder.append(sub_name)
+                        .append("<br> ");
+            }
+            builder.append("<body></html>");
+            name = builder.toString();
+        }
         JLabel name_label = new JLabel(name);
-        name_label.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
+        name_label.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
         JProgressBar progressBar = new JProgressBar(0, 1000);
         progressBar.setValue(percent);
-        JLabel percent_label = new JLabel(percent * 0.1 + "%");
         JLabel id_label = new JLabel(id.toString());
         id_label.setVisible(false);
 
@@ -60,7 +71,6 @@ public class CardPanel {
         panel.add(name_label, new CC().growX().alignX("left").wrap());
         panel.add(progressBar, new CC().growX().gapLeft("15").wrap());
         panel.add(id_label, new CC().split(2).growX());
-//        panel.add(percent_label, new CC().skip().wrap());
         panel.add(done_label, new CC().alignX("right"));
 
         panel.setComponentPopupMenu(set_menu);
