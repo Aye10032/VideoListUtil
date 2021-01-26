@@ -23,9 +23,11 @@ import java.io.IOException;
  * @author: Aye10032
  * @create: 2021-01-25 23:09
  **/
-public class NewProjectWindow extends JFrame {
+public class NewProjectWindow extends JDialog {
 
     Logger logger;
+
+    private Integer id = null;
 
     private JTextArea log_area;
     private JProgressBar progressBar;
@@ -54,7 +56,6 @@ public class NewProjectWindow extends JFrame {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Integer id = null;
                 try {
                     id = ListVideos.getList(file, log_area);
                 } catch (IOException e) {
@@ -113,6 +114,10 @@ public class NewProjectWindow extends JFrame {
 
     private void done(){
         this.dispose();
+    }
+
+    public Integer getId(){
+        return this.id;
     }
 
 }

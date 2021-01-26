@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Queue;
 
 import static com.aye10032.config.LocalConfig.PROJECT_SIDE_PANEL;
+import static com.aye10032.config.LocalConfig.ROOTS_SIDE_PANEL;
 import static com.aye10032.gui.CardPanel.cardPanel;
 
 /**
@@ -169,6 +170,8 @@ public class MainWindow extends JFrame {
             {
                 main_win = new JPanel(new MigLayout(new LC().fill()));
                 main_win.setBackground(Color.WHITE);
+
+
             }
 
             main_panel.setLeftComponent(project_tab);
@@ -193,6 +196,9 @@ public class MainWindow extends JFrame {
         switch (panel_type) {
             case PROJECT_SIDE_PANEL:
                 list = ListVideos.getDirectoryWithRoot(ID);
+
+            case ROOTS_SIDE_PANEL:
+                list = ListVideos.getRoots();
         }
 
         for (Directory directory : list) {
@@ -261,7 +267,11 @@ public class MainWindow extends JFrame {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             NewProjectWindow window = new NewProjectWindow(file);
+            window.setModal(true);
             window.setVisible(true);
+
+            this.ID = window.getId();
+            update_list(list_panel2, ROOTS_SIDE_PANEL);
         }
     }
 
@@ -271,7 +281,7 @@ public class MainWindow extends JFrame {
         window.setModal(true);
         window.setVisible(true);
 
-        Integer open_id = window.getSelect_id();
+        int open_id = window.getSelect_id();
         if (open_id != -1) {
             this.ID = open_id;
             update_list(list_panel1, PROJECT_SIDE_PANEL);
