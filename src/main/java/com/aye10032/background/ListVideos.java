@@ -221,6 +221,15 @@ public class ListVideos {
         return list;
     }
 
+    public static List<Video> getVideoWithParent(Integer parent_id){
+        List<Video> list = null;
+        DaoImpl dao = new DaoImpl();
+
+        list = dao.selectWithParent(parent_id);
+
+        return list;
+    }
+
     public static void setRootHidden(Integer root_id, boolean hide) {
         DaoImpl dao = new DaoImpl();
 

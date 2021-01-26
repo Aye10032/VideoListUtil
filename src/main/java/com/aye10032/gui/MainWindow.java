@@ -7,6 +7,7 @@ import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
+import com.aye10032.database.pojo.Video;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
@@ -39,6 +40,7 @@ import static com.aye10032.gui.CardPanel.cardPanel;
 public class MainWindow extends JFrame {
 
     private Integer ID;
+    private Integer PARENT_ID = 2;
     private final Logger logger;
 
     private JMenu open_menu;
@@ -47,6 +49,7 @@ public class MainWindow extends JFrame {
     private JTabbedPane project_tab;
     private JPanel list_panel1;
     private JPanel list_panel2;
+    private JPanel list_panel3;
 
     public MainWindow(Integer id) {
         this.ID = id;
@@ -171,7 +174,24 @@ public class MainWindow extends JFrame {
                 main_win = new JPanel(new MigLayout(new LC().fill()));
                 main_win.setBackground(Color.WHITE);
 
+                list_panel3 = new JPanel(new MigLayout(new LC().fillX()));
+                list_panel3.setBackground(Color.WHITE);
 
+                List<Video> video_list = ListVideos.getVideoWithParent(this.PARENT_ID);
+
+                for (Video video : video_list) {
+                    JPanel video_card = CardPanel.video_card(video);
+                    video_card.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            logger.info("选择了视频:" + video.getName());
+                        }
+                    });
+                    list_panel3.add(video_card, new CC().wrap().growX().gapY("0", "5"));
+                }
+
+                JScrollPane sp3 = new JScrollPane(list_panel3);
+                main_win.add(sp3, new CC().spanX().spanY().growX().growY());
             }
 
             main_panel.setLeftComponent(project_tab);
@@ -257,6 +277,7 @@ public class MainWindow extends JFrame {
 
     private void onSelectParent(Integer id) {
         logger.info("选择了:" + id);
+        this.PARENT_ID = id;
     }
 
     private void CreatNewProject() {
