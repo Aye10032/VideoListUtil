@@ -73,9 +73,9 @@ public class NewProjectWindow extends JFrame {
     }
 
     private void initFrame() {
-        LC lc = new LC().fill().wrap().debug();
+        LC lc = new LC().fill().wrap();
         AC colC = new AC();
-        AC rowC = new AC().grow(100, 1).grow(10, 0, 2);
+        AC rowC = new AC().grow(100, 1).grow(5, 0, 2);
         JPanel panel = new JPanel(new MigLayout(lc, colC, rowC));
 
         progressBar = new JProgressBar();
