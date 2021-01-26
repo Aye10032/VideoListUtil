@@ -39,8 +39,26 @@ public class PercentCalculate {
         return percent;
     }
 
-    public static void getPercent(String parent_file) {
+    public static int getPercent(Integer parent_id) {
+        DaoImpl dao = new DaoImpl();
 
+        List<Video> list = dao.selectWithParent(parent_id);
+
+        int done_count = 0;
+
+        for (Video video : list) {
+            if (video.isHas_done()) {
+                done_count += 1;
+            }
+        }
+
+        int percent = (int) (done_count / list.size()) * 1000;
+
+        logger.debug("已看完：" + done_count);
+        logger.debug("总计：" + list.size());
+        logger.debug("计算得：" + percent);
+
+        return percent;
     }
 
 }

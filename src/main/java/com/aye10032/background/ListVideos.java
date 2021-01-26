@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -186,6 +187,29 @@ public class ListVideos {
         list = dao.selectDirectoryWithID(id);
 
         return list;
+    }
+
+    public static List<Directory> getDirectoryWithRoot(Integer id){
+        List<Video> video_list = null;
+        DaoImpl dao = new DaoImpl();
+
+        List<Integer> temp_list = new ArrayList<>();
+
+        video_list = dao.selectWithRoot(id);
+
+        for (Video video:video_list){
+            if (!temp_list.contains(video.getParent_id())){
+                temp_list.add(video.getParent_id());
+            }
+        }
+
+        List<Directory> result_list = new ArrayList<>();
+
+        for (Integer ID:temp_list){
+            result_list.add(dao.selectDirectoryWithID(ID).get(0));
+        }
+
+        return result_list;
     }
 
     public static List<Directory> getRoots() {

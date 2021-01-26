@@ -51,9 +51,10 @@ public class MainRun {
         ConfigSet config = ConfigIO.loadConfig();
         int windowWidth = (int) config.getWINDOW_WIDTH();
         int windowHeight = (int) config.getWINDOW_HEIGHT();
+        Integer last_id = config.getHistory_id().peek();
 
         MainWindow.setDefaultLookAndFeelDecorated(true);
-        MainWindow window = new MainWindow();
+        MainWindow window = new MainWindow(last_id);
         window.setTitle("刷课工具箱");
         Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/aye10032/icon.png").getFile());
         window.setIconImage(icon);
