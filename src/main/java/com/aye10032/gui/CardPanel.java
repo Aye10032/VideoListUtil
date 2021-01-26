@@ -84,7 +84,7 @@ public class CardPanel {
 
     public static JPanel video_card(Video video) {
         LC layC = new LC().fill().wrap();
-        AC colC = new AC().grow();
+        AC colC = new AC().grow(100, 0).count(2);
         AC rowC = new AC();
         JPanel panel = new JPanel(new MigLayout(layC, colC, rowC));
         panel.setBorder(new EtchedBorder());
@@ -110,7 +110,7 @@ public class CardPanel {
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String update_date = ft.format(video.getDate());
 
-        if (name.length() > 10) {
+        if (name.length() > 50) {
             List<String> names = Util.getStrList(name, 15);
             StringBuilder builder = new StringBuilder();
             builder.append("<html><body>");
@@ -122,9 +122,10 @@ public class CardPanel {
             name = builder.toString();
         }
         JLabel name_label = new JLabel(name);
-        name_label.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
+        name_label.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
         JButton play = new JButton(new FlatSVGIcon("com/aye10032/icon/play.svg"));
         JLabel date_label = new JLabel("上次: " + update_date);
+        date_label.setForeground(Color.DARK_GRAY);
         JLabel done_label = new JLabel();
         if (video.isHas_done()) {
             done_label.setIcon(new FlatSVGIcon("com/aye10032/icon/selected.svg"));

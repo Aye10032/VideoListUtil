@@ -187,7 +187,7 @@ public class MainWindow extends JFrame {
                             logger.info("选择了视频:" + video.getName());
                         }
                     });
-                    list_panel3.add(video_card, new CC().wrap().growX().gapY("0", "5"));
+                    list_panel3.add(video_card, new CC().wrap().growX().gapX("20", "20").gapY("0", "5"));
                 }
 
                 JScrollPane sp3 = new JScrollPane(list_panel3);
@@ -207,6 +207,22 @@ public class MainWindow extends JFrame {
         main_panel.setDividerLocation((int) (ConfigIO.loadConfig().getWINDOW_WIDTH() * 0.3));
     }
 
+    private void update_main() {
+        list_panel3.removeAll();
+        List<Video> video_list = ListVideos.getVideoWithParent(this.PARENT_ID);
+
+        for (Video video : video_list) {
+            JPanel video_card = CardPanel.video_card(video);
+            video_card.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    logger.info("选择了视频:" + video.getName());
+                }
+            });
+            list_panel3.add(video_card, new CC().wrap().growX().gapY("0", "5"));
+        }
+        update_panel(list_panel3);
+    }
 
     private void update_list(JPanel panel, int panel_type) {
         List<Directory> list = null;
@@ -278,6 +294,7 @@ public class MainWindow extends JFrame {
     private void onSelectParent(Integer id) {
         logger.info("选择了:" + id);
         this.PARENT_ID = id;
+        update_main();
     }
 
     private void CreatNewProject() {
