@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Queue;
 
+import static com.aye10032.gui.CardPanel.cardPanel;
+
 /**
  * @program: VideoListUtil
  * @description: 主程序窗口
@@ -36,6 +38,8 @@ public class MainWindow extends JFrame {
 
     private Integer ID;
     private Logger logger;
+
+    private JPanel project_tree_panel;
 
     public MainWindow(Integer id) {
         this.ID = id;
@@ -96,7 +100,6 @@ public class MainWindow extends JFrame {
         {
             JTabbedPane project_tab = new JTabbedPane();
 
-            JPanel project_tree_panel;
             {
                 project_tree_panel = new JPanel(new MigLayout(new LC().fill().wrap().debug()));
 
@@ -108,6 +111,12 @@ public class MainWindow extends JFrame {
                     Integer id = directory.getId();
                     int percent = PercentCalculate.getPercent(id);
                     JPanel card_panel = cardPanel(id, directory.getName(), percent, percent == 1000);
+                    card_panel.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            onSelectProject(id+"");
+                        }
+                    });
                     list_panel1.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
                 }
 
@@ -126,6 +135,7 @@ public class MainWindow extends JFrame {
             JPanel main_win;
             {
                 main_win = new JPanel(new MigLayout(new LC().fill()));
+                main_win.setBackground(Color.WHITE);
             }
 
             main_panel.setLeftComponent(project_tab);
@@ -141,58 +151,9 @@ public class MainWindow extends JFrame {
         main_panel.setDividerLocation((int) (ConfigIO.loadConfig().getWINDOW_WIDTH() * 0.3));
     }
 
-    private JPanel cardPanel(Integer id, String name, int percent, boolean done) {
-        LC layC = new LC().fill().wrap();
-        AC colC = new AC().grow();
-        AC rowC = new AC();
-        JPanel panel = new JPanel(new MigLayout(layC, colC, rowC));
-        panel.setBorder(new EtchedBorder());
 
-        JLabel name_label = new JLabel(name);
-        name_label.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
-        JProgressBar progressBar = new JProgressBar(0, 1000);
-        progressBar.setValue(percent);
-        JLabel percent_label = new JLabel(percent * 0.1 + "%");
-        JLabel id_label = new JLabel(id.toString());
-        id_label.setVisible(false);
 
-        JLabel done_label = new JLabel();
-        if (done) {
-            done_label.setIcon(new FlatSVGIcon("com/aye10032/icon/selected.svg"));
-        } else {
-            done_label.setIcon(new FlatSVGIcon("com/aye10032/icon/close.svg"));
-        }
-
-        JPopupMenu set_menu = new JPopupMenu();
-        JMenuItem done_item = new JMenuItem("全部完成");
-        JCheckBoxMenuItem hide_item = new JCheckBoxMenuItem("隐藏");
-        JMenuItem del_item = new JMenuItem("删除");
-        if (done) {
-            done_item.setEnabled(false);
-        }
-        set_menu.add(done_item);
-        set_menu.add(hide_item);
-        set_menu.add(new JSeparator());
-        set_menu.add(del_item);
-
-        panel.add(name_label, new CC().growX().alignX("left").wrap());
-        panel.add(progressBar, new CC().growX().gapLeft("15").wrap());
-        panel.add(id_label, new CC().split(2).growX());
-//        panel.add(percent_label, new CC().skip().wrap());
-        panel.add(done_label, new CC().alignX("right"));
-
-        panel.setComponentPopupMenu(set_menu);
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                onSelectProject(id_label.getText());
-            }
-        });
-
-        return panel;
-    }
-
-    private void update_list(JPanel panel) {
+    private void update_list(JPanel panel, int panel_type) {
         List<Directory> list = null;
         DaoImpl dao = new DaoImpl();
 
