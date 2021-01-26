@@ -14,6 +14,7 @@ public class ConfigSet {
     private double WINDOW_HEIGHT;
 
     private boolean use_md5;
+    private boolean open_recent;
 
     private Queue<Integer> history_id;
 
@@ -27,6 +28,10 @@ public class ConfigSet {
 
     public boolean isUse_md5() {
         return use_md5;
+    }
+
+    public boolean isOpen_recent() {
+        return open_recent;
     }
 
     public Queue<Integer> getHistory_id() {
@@ -45,6 +50,10 @@ public class ConfigSet {
         this.use_md5 = use_md5;
     }
 
+    public void setOpen_recent(boolean open_recent) {
+        this.open_recent = open_recent;
+    }
+
     public void setHistory_id(Queue<Integer> history_id) {
         this.history_id = history_id;
     }
@@ -55,6 +64,7 @@ public class ConfigSet {
                 "WINDOW_WIDTH=" + WINDOW_WIDTH +
                 ", WINDOW_HEIGHT=" + WINDOW_HEIGHT +
                 ", use_md5=" + use_md5 +
+                ", open_recent=" + open_recent +
                 ", history_id=" + history_id +
                 '}';
     }

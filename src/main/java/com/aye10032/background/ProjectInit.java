@@ -1,9 +1,13 @@
 package com.aye10032.background;
 
+import com.aye10032.config.ConfigSet;
 import com.aye10032.database.dao.DaoImpl;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.util.LinkedList;
+
+import static com.aye10032.config.ConfigIO.saveConfig;
 
 /**
  * @program: VideoListUtil
@@ -27,6 +31,17 @@ public class ProjectInit {
         }else {
             logger.info("已找到数据库");
         }
+    }
+
+    public static void initConfig(){
+        ConfigSet configSet = new ConfigSet();
+        configSet.setWINDOW_HEIGHT(600);
+        configSet.setWINDOW_WIDTH(900);
+        configSet.setUse_md5(false);
+        configSet.setOpen_recent(false);
+        configSet.setHistory_id(new LinkedList<>());
+
+        saveConfig(configSet);
     }
 
 }

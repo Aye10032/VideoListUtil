@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import static com.aye10032.background.ProjectInit.initConfig;
+
 /**
  * @program: VideoListUtil
  * @description: 存取配置文件
@@ -47,16 +49,6 @@ public class ConfigIO {
         Gson gson = new Gson();
 
         return gson.fromJson(json_string, ConfigSet.class);
-    }
-
-    public static void initConfig(){
-        ConfigSet configSet = new ConfigSet();
-        configSet.setWINDOW_HEIGHT(600);
-        configSet.setWINDOW_WIDTH(900);
-        configSet.setUse_md5(false);
-        configSet.setHistory_id(new LinkedList<>());
-
-        saveConfig(configSet);
     }
 
 }
