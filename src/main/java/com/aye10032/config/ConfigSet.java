@@ -60,7 +60,7 @@ public class ConfigSet {
     }
 
     public void addHistory(Integer new_id) {
-        if (this.history_id.size() == 5){
+        if (this.history_id.size() == 6){
             this.history_id.poll();
         }
 

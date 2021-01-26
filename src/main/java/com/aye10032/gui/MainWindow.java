@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * @program: VideoListUtil
@@ -32,6 +33,7 @@ import java.util.List;
  **/
 public class MainWindow extends JFrame {
 
+    private Integer ID;
     private Logger logger;
 
     public MainWindow() {
@@ -63,6 +65,22 @@ public class MainWindow extends JFrame {
             file_menu.add(open_menu);
             file_menu.addSeparator();
             file_menu.add(exit_item);
+
+            Queue<Integer> id_queue = ConfigIO.loadConfig().getHistory_id();
+            for (int i = 0; i < id_queue.size(); i++) {
+                Integer id = id_queue.poll();
+                if (!id.equals(ID)) {
+                    JMenuItem project_item = new JMenuItem(ListVideos.getDirectory(id).get(0).getName());
+                    open_menu.add(project_item);
+
+                    project_item.addActionListener(new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            onSelectProject(id+"");
+                        }
+                    });
+                }
+            }
 
             new_item.addActionListener(e -> CreatNewProject());
             open_item.addActionListener(e -> OpenNewProject());
@@ -223,11 +241,13 @@ public class MainWindow extends JFrame {
     private void CreatNewProject() {
         JFileChooser jfc = new JFileChooser();
         jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        jfc.showDialog(new JLabel(), "选择项目");
+        int result = jfc.showDialog(new JLabel(), "选择项目");
         File file = jfc.getSelectedFile();
 
-        NewProjectWindow window = new NewProjectWindow(file);
-        window.setVisible(true);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            NewProjectWindow window = new NewProjectWindow(file);
+            window.setVisible(true);
+        }
     }
 
     private void OpenNewProject() {

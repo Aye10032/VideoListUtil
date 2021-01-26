@@ -179,6 +179,15 @@ public class ListVideos {
         return id;
     }
 
+    public static List<Directory> getDirectory(Integer id){
+        List<Directory> list = null;
+        DaoImpl dao = new DaoImpl();
+
+        list = dao.selectDirectoryWithID(id);
+
+        return list;
+    }
+
     public static List<Directory> getRoots() {
         List<Directory> list = null;
         DaoImpl dao = new DaoImpl();
