@@ -115,6 +115,17 @@ public class MainWindow extends JFrame {
             toolBar.add(open_button);
             toolBar.addSeparator();
             toolBar.add(refresh_button);
+
+            new_button.addActionListener(e -> CreatNewProject());
+            open_button.addActionListener(e -> OpenNewProject());
+            refresh_button.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    update_list(list_panel1,PROJECT_SIDE_PANEL);
+                    update_list(list_panel2,ROOTS_SIDE_PANEL);
+                    update_main();
+                }
+            });
         }
 
         main_panel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
