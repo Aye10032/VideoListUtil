@@ -16,7 +16,10 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -90,22 +93,21 @@ public class CardPanel {
         panel.setBorder(new EtchedBorder());
 
         String name = video.getName();
-        StringBuilder path_builder = new StringBuilder();
+        String path = "";
         {
             DaoImpl dao = new DaoImpl();
             Directory directory;
 
             directory = dao.selectDirectoryWithID(video.getParent_id()).get(0);
-            path_builder.append("\\")
-                    .append(directory.getName());
+            path = "\\" + directory.getName() + "\\" + video.getName();
             while (!directory.isIs_root()) {
                 Integer parent_id = directory.getParent_id();
                 directory = dao.selectDirectoryWithID(parent_id).get(0);
-                path_builder.append("\\").append(directory.getName());
+                path = directory.getName() + path;
             }
-            path_builder.append("\\").append(directory.getParent());
+            path = directory.getParent() + "\\" + path;
         }
-        String path = path_builder.toString();
+
         logger.debug("path is: " + path);
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String update_date = ft.format(video.getDate());
@@ -152,8 +154,23 @@ public class CardPanel {
 
         panel.setComponentPopupMenu(set_menu);
 
+        String finalPath = path;
+        play.addActionListener(e -> onSelectVideo(video, finalPath));
+
         return panel;
     }
 
 
+    private static void onSelectVideo(Video video, String path) {
+        DaoImpl dao = new DaoImpl();
+        video.setDate(new Date());
+        video.setHas_done(true);
+        dao.setVideoDone(video);
+
+        try {
+            Desktop.getDesktop().open(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
