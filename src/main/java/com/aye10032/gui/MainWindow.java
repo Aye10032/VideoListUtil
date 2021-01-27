@@ -285,7 +285,7 @@ public class MainWindow extends JFrame {
         config.addHistory(ID);
         ConfigIO.saveConfig(config);
 
-        update_list(list_panel1, PROJECT_SIDE_PANEL);
+        update_list(list_panel1, ROOTS_SIDE_PANEL);
         update_history_menu();
         setTitle(ListVideos.getDirectory(ID).get(0).getName());
         logger.debug("ID is " + ID);

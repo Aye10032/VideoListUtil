@@ -1,6 +1,7 @@
 package com.aye10032;
 
 import com.aye10032.background.ListVideos;
+import com.aye10032.background.PercentCalculate;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.database.dao.DaoImpl;
@@ -126,5 +127,11 @@ public class TestClass {
         ProjectWindow window = new ProjectWindow();
 
         window.setVisible(true);
+    }
+
+    @Test
+    public void TestPercent(){
+        int percent = PercentCalculate.getPercent(3);
+        System.out.println(percent);
     }
 }

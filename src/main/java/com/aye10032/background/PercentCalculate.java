@@ -22,7 +22,7 @@ public class PercentCalculate {
 
         List<Video> list = dao.selectWithRoot(root_id);
 
-        int done_count = 0;
+        double done_count = 0;
 
         for (Video video : list) {
             if (video.isHas_done()) {
@@ -30,7 +30,7 @@ public class PercentCalculate {
             }
         }
 
-        int percent = (int) (done_count / list.size()) * 1000;
+        int percent = (int) ((done_count / list.size()) * 1000);
 
         logger.debug("已看完：" + done_count);
         logger.debug("总计：" + list.size());
@@ -44,7 +44,7 @@ public class PercentCalculate {
 
         List<Video> list = dao.selectWithParent(parent_id);
 
-        int done_count = 0;
+        double done_count = 0;
 
         for (Video video : list) {
             if (video.isHas_done()) {
@@ -52,7 +52,7 @@ public class PercentCalculate {
             }
         }
 
-        int percent = (int) (done_count / list.size()) * 1000;
+        int percent = (int) ((done_count / list.size()) * 1000);
 
         logger.debug("已看完：" + done_count);
         logger.debug("总计：" + list.size());
