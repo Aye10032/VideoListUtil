@@ -109,6 +109,7 @@ public class MainWindow extends JFrame {
         {
             project_tab = new JTabbedPane();
 
+//            项目详情面板
             JPanel project_tree_panel;
             {
                 project_tree_panel = new JPanel(new MigLayout(new LC().fill().wrap()));
@@ -136,6 +137,7 @@ public class MainWindow extends JFrame {
                 project_tree_panel.add(sp1, new CC().spanX().spanY().growX().growY());
             }
 
+//            根目录面板
             JPanel roots_panel;
             {
                 roots_panel = new JPanel(new MigLayout(new LC().fill().wrap()));
@@ -232,9 +234,11 @@ public class MainWindow extends JFrame {
         switch (panel_type) {
             case PROJECT_SIDE_PANEL:
                 list = ListVideos.getDirectoryWithRoot(ID);
-
+                this.PARENT_ID = list.get(0).getId();
+                break;
             case ROOTS_SIDE_PANEL:
                 list = ListVideos.getRoots();
+                break;
         }
 
         for (Directory directory : list) {
@@ -244,7 +248,12 @@ public class MainWindow extends JFrame {
             card_panel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    onSelectProject(id);
+                    logger.debug("测试：选择了：" + id);
+                    if (panel_type == ROOTS_SIDE_PANEL){
+                        onSelectProject(id);
+                    }else {
+                        onSelectParent(id);
+                    }
                 }
             });
             panel.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
@@ -285,8 +294,9 @@ public class MainWindow extends JFrame {
         config.addHistory(ID);
         ConfigIO.saveConfig(config);
 
-        update_list(list_panel1, ROOTS_SIDE_PANEL);
+        update_list(list_panel1, PROJECT_SIDE_PANEL);
         update_history_menu();
+        update_main();
         setTitle(ListVideos.getDirectory(ID).get(0).getName());
         logger.debug("ID is " + ID);
     }
