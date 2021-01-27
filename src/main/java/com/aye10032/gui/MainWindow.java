@@ -9,6 +9,7 @@ import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.Video;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import javafx.scene.control.ToolBar;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
@@ -100,6 +101,20 @@ public class MainWindow extends JFrame {
             new_item.addActionListener(e -> CreatNewProject());
             open_item.addActionListener(e -> OpenNewProject());
             exit_item.addActionListener(e -> Exit());
+        }
+
+        JToolBar toolBar = new JToolBar();
+        {
+            toolBar.setFloatable(false);
+            toolBar.setBorderPainted(true);
+            JButton new_button = new JButton(UIManager.getIcon("FileChooser.newFolderIcon"));
+            JButton open_button = new JButton(UIManager.getIcon("FileView.directoryIcon"));
+            JButton refresh_button = new JButton(new FlatSVGIcon("com/aye10032/icon/refresh.svg"));
+
+            toolBar.add(new_button);
+            toolBar.add(open_button);
+            toolBar.addSeparator();
+            toolBar.add(refresh_button);
         }
 
         main_panel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -205,6 +220,7 @@ public class MainWindow extends JFrame {
         contentPane.setLayout(new BorderLayout());
 
         contentPane.add(panel, BorderLayout.CENTER);
+        contentPane.add(toolBar, BorderLayout.NORTH);
 
         main_panel.setDividerLocation((int) (ConfigIO.loadConfig().getWINDOW_WIDTH() * 0.3));
     }
@@ -249,9 +265,9 @@ public class MainWindow extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     logger.debug("测试：选择了：" + id);
-                    if (panel_type == ROOTS_SIDE_PANEL){
+                    if (panel_type == ROOTS_SIDE_PANEL) {
                         onSelectProject(id);
-                    }else {
+                    } else {
                         onSelectParent(id);
                     }
                 }
