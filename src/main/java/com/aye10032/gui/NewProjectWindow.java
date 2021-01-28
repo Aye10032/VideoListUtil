@@ -4,6 +4,7 @@ import com.aye10032.background.ListVideos;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.config.LocalConfig;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
@@ -46,7 +47,7 @@ public class NewProjectWindow extends JDialog {
 
         setTitle("项目初始化");
         Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/aye10032/icon.png").getFile());
-        setIconImage(icon);
+        setIconImage(new FlatSVGIcon("com/aye10032/icon.svg").getImage());
         setBounds((screenWidth - windowWidth) / 2, (screenHeight - windowHeight) / 2, windowWidth, windowHeight);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 

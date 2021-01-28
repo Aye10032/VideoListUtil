@@ -48,7 +48,7 @@ public class ProjectWindow extends JDialog {
 
         setTitle("计划选择");
         Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/aye10032/icon.png").getFile());
-        setIconImage(icon);
+        setIconImage(new FlatSVGIcon("com/aye10032/icon.svg").getImage());
         setBounds((screenWidth - windowWidth) / 2, (screenHeight - windowHeight) / 2, windowWidth, windowHeight);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 

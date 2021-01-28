@@ -6,6 +6,7 @@ import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.gui.MainWindow;
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,8 +65,8 @@ public class MainRun {
         MainWindow.setDefaultLookAndFeelDecorated(true);
         MainWindow window = new MainWindow(last_id);
         window.setTitle(title);
-        Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/aye10032/icon.png").getFile());
-        window.setIconImage(icon);
+//        Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("com/aye10032/icon.png").getFile());
+        window.setIconImage(new FlatSVGIcon("com/aye10032/icon.svg").getImage());
         window.setBounds((screenWidth - windowWidth) / 2, (screenHeight - windowHeight) / 2, windowWidth, windowHeight);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setVisible(true);
