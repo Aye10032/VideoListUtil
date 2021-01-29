@@ -121,8 +121,8 @@ public class MainWindow extends JFrame {
             refresh_button.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    update_list(list_panel1,PROJECT_SIDE_PANEL);
-                    update_list(list_panel2,ROOTS_SIDE_PANEL);
+                    update_list(list_panel1, PROJECT_SIDE_PANEL);
+                    update_list(list_panel2, ROOTS_SIDE_PANEL);
                     update_main();
                 }
             });
@@ -152,7 +152,9 @@ public class MainWindow extends JFrame {
                     card_panel.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
-                            onSelectParent(id);
+                            if (e.getButton() == MouseEvent.BUTTON1) {
+                                onSelectParent(id);
+                            }
                         }
                     });
                     list_panel1.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
@@ -182,11 +184,13 @@ public class MainWindow extends JFrame {
                     card_panel.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
-                            onSelectProject(id);
-                            project_tab.setSelectedIndex(0);
+                            if (e.getButton() == MouseEvent.BUTTON1) {
+                                onSelectProject(id);
+                                project_tab.setSelectedIndex(0);
+                            }
                         }
                     });
-                    list_panel2.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
+                    list_panel2.add(card_panel, new CC().wrap().growX().gapY("5", "0"));
                 }
 
                 JScrollPane sp2 = new JScrollPane(list_panel2);
@@ -215,7 +219,7 @@ public class MainWindow extends JFrame {
                             logger.info("选择了视频:" + video.getName());
                         }
                     });
-                    list_panel3.add(video_card, new CC().wrap().growX().gapX("20", "20").gapY("0", "5"));
+                    list_panel3.add(video_card, new CC().wrap().growX().gapX("40", "40").gapY("0", "5"));
                 }
 
                 JScrollPane sp3 = new JScrollPane(list_panel3);
