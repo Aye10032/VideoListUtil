@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -90,7 +91,7 @@ public class CardPanel {
         AC colC = new AC().grow(100, 0).count(2);
         AC rowC = new AC();
         JPanel panel = new JPanel(new MigLayout(layC, colC, rowC));
-        panel.setBorder(new EtchedBorder());
+        panel.setBorder(new RoundBorder());
 
         String name = video.getName();
         String path = "";
