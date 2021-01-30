@@ -7,9 +7,11 @@ import com.aye10032.config.ConfigSet;
 import com.aye10032.gui.MainWindow;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +59,7 @@ public class MainRun {
         List<Integer> history = config.getHistory_id();
         Integer last_id = -1;
         String title = "规划工具箱";
-        if (history.size() != 0){
+        if (history.size() != 0) {
             last_id = history.get(history.size() - 1);
             title = ListVideos.getDirectory(last_id).get(0).getName();
         }
@@ -65,8 +67,15 @@ public class MainRun {
         MainWindow.setDefaultLookAndFeelDecorated(true);
         MainWindow window = new MainWindow(last_id);
         window.setTitle(title);
-//        Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("com/aye10032/icon.png").getFile());
+
+        Image icon1 = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("com/aye10032/icon.png"));
+        Image icon2 = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("com/aye10032/logo.png"));
+        List<Image> icons = new ArrayList<>();
+        icons.add(icon1);
+        icons.add(icon2);
         window.setIconImage(new FlatSVGIcon("com/aye10032/icon.svg").getImage());
+//        window.setIconImages(icons);
+
         window.setBounds((screenWidth - windowWidth) / 2, (screenHeight - windowHeight) / 2, windowWidth, windowHeight);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setVisible(true);
