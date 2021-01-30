@@ -52,7 +52,7 @@ public class ListVideos {
             }
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -101,7 +101,7 @@ public class ListVideos {
                 addVideo(dao, f.getName(), f.getParentFile().getName(), new_id, root, root_id, false, md5);
             }
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
