@@ -26,5 +26,6 @@
     <mappers>
         <mapper class="com.aye10032.database.dao.IVideoDao"/>
         <mapper class="com.aye10032.database.dao.IDirectoryDao"/>
+        <mapper class="com.aye10032.database.dao.IHistoryDAO" />
     </mappers>
 </configuration>
