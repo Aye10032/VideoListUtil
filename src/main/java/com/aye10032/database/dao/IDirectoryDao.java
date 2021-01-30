@@ -49,11 +49,11 @@ public interface IDirectoryDao {
     @Select("SELECT * FROM directory_table WHERE id=#{id}")
     List<Directory> selectDirectoryWithID(Integer id);
 
-    @Select("SELECT * FROM directory_table WHERE name=#{name}")
-    List<Directory> selectWithName(String name);
-
     @Select("SELECT * FROM directory_table WHERE root_id=#{id}")
-    List<Directory> selectWithRootID(Integer id);
+    List<Directory> selectDirectoryWithRootID(Integer id);
+
+    @Select("SELECT * FROM directory_table WHERE parent_id=#{parent_id} AND available=1")
+    List<Directory> selectDirectoryWithParentID(Integer parent_id);
 
     @Select("UPDATE directory_table available=#{done} WHERE id={parent_id}")
     void updateHide(Integer parent_id, boolean done);

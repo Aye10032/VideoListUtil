@@ -58,15 +58,12 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
     @Override
     public List<Video> getAllVideo() {
         List<Video> list = null;
-
         initSession();
 
         IVideoDao dao = session.getMapper(IVideoDao.class);
-
         list = dao.getAllVideo();
 
         closeAll();
-
         return list;
     }
 
@@ -79,7 +76,6 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
         session.commit();
 
         closeAll();
-
         return video.getId();
     }
 
@@ -87,11 +83,11 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
     public List<Video> selectWithRoot(Integer root_id) {
         List<Video> list = null;
         initSession();
+
         IVideoDao dao = session.getMapper(IVideoDao.class);
-
         list = dao.selectWithRoot(root_id);
-        closeAll();
 
+        closeAll();
         return list;
     }
 
@@ -99,11 +95,11 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
     public List<Video> selectWithParent(Integer parent_id) {
         List<Video> list = null;
         initSession();
+
         IVideoDao dao = session.getMapper(IVideoDao.class);
-
         list = dao.selectWithParent(parent_id);
-        closeAll();
 
+        closeAll();
         return list;
     }
 
@@ -144,7 +140,6 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
 
         dao.creatDirectoryTable();
         session.commit();
-
         closeAll();
     }
 
@@ -155,13 +150,11 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
 
     @Override
     public Integer insert(Directory directory) {
-
         initSession();
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
 
         dao.insert(directory);
         session.commit();
-
         closeAll();
 
         return directory.getId();
@@ -170,15 +163,12 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
     @Override
     public List<Directory> getRoots() {
         List<Directory> list = null;
-
         initSession();
 
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
-
         list = dao.getRoots();
 
         closeAll();
-
         return list;
     }
 
@@ -186,56 +176,47 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
     public List<Directory> getAllRoots() {
         List<Directory> list = null;
         initSession();
+
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
-
         list = dao.getAllRoots();
-        closeAll();
 
+        closeAll();
         return list;
     }
 
     @Override
     public List<Directory> selectDirectoryWithID(Integer id) {
         List<Directory> list = null;
-
         initSession();
 
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
-
         list = dao.selectDirectoryWithID(id);
 
         closeAll();
-
         return list;
     }
 
     @Override
-    public List<Directory> selectWithName(String name) {
+    public List<Directory> selectDirectoryWithRootID(Integer id) {
         List<Directory> list = null;
-
         initSession();
 
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
-
-        list = dao.selectWithName(name);
+        list = dao.selectDirectoryWithRootID(id);
 
         closeAll();
-
         return list;
     }
 
     @Override
-    public List<Directory> selectWithRootID(Integer id) {
+    public List<Directory> selectDirectoryWithParentID(Integer parent_id) {
         List<Directory> list = null;
-
         initSession();
 
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
-
-        list = dao.selectWithRootID(id);
+        list = dao.selectDirectoryWithParentID(parent_id);
 
         closeAll();
-
         return list;
     }
 
@@ -246,6 +227,7 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
 
         dao.updateHide(parent_id, done);
         session.commit();
+        closeAll();
     }
 
     @Override
@@ -255,6 +237,7 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
 
         dao.updateRootAvailable(directory);
         session.commit();
+        closeAll();
     }
 
 

@@ -9,7 +9,6 @@ import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.Video;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import javafx.scene.control.ToolBar;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
@@ -17,7 +16,6 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,6 +54,8 @@ public class MainWindow extends JFrame {
         this.ID = id;
         logger = Logger.getLogger(MainWindow.class);
         initFrame();
+        update_list(list_panel1, PROJECT_SIDE_PANEL);
+        update_list(list_panel2, ROOTS_SIDE_PANEL);
     }
 
     private void initFrame() {
@@ -128,6 +128,17 @@ public class MainWindow extends JFrame {
             });
         }
 
+        JToolBar project_path = new JToolBar();
+        {
+            JLabel path = new JLabel("E:\\考研\\考虫（李良 曾芸芸 陈晓燕 吴一博）\\01.零基础\\高等数学-零基础入门课程\\07.第七章：微分方程");
+
+            project_path.add(path);
+        }
+
+        JPanel tool_bars = new JPanel(new GridLayout(0, 1));
+        tool_bars.add(toolBar);
+        tool_bars.add(project_path);
+
         main_panel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
         panel.add(main_panel, new CC().growY().growX().spanY().spanX());
@@ -143,22 +154,22 @@ public class MainWindow extends JFrame {
                 list_panel1 = new JPanel(new MigLayout(new LC().fillX()));
                 list_panel1.setBackground(Color.WHITE);
 
-                List<Directory> parents = ListVideos.getDirectoryWithRoot(ID);
-
-                for (Directory directory : parents) {
-                    Integer id = directory.getId();
-                    int percent = PercentCalculate.getPercent(id);
-                    JPanel card_panel = cardPanel(id, directory.getName(), percent, percent == 1000);
-                    card_panel.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            if (e.getButton() == MouseEvent.BUTTON1) {
-                                onSelectParent(id);
-                            }
-                        }
-                    });
-                    list_panel1.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
-                }
+//                List<Directory> parents = ListVideos.getDirectoryWithParent(ID);
+//
+//                for (Directory directory : parents) {
+//                    Integer id = directory.getId();
+//                    int percent = PercentCalculate.getPercent(id);
+//                    JPanel card_panel = cardPanel(id, directory.getName(), percent, percent == 1000);
+//                    card_panel.addMouseListener(new MouseAdapter() {
+//                        @Override
+//                        public void mouseClicked(MouseEvent e) {
+//                            if (e.getButton() == MouseEvent.BUTTON1) {
+//                                onSelectParent(id);
+//                            }
+//                        }
+//                    });
+//                    list_panel1.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
+//                }
 
                 JScrollPane sp1 = new JScrollPane(list_panel1);
 //                sp1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -173,25 +184,25 @@ public class MainWindow extends JFrame {
                 list_panel2 = new JPanel(new MigLayout(new LC().fillX()));
                 list_panel2.setBackground(Color.WHITE);
 
-                List<Directory> roots = null;
-                DaoImpl dao = new DaoImpl();
-                roots = dao.getRoots();
-
-                for (Directory directory : roots) {
-                    Integer id = directory.getId();
-                    int percent = PercentCalculate.getProjectPercent(id);
-                    JPanel card_panel = cardPanel(id, directory.getName(), percent, percent == 1000);
-                    card_panel.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            if (e.getButton() == MouseEvent.BUTTON1) {
-                                onSelectProject(id);
-                                project_tab.setSelectedIndex(0);
-                            }
-                        }
-                    });
-                    list_panel2.add(card_panel, new CC().wrap().growX().gapY("5", "0"));
-                }
+//                List<Directory> roots = null;
+//                DaoImpl dao = new DaoImpl();
+//                roots = dao.getRoots();
+//
+//                for (Directory directory : roots) {
+//                    Integer id = directory.getId();
+//                    int percent = PercentCalculate.getProjectPercent(id);
+//                    JPanel card_panel = cardPanel(id, directory.getName(), percent, percent == 1000);
+//                    card_panel.addMouseListener(new MouseAdapter() {
+//                        @Override
+//                        public void mouseClicked(MouseEvent e) {
+//                            if (e.getButton() == MouseEvent.BUTTON1) {
+//                                onSelectProject(id);
+//                                project_tab.setSelectedIndex(0);
+//                            }
+//                        }
+//                    });
+//                    list_panel2.add(card_panel, new CC().wrap().growX().gapY("5", "0"));
+//                }
 
                 JScrollPane sp2 = new JScrollPane(list_panel2);
 //                sp1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -209,18 +220,18 @@ public class MainWindow extends JFrame {
                 list_panel3 = new JPanel(new MigLayout(new LC().fillX()));
                 list_panel3.setBackground(Color.WHITE);
 
-                List<Video> video_list = ListVideos.getVideoWithParent(this.PARENT_ID);
-
-                for (Video video : video_list) {
-                    JPanel video_card = CardPanel.video_card(video);
-                    video_card.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            logger.info("选择了视频:" + video.getName());
-                        }
-                    });
-                    list_panel3.add(video_card, new CC().wrap().growX().gapX("40", "40").gapY("0", "5"));
-                }
+//                List<Video> video_list = ListVideos.getVideoWithParent(this.PARENT_ID);
+//
+//                for (Video video : video_list) {
+//                    JPanel video_card = CardPanel.video_card(video);
+//                    video_card.addMouseListener(new MouseAdapter() {
+//                        @Override
+//                        public void mouseClicked(MouseEvent e) {
+//                            logger.info("选择了视频:" + video.getName());
+//                        }
+//                    });
+//                    list_panel3.add(video_card, new CC().wrap().growX().gapX("40", "40").gapY("0", "5"));
+//                }
 
                 JScrollPane sp3 = new JScrollPane(list_panel3);
                 main_win.add(sp3, new CC().spanX().spanY().growX().growY());
@@ -235,7 +246,7 @@ public class MainWindow extends JFrame {
         contentPane.setLayout(new BorderLayout());
 
         contentPane.add(panel, BorderLayout.CENTER);
-        contentPane.add(toolBar, BorderLayout.NORTH);
+        contentPane.add(tool_bars, BorderLayout.NORTH);
 
         main_panel.setDividerLocation((int) (ConfigIO.loadConfig().getWINDOW_WIDTH() * 0.3));
     }
@@ -260,17 +271,22 @@ public class MainWindow extends JFrame {
     private void update_list(JPanel panel, int panel_type) {
         List<Directory> list = null;
 
-        panel.removeAll();
-
         switch (panel_type) {
             case PROJECT_SIDE_PANEL:
-                list = ListVideos.getDirectoryWithRoot(ID);
-                this.PARENT_ID = list.get(0).getId();
-                break;
+                list = ListVideos.getDirectoryWithParent(PARENT_ID);
+                if (list.size() == 0) {
+                    update_main();
+                    return;
+                } else {
+                    this.PARENT_ID = list.get(0).getId();
+                    break;
+                }
             case ROOTS_SIDE_PANEL:
                 list = ListVideos.getRoots();
                 break;
         }
+
+        panel.removeAll();
 
         for (Directory directory : list) {
             Integer id = directory.getId();
@@ -320,6 +336,7 @@ public class MainWindow extends JFrame {
 
     private void onSelectProject(Integer id) {
         this.ID = id;
+        this.PARENT_ID = id;
 
         ConfigSet config = ConfigIO.loadConfig();
         config.addHistory(ID);
@@ -335,7 +352,7 @@ public class MainWindow extends JFrame {
     private void onSelectParent(Integer id) {
         logger.info("选择了:" + id);
         this.PARENT_ID = id;
-        update_main();
+        update_list(list_panel1, PROJECT_SIDE_PANEL);
     }
 
     private void CreatNewProject() {

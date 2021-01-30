@@ -212,6 +212,15 @@ public class ListVideos {
         return result_list;
     }
 
+    public static List<Directory> getDirectoryWithParent(Integer parent_id){
+        List<Directory> list = null;
+        DaoImpl dao = new DaoImpl();
+
+        list = dao.selectDirectoryWithParentID(parent_id);
+
+        return list;
+    }
+
     public static List<Directory> getRoots() {
         List<Directory> list = null;
         DaoImpl dao = new DaoImpl();

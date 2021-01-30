@@ -1,6 +1,5 @@
 package com.aye10032;
 
-import com.aye10032.background.ListVideos;
 import com.aye10032.background.PercentCalculate;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
@@ -70,7 +69,7 @@ public class TestClass {
 
         dao.insert(directory);
 
-        List<Directory> list = dao.selectWithName("2021计算机组成原理");
+        List<Directory> list = dao.selectDirectoryWithName("2021计算机组成原理");
         for (Directory dio : list) {
             System.out.println(dio);
         }
