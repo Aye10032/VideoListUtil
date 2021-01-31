@@ -135,6 +135,16 @@ public class DaoImpl implements IHistoryDAO, IVideoDao, IDirectoryDao{
     }
 
     @Override
+    public void setListVideoDone(Video video) {
+        initSession();
+        IVideoDao dao = session.getMapper(IVideoDao.class);
+
+        dao.setListVideoDone(video);
+        session.commit();
+        closeAll();
+    }
+
+    @Override
     public void deleteVideoWithID(Integer id) {
         initSession();
         IVideoDao dao = session.getMapper(IVideoDao.class);

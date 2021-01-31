@@ -287,15 +287,15 @@ public class ListVideos {
         dao.setRootVideoDone(video);
     }
 
-    public static void setParentDone(Integer id){
+    public static void setParentDone(Integer id) {
         DaoImpl dao = new DaoImpl();
         List<Directory> child = dao.selectDirectoryWithParentID(id);
 
-        if (child.size()!=0){
-            for (Directory directory:child){
+        if (child.size() != 0) {
+            for (Directory directory : child) {
                 setParentDone(directory.getId());
             }
-        }else {
+        } else {
             Video video = new Video();
             video.setHas_done(true);
             video.setParent_id(id);
@@ -304,7 +304,17 @@ public class ListVideos {
         }
     }
 
-    public static void deleteRoot(Integer root_id){
+    public static void setVideosDone(Integer id, Integer parent_id) {
+        DaoImpl dao = new DaoImpl();
+        Video video = new Video();
+        video.setId(id);
+        video.setParent_id(parent_id);
+        video.setHas_done(true);
+        video.setDate(new Date());
+        dao.setListVideoDone(video);
+    }
+
+    public static void deleteRoot(Integer root_id) {
         DaoImpl dao = new DaoImpl();
 
         dao.deleteVideoWithRootID(root_id);

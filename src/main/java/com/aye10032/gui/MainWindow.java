@@ -240,12 +240,27 @@ public class MainWindow extends JFrame {
 
         for (Video video : video_list) {
             JPanel video_card = CardPanel.video_card(video);
-            video_card.addMouseListener(new MouseAdapter() {
+
+            JPopupMenu menu = new JPopupMenu();
+            JMenuItem all_done = new JMenuItem("全部完成");
+            JMenuItem del = new JMenuItem("删除");
+            menu.add(all_done);
+            menu.add(new JSeparator());
+            menu.add(del);
+
+            all_done.addActionListener(new AbstractAction() {
                 @Override
-                public void mouseClicked(MouseEvent e) {
-                    logger.info("选择了视频:" + video.getName());
+                public void actionPerformed(ActionEvent e) {
+                    int result = JOptionPane.showConfirmDialog(null,
+                            "会将本视频以前的视频全部设为已观看，确定吗？", "提示", JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION) {
+                        ListVideos.setVideosDone(video.getId(), video.getParent_id());
+                        reload_ui();
+                    }
                 }
             });
+
+            video_card.setComponentPopupMenu(menu);
             list_panel3.add(video_card, new CC().wrap().growX().gapY("0", "5"));
         }
         update_panel(list_panel3);
@@ -283,7 +298,7 @@ public class MainWindow extends JFrame {
             JPopupMenu menu = new JPopupMenu();
             JMenuItem hide_item = new JMenuItem("隐藏此项");
             JMenuItem done_item = new JMenuItem("全部完成");
-            if (percent == 1000){
+            if (percent == 1000) {
                 done_item.setEnabled(false);
             }
             menu.add(hide_item);

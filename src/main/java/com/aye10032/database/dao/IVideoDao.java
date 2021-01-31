@@ -51,6 +51,9 @@ public interface IVideoDao {
     @Update("UPDATE video_table SET has_done=#{has_done}, date=#{date} WHERE id=#{id}")
     void setVideoDone(Video video);
 
+    @Update("UPDATE video_table SET has_done=#{has_done}, date=#{date} WHERE id<=#{id} AND parent_id=#{parent_id}")
+    void setListVideoDone(Video video);
+
     @Delete("DELETE FROM video_table WHERE id=#{id}")
     void deleteVideoWithID(Integer id);
 
