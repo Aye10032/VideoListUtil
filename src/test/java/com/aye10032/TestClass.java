@@ -17,6 +17,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @program: VideoListUtil
@@ -38,16 +40,16 @@ public class TestClass {
     }
 
     @Test
-    public void TestCreatTable(){
+    public void TestCreatTable() {
         File file = new File("videolist.db");
-        if (!file.exists()){
+        if (!file.exists()) {
             System.out.println("未找到");
 
             DaoImpl dao = new DaoImpl();
 
             dao.createVideoTable();
             dao.creatDirectoryTable();
-        }else {
+        } else {
             System.out.println("find");
         }
     }
@@ -73,7 +75,7 @@ public class TestClass {
     }
 
     @Test
-    public void TestJson(){
+    public void TestJson() {
 //        ConfigSet configSet = new ConfigSet();
 //        configSet.setUse_md5(true);
 //        ConfigIO.saveConfig(configSet);
@@ -83,14 +85,14 @@ public class TestClass {
     }
 
     @Test
-    public void TestLog(){
+    public void TestLog() {
         Logger logger = Logger.getLogger(TestClass.class);
 
         logger.info("test");
     }
 
     @Test
-    public void GUITest(){
+    public void GUITest() {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
             UIManager.put("Button.arc", 6);
@@ -117,16 +119,17 @@ public class TestClass {
     }
 
     @Test
-    public void TestPercent(){
+    public void TestPercent() {
         int percent = PercentCalculate.getPercent(3);
         System.out.println(percent);
     }
 
     @Test
-    public void TestPath(){
-        List<String> list = ListVideos.getPath(40);
-        for (String path:list){
-            System.out.println(path);
+    public void TestPath() {
+        Set<Map.Entry<Integer, String>> list = ListVideos.getPath(40);
+
+        for (Map.Entry<Integer, String> path : list) {
+            System.out.println(path.getValue());
         }
     }
 }

@@ -258,21 +258,28 @@ public class ListVideos {
         dao.setRootVideoDone(video);
     }
 
-    public static List<String> getPath(Integer id) {
-        List<String> path = new ArrayList<>();
-
+    public static Set<Map.Entry<Integer, String>> getPath(Integer id) {
+        Map<Integer, String> path = new LinkedHashMap<>();
         DaoImpl dao = new DaoImpl();
 
         Directory directory = dao.selectDirectoryWithID(id).get(0);
-        path.add(directory.getName());
+        path.put(directory.getId(), directory.getName());
         while (!directory.isIs_root()) {
             directory = dao.selectDirectoryWithID(directory.getParent_id()).get(0);
-            path.add(directory.getName());
+            path.put(directory.getId(), directory.getName());
         }
-        path.add(directory.getParent());
+        path.put(-1, directory.getParent());
 
-        Collections.reverse(path);
-        return path;
+        ListIterator<Map.Entry<Integer, String>> iterator =
+                new ArrayList<Map.Entry<Integer, String>>(path.entrySet()).listIterator(path.size());
+
+        Map<Integer, String> result = new LinkedHashMap<>();
+
+        while (iterator.hasPrevious()) {
+            Map.Entry<Integer, String> entry = iterator.previous();
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result.entrySet();
     }
 
 }
