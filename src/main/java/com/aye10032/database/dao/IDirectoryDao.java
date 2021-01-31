@@ -1,10 +1,7 @@
 package com.aye10032.database.dao;
 
 import com.aye10032.database.pojo.Directory;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -57,4 +54,10 @@ public interface IDirectoryDao {
 
     @Update("UPDATE directory_table SET available=#{available}, update_date=#{update_date} WHERE id=#{root_id} OR root_id=#{root_id}")
     void updateRootAvailable(Directory directory);
+
+    @Delete("DELETE FROM directory_table WHERE id=#{id}")
+    void deleteDirectoryWithID(Integer id);
+
+    @Delete("DELETE FROM directory_table WHERE id=#{root_id} OR root_id=#{root_id}")
+    void deleteDirectoryWithRootID(Integer root_id);
 }

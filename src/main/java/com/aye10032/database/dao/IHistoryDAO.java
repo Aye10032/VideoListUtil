@@ -1,10 +1,7 @@
 package com.aye10032.database.dao;
 
 import com.aye10032.database.pojo.History;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -39,4 +36,7 @@ public interface IHistoryDAO {
 
     @Select("SELECT * FROM history_table ORDER BY last_date DESC LIMIT 6")
     List<History> selectLastHistory();
+
+    @Delete("DELETE FROM history_table WHERE root_id=#{root_id}")
+    void deleteHistoryRoot(Integer root_id);
 }

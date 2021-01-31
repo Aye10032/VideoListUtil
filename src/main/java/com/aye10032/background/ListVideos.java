@@ -276,4 +276,12 @@ public class ListVideos {
         dao.setRootVideoDone(video);
     }
 
+    public static void deleteRoot(Integer root_id){
+        DaoImpl dao = new DaoImpl();
+
+        dao.deleteVideoWithRootID(root_id);
+        dao.deleteDirectoryWithRootID(root_id);
+        dao.deleteHistoryRoot(root_id);
+    }
+
 }

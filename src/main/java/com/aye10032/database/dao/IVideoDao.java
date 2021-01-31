@@ -1,10 +1,7 @@
 package com.aye10032.database.dao;
 
 import com.aye10032.database.pojo.Video;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -53,5 +50,11 @@ public interface IVideoDao {
 
     @Update("UPDATE video_table SET has_done=#{has_done}, date=#{date} WHERE id=#{id}")
     void setVideoDone(Video video);
+
+    @Delete("DELETE FROM video_table WHERE id=#{id}")
+    void deleteVideoWithID(Integer id);
+
+    @Delete("DELETE FROM video_table WHERE root_id=#{root_id}")
+    void deleteVideoWithRootID(Integer root_id);
 
 }

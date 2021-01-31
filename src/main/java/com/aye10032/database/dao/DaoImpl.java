@@ -135,6 +135,26 @@ public class DaoImpl implements IHistoryDAO, IVideoDao, IDirectoryDao{
     }
 
     @Override
+    public void deleteVideoWithID(Integer id) {
+        initSession();
+        IVideoDao dao = session.getMapper(IVideoDao.class);
+
+        dao.deleteVideoWithID(id);
+        session.commit();
+        closeAll();
+    }
+
+    @Override
+    public void deleteVideoWithRootID(Integer root_id) {
+        initSession();
+        IVideoDao dao = session.getMapper(IVideoDao.class);
+
+        dao.deleteVideoWithRootID(root_id);
+        session.commit();
+        closeAll();
+    }
+
+    @Override
     public void creatDirectoryTable() {
         initSession();
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
@@ -231,6 +251,26 @@ public class DaoImpl implements IHistoryDAO, IVideoDao, IDirectoryDao{
         closeAll();
     }
 
+    @Override
+    public void deleteDirectoryWithID(Integer id) {
+        initSession();
+        IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
+
+        dao.deleteDirectoryWithID(id);
+        session.commit();
+        closeAll();
+    }
+
+    @Override
+    public void deleteDirectoryWithRootID(Integer root_id) {
+        initSession();
+        IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
+
+        dao.deleteDirectoryWithRootID(root_id);
+        session.commit();
+        closeAll();
+    }
+
 
     @Override
     public void creatHistoryTable() {
@@ -286,5 +326,15 @@ public class DaoImpl implements IHistoryDAO, IVideoDao, IDirectoryDao{
         closeAll();
 
         return list;
+    }
+
+    @Override
+    public void deleteHistoryRoot(Integer root_id) {
+        initSession();
+        IHistoryDAO dao = session.getMapper(IHistoryDAO.class);
+
+        dao.deleteHistoryRoot(root_id);
+        session.commit();
+        closeAll();
     }
 }
