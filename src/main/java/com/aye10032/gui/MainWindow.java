@@ -309,7 +309,22 @@ public class MainWindow extends JFrame {
                     int result = JOptionPane.showConfirmDialog(null,
                             "将会隐藏这个项目，确定要隐藏这个项目吗？", "提示", JOptionPane.YES_NO_OPTION);
                     if (result == JOptionPane.YES_OPTION) {
-                        ListVideos.setParentHidden(id,false);
+                        ListVideos.setParentHidden(id, false);
+                    }
+                }
+            });
+
+            done_item.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int result = JOptionPane.showConfirmDialog(null,
+                            "会将这个目录下的所有视频设为已观看状态，确定吗？", "提示", JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION) {
+                        ListVideos.setParentDone(id);
+                        PARENT_ID = id;
+                        ListHistory.addHistory(ID, PARENT_ID);
+                        update_list(list_panel1, PROJECT_SIDE_PANEL);
+                        update_path_toolbar();
                     }
                 }
             });
