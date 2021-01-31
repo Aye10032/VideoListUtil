@@ -60,21 +60,18 @@ public class MainRun {
 
         List<History> history = ListHistory.getLastHistory();
         Integer last_id = -1;
+        Integer last_parent = -1;
         String title = "规划工具箱";
         if (history.size() != 0) {
             last_id = history.get(0).getRoot_id();
+            last_parent = history.get(0).getParent_id();
             title = ListVideos.getDirectory(last_id).get(0).getName();
         }
 
         MainWindow.setDefaultLookAndFeelDecorated(true);
-        MainWindow window = new MainWindow(last_id);
+        MainWindow window = new MainWindow(last_id,last_parent);
         window.setTitle(title);
 
-        Image icon1 = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("com/aye10032/icon.png"));
-        Image icon2 = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("com/aye10032/logo.png"));
-        List<Image> icons = new ArrayList<>();
-        icons.add(icon1);
-        icons.add(icon2);
         window.setIconImage(new FlatSVGIcon("com/aye10032/icon.svg").getImage());
 //        window.setIconImages(icons);
 

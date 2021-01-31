@@ -37,6 +37,6 @@ public interface IHistoryDAO {
     @Update("UPDATE history_table SET parent_id=#{parent_id}, last_date=#{last_date} WHERE id=#{id}")
     void updateHistory(History history);
 
-    @Select("SELECT * FROM history_table ORDER BY last_date ASC LIMIT 6")
+    @Select("SELECT * FROM history_table ORDER BY last_date DESC LIMIT 6")
     List<History> selectLastHistory();
 }
