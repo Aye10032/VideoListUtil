@@ -55,6 +55,9 @@ public interface IDirectoryDao {
     @Update("UPDATE directory_table SET available=#{available}, update_date=#{update_date} WHERE id=#{root_id} OR root_id=#{root_id}")
     void updateRootAvailable(Directory directory);
 
+    @Update("UPDATE directory_table SET available=#{available}, update_date=#{update_date} WHERE id=#{id}")
+    void updateDirectoryAvailable(Directory directory);
+
     @Delete("DELETE FROM directory_table WHERE id=#{id}")
     void deleteDirectoryWithID(Integer id);
 

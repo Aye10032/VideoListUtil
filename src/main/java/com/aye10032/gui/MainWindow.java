@@ -279,14 +279,37 @@ public class MainWindow extends JFrame {
             int percent = panel_type ==
                     PROJECT_SIDE_PANEL ? PercentCalculate.getPercent(id) : PercentCalculate.getProjectPercent(id);
             JPanel card_panel = cardPanel(id, directory.getName(), percent, percent == 1000);
+
+            JPopupMenu menu = new JPopupMenu();
+            JMenuItem hide_item = new JMenuItem("隐藏此项");
+            JMenuItem done_item = new JMenuItem("全部完成");
+            menu.add(hide_item);
+            menu.add(done_item);
+
             card_panel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    logger.debug("测试：选择了：" + id);
-                    if (panel_type == ROOTS_SIDE_PANEL) {
-                        onSelectProject(id);
-                    } else {
-                        onSelectParent(id);
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+                        logger.debug("测试：选择了：" + id);
+                        if (panel_type == ROOTS_SIDE_PANEL) {
+                            onSelectProject(id);
+                        } else {
+                            onSelectParent(id);
+                        }
+                    } else if (e.getButton() == MouseEvent.BUTTON3) {
+                        menu.show(card_panel, e.getX(), e.getY());
+                        menu.setVisible(true);
+                    }
+                }
+            });
+
+            hide_item.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int result = JOptionPane.showConfirmDialog(null,
+                            "将会隐藏这个项目，确定要隐藏这个项目吗？", "提示", JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION) {
+                        ListVideos.setParentHidden(id,false);
                     }
                 }
             });

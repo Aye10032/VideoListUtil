@@ -265,6 +265,17 @@ public class ListVideos {
         dao.updateRootAvailable(directory);
     }
 
+    public static void setParentHidden(Integer id, boolean hide) {
+        DaoImpl dao = new DaoImpl();
+
+        Directory directory = new Directory();
+        directory.setId(id);
+        directory.setAvailable(hide);
+        directory.setUpdate_date(new Date());
+
+        dao.updateDirectoryAvailable(directory);
+    }
+
     public static void setProjectDone(Integer root_id) {
         DaoImpl dao = new DaoImpl();
 
