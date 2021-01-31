@@ -290,6 +290,19 @@ public class MainWindow extends JFrame {
                     public void mouseClicked(MouseEvent e) {
                         if (e.getButton() == MouseEvent.BUTTON1){
                             //TODO 下拉菜单
+                            List<Directory> list = ListVideos.getDirectoryWithParent(
+                                    ListVideos.getDirectory(entry.getKey()).get(0).getParent_id());
+                            JPopupMenu popupMenu = new JPopupMenu();
+                            for (Directory directory:list){
+                                if (!directory.getId().equals(entry.getKey())) {
+                                    JMenuItem item = new JMenuItem(directory.getName());
+                                    popupMenu.add(item);
+
+                                    item.addActionListener(e1 -> onSelectParent(directory.getId()));
+                                }
+                            }
+                            popupMenu.show(path,0,path.getY());
+                            popupMenu.setVisible(true);
                         }
                     }
                 });
