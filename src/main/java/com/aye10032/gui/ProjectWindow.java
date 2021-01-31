@@ -1,6 +1,7 @@
 package com.aye10032.gui;
 
 import com.aye10032.background.ListHistory;
+import com.aye10032.background.ListPath;
 import com.aye10032.background.ListVideos;
 import com.aye10032.background.PercentCalculate;
 import com.aye10032.config.ConfigIO;
@@ -88,7 +89,7 @@ public class ProjectWindow extends JDialog {
                 Integer id = directory.getId();
                 int percent = PercentCalculate.getProjectPercent(id);
                 JPanel card_panel = cardPanel(id, directory.getName(), percent,
-                        directory.getParent() + "\\" + directory.getName(), percent == 1000, directory.isAvailable());
+                        ListPath.getPathString(id), percent == 1000, directory.isAvailable());
                 list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
             }
 
@@ -288,7 +289,7 @@ public class ProjectWindow extends JDialog {
             }
 
             JPanel card_panel = cardPanel(id, directory.getName(), percent,
-                    directory.getParent() + "\\" + directory.getName(), percent == 1000, directory.isAvailable());
+                    ListPath.getPathString(id), percent == 1000, directory.isAvailable());
             list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
 
         }
