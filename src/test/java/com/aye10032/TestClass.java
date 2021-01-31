@@ -1,5 +1,6 @@
 package com.aye10032;
 
+import com.aye10032.background.ListPath;
 import com.aye10032.background.ListVideos;
 import com.aye10032.background.PercentCalculate;
 import com.aye10032.config.ConfigIO;
@@ -126,10 +127,12 @@ public class TestClass {
 
     @Test
     public void TestPath() {
-        Set<Map.Entry<Integer, String>> list = ListVideos.getPath(40);
+        Set<Map.Entry<Integer, String>> list = ListPath.getPath(40);
 
         for (Map.Entry<Integer, String> path : list) {
             System.out.println(path.getValue());
         }
+
+        System.out.println(ListPath.getPathString(40));
     }
 }
