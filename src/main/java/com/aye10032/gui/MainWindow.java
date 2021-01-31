@@ -214,8 +214,11 @@ public class MainWindow extends JFrame {
                 list = ListVideos.getDirectoryWithParent(PARENT_ID);
                 if (list.size() == 0) {
                     update_main();
-                    this.PARENT_ID = ListVideos.getDirectory(PARENT_ID).get(0).getParent_id();
-                    return;
+//                    this.PARENT_ID = ListVideos.getDirectory(PARENT_ID).get(0).getParent_id();
+                    list.clear();
+                    Integer parent_id = ListVideos.getDirectory(PARENT_ID).get(0).getParent_id();
+                    list = ListVideos.getDirectoryWithParent(parent_id);
+                    break;
                 } else {
                     break;
                 }
@@ -244,6 +247,7 @@ public class MainWindow extends JFrame {
             panel.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
         }
         update_panel(panel);
+        update_path_toolbar();
     }
 
     private void update_panel(JComponent component) {
