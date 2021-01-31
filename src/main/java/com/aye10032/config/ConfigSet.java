@@ -17,8 +17,6 @@ public class ConfigSet {
     private boolean use_md5;
     private boolean open_recent;
 
-    private List<Integer> history_id;
-
     public double getWINDOW_WIDTH() {
         return WINDOW_WIDTH;
     }
@@ -33,10 +31,6 @@ public class ConfigSet {
 
     public boolean isOpen_recent() {
         return open_recent;
-    }
-
-    public List<Integer> getHistory_id() {
-        return history_id;
     }
 
     public void setWINDOW_WIDTH(double WINDOW_WIDTH) {
@@ -55,10 +49,6 @@ public class ConfigSet {
         this.open_recent = open_recent;
     }
 
-    public void setHistory_id(List<Integer> history_id) {
-        this.history_id = history_id;
-    }
-
     @Override
     public String toString() {
         return "ConfigSet{" +
@@ -66,7 +56,6 @@ public class ConfigSet {
                 ", WINDOW_HEIGHT=" + WINDOW_HEIGHT +
                 ", use_md5=" + use_md5 +
                 ", open_recent=" + open_recent +
-                ", history_id=" + history_id +
                 '}';
     }
 }

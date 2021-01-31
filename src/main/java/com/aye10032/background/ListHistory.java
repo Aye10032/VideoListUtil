@@ -32,4 +32,13 @@ public class ListHistory {
         }
     }
 
+    public static List<History> getLastHistory(){
+        List<History> list = null;
+        DaoImpl dao = new DaoImpl();
+
+        list = dao.selectLastHistory();
+
+        return list;
+    }
+
 }

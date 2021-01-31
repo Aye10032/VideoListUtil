@@ -8,6 +8,7 @@ import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
+import com.aye10032.database.pojo.History;
 import com.aye10032.database.pojo.Video;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.layout.AC;
@@ -57,6 +58,7 @@ public class MainWindow extends JFrame {
         initFrame();
         update_list(list_panel1, PROJECT_SIDE_PANEL);
         update_list(list_panel2, ROOTS_SIDE_PANEL);
+        update_history_menu();
     }
 
     private void initFrame() {
@@ -84,20 +86,21 @@ public class MainWindow extends JFrame {
             file_menu.addSeparator();
             file_menu.add(exit_item);
 
-            List<Integer> id_queue = ConfigIO.loadConfig().getHistory_id();
-            for (Integer id : id_queue) {
-                if (!id.equals(ID)) {
-                    JMenuItem project_item = new JMenuItem(ListVideos.getDirectory(id).get(0).getName());
-                    open_menu.add(project_item);
-
-                    project_item.addActionListener(new AbstractAction() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            onSelectProject(id);
-                        }
-                    });
-                }
-            }
+//            List<History> history_queue = ListHistory.getLastHistory();
+//            for (History history : history_queue) {
+//                Integer id = history.getRoot_id();
+//                if (!id.equals(ID)) {
+//                    JMenuItem project_item = new JMenuItem(ListVideos.getDirectory(id).get(0).getName());
+//                    open_menu.add(project_item);
+//
+//                    project_item.addActionListener(new AbstractAction() {
+//                        @Override
+//                        public void actionPerformed(ActionEvent e) {
+//                            onSelectProject(id);
+//                        }
+//                    });
+//                }
+//            }
 
             new_item.addActionListener(e -> CreatNewProject());
             open_item.addActionListener(e -> OpenNewProject());
@@ -319,8 +322,9 @@ public class MainWindow extends JFrame {
 
     private void update_history_menu() {
         open_menu.removeAll();
-        List<Integer> id_queue = ConfigIO.loadConfig().getHistory_id();
-        for (Integer id : id_queue) {
+        List<History> history_queue = ListHistory.getLastHistory();
+        for (History history : history_queue) {
+            Integer id = history.getRoot_id();
             if (!id.equals(ID)) {
                 JMenuItem project_item = new JMenuItem(ListVideos.getDirectory(id).get(0).getName());
                 open_menu.add(project_item);

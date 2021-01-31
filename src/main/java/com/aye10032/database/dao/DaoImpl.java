@@ -285,4 +285,16 @@ public class DaoImpl implements IHistoryDAO, IVideoDao, IDirectoryDao{
         session.commit();
         closeAll();
     }
+
+    @Override
+    public List<History> selectLastHistory() {
+        List<History> list = null;
+        initSession();
+        IHistoryDAO dao = session.getMapper(IHistoryDAO.class);
+
+        list = dao.selectLastHistory();
+        closeAll();
+
+        return list;
+    }
 }

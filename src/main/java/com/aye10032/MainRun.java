@@ -1,9 +1,11 @@
 package com.aye10032;
 
+import com.aye10032.background.ListHistory;
 import com.aye10032.background.ListVideos;
 import com.aye10032.background.ProjectInit;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
+import com.aye10032.database.pojo.History;
 import com.aye10032.gui.MainWindow;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -56,11 +58,11 @@ public class MainRun {
         int windowWidth = (int) config.getWINDOW_WIDTH();
         int windowHeight = (int) config.getWINDOW_HEIGHT();
 
-        List<Integer> history = config.getHistory_id();
+        List<History> history = ListHistory.getLastHistory();
         Integer last_id = -1;
         String title = "规划工具箱";
         if (history.size() != 0) {
-            last_id = history.get(history.size() - 1);
+            last_id = history.get(0).getRoot_id();
             title = ListVideos.getDirectory(last_id).get(0).getName();
         }
 

@@ -41,7 +41,6 @@ public class ProjectInit {
         configSet.setWINDOW_WIDTH(900);
         configSet.setUse_md5(false);
         configSet.setOpen_recent(false);
-        configSet.setHistory_id(new ArrayList<>());
 
         saveConfig(configSet);
     }
