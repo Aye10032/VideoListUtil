@@ -7,6 +7,7 @@ import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.database.pojo.History;
 import com.aye10032.gui.MainWindow;
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.apache.commons.io.FileUtils;
@@ -31,7 +32,11 @@ public class MainRun {
 
     public MainRun() {
         try {
-            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            if (ConfigIO.loadConfig().isDark_theme()) {
+                UIManager.setLookAndFeel(new FlatDarkLaf());
+            }else {
+                UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            }
             UIManager.put("Button.arc", 6);
             UIManager.put("Component.arc", 6);
             UIManager.put("CheckBox.arc", 6);

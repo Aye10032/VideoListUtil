@@ -150,7 +150,7 @@ public class CardPanel {
 
         panel.add(name_label, new CC().growX().alignX("left"));
         panel.add(play, new CC().gapLeft("15").wrap());
-        panel.add(date_label, new CC().growX());
+        panel.add(date_label, new CC().growX().split(2));
         panel.add(done_label, new CC().alignX("right"));
 
         panel.setComponentPopupMenu(set_menu);

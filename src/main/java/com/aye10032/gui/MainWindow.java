@@ -7,6 +7,10 @@ import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.History;
 import com.aye10032.database.pojo.Video;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
@@ -75,24 +79,52 @@ public class MainWindow extends JFrame {
         setJMenuBar(menuBar);
         {
             JMenu file_menu = new JMenu("文件");
-            JMenu menu2 = new JMenu("编辑");
-            JMenu menu3 = new JMenu("视图");
+            JMenu graph_menu = new JMenu("视图");
+            JMenu menu3 = new JMenu("帮助");
             menuBar.add(file_menu);
-            menuBar.add(menu2);
+            menuBar.add(graph_menu);
             menuBar.add(menu3);
-            JMenuItem new_item = new JMenuItem("新建项目");
-            JMenuItem open_item = new JMenuItem("打开...");
-            open_menu = new JMenu("打开最近");
-            JMenuItem exit_item = new JMenuItem("退出");
-            file_menu.add(new_item);
-            file_menu.add(open_item);
-            file_menu.add(open_menu);
-            file_menu.addSeparator();
-            file_menu.add(exit_item);
 
-            new_item.addActionListener(e -> CreatNewProject());
-            open_item.addActionListener(e -> OpenNewProject());
-            exit_item.addActionListener(e -> Exit());
+            {
+                JMenuItem new_item = new JMenuItem("新建项目");
+                JMenuItem open_item = new JMenuItem("打开...");
+                open_menu = new JMenu("打开最近");
+                JMenuItem exit_item = new JMenuItem("退出");
+                file_menu.add(new_item);
+                file_menu.add(open_item);
+                file_menu.add(open_menu);
+                file_menu.addSeparator();
+                file_menu.add(exit_item);
+
+                new_item.addActionListener(e -> CreatNewProject());
+                open_item.addActionListener(e -> OpenNewProject());
+                exit_item.addActionListener(e -> Exit());
+            }
+
+            {
+                JRadioButtonMenuItem light_theme = new JRadioButtonMenuItem("明亮主题");
+                JRadioButtonMenuItem dark_theme = new JRadioButtonMenuItem("深色主题");
+                ButtonGroup theme_group = new ButtonGroup();
+                theme_group.add(light_theme);
+                theme_group.add(dark_theme);
+
+                if (ConfigIO.loadConfig().isDark_theme()){
+                    dark_theme.setSelected(true);
+                }else {
+                    light_theme.setSelected(true);
+                }
+
+                JMenuItem reload_UI = new JMenuItem("重载界面");
+
+                graph_menu.add(light_theme);
+                graph_menu.add(dark_theme);
+                graph_menu.add(new JSeparator());
+                graph_menu.add(reload_UI);
+
+                light_theme.addActionListener(e -> update_theme(false));
+                dark_theme.addActionListener(e -> update_theme(true));
+                reload_UI.addActionListener(e -> reload_ui());
+            }
         }
 
         JToolBar toolBar = new JToolBar();
@@ -110,24 +142,19 @@ public class MainWindow extends JFrame {
 
             new_button.addActionListener(e -> CreatNewProject());
             open_button.addActionListener(e -> OpenNewProject());
-            refresh_button.addActionListener(new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    update_list(list_panel1, PROJECT_SIDE_PANEL);
-                    update_list(list_panel2, ROOTS_SIDE_PANEL);
-                    update_main();
-                }
-            });
+            refresh_button.addActionListener(e -> reload_ui());
         }
 
-         project_path = new JToolBar();
+        project_path = new JToolBar();
         {
+//            project_path.setLayout(new MigLayout(new LC().debug()));
             project_path.setFloatable(false);
         }
 
         tool_bars = new JPanel(new GridLayout(0, 1));
         tool_bars.add(toolBar);
         tool_bars.add(project_path);
+        tool_bars.add(new JSeparator(JSeparator.HORIZONTAL));
 
         main_panel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
@@ -142,7 +169,6 @@ public class MainWindow extends JFrame {
                 project_tree_panel = new JPanel(new MigLayout(new LC().fill().wrap()));
 
                 list_panel1 = new JPanel(new MigLayout(new LC().fillX()));
-                list_panel1.setBackground(Color.WHITE);
 
                 JScrollPane sp1 = new JScrollPane(list_panel1);
                 project_tree_panel.add(sp1, new CC().spanX().spanY().growX().growY());
@@ -154,7 +180,6 @@ public class MainWindow extends JFrame {
                 roots_panel = new JPanel(new MigLayout(new LC().fill().wrap()));
 
                 list_panel2 = new JPanel(new MigLayout(new LC().fillX()));
-                list_panel2.setBackground(Color.WHITE);
 
                 JScrollPane sp2 = new JScrollPane(list_panel2);
                 roots_panel.add(sp2, new CC().spanX().spanY().growX().growY());
@@ -166,14 +191,16 @@ public class MainWindow extends JFrame {
             JPanel main_win;
             {
                 main_win = new JPanel(new MigLayout(new LC().fill()));
-                main_win.setBackground(Color.WHITE);
 
                 list_panel3 = new JPanel(new MigLayout(new LC().fillX()));
-                list_panel3.setBackground(Color.WHITE);
 
                 JScrollPane sp3 = new JScrollPane(list_panel3);
                 main_win.add(sp3, new CC().spanX().spanY().growX().growY());
             }
+
+            list_panel1.setBackground(list_panel1.getBackground().brighter());
+            list_panel2.setBackground(list_panel2.getBackground().brighter());
+            list_panel3.setBackground(list_panel3.getBackground().brighter());
 
             main_panel.setLeftComponent(project_tab);
             main_panel.setRightComponent(main_win);
@@ -187,6 +214,24 @@ public class MainWindow extends JFrame {
         contentPane.add(tool_bars, BorderLayout.NORTH);
 
         main_panel.setDividerLocation((int) (ConfigIO.loadConfig().getWINDOW_WIDTH() * 0.3));
+    }
+
+    private void update_theme(boolean dark_theme) {
+        try {
+            FlatAnimatedLafChange.showSnapshot();
+            if (dark_theme) {
+                UIManager.setLookAndFeel(new FlatDarkLaf());
+            }else {
+                UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            }
+            ConfigSet config = ConfigIO.loadConfig();
+            config.setDark_theme(dark_theme);
+            ConfigIO.saveConfig(config);
+            FlatLaf.updateUI();
+            FlatAnimatedLafChange.hideSnapshotWithAnimation();
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
     }
 
     private void update_main() {
@@ -277,23 +322,23 @@ public class MainWindow extends JFrame {
         }
     }
 
-    private void update_path_toolbar(){
+    private void update_path_toolbar() {
         project_path.removeAll();
         Set<Map.Entry<Integer, String>> path_set = ListPath.getPath(PARENT_ID);
         logger.info(path_set.size());
 
-        for (Map.Entry<Integer, String> entry:path_set){
-            if (entry.getKey() != -1){
+        for (Map.Entry<Integer, String> entry : path_set) {
+            if (entry.getKey() != -1) {
                 JLabel path = new JLabel(entry.getValue());
                 path.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        if (e.getButton() == MouseEvent.BUTTON1){
+                        if (e.getButton() == MouseEvent.BUTTON1) {
                             //TODO 下拉菜单
                             List<Directory> list = ListVideos.getDirectoryWithParent(
                                     ListVideos.getDirectory(entry.getKey()).get(0).getParent_id());
                             JPopupMenu popupMenu = new JPopupMenu();
-                            for (Directory directory:list){
+                            for (Directory directory : list) {
                                 if (!directory.getId().equals(entry.getKey())) {
                                     JMenuItem item = new JMenuItem(directory.getName());
                                     popupMenu.add(item);
@@ -301,7 +346,7 @@ public class MainWindow extends JFrame {
                                     item.addActionListener(e1 -> onSelectParent(directory.getId()));
                                 }
                             }
-                            popupMenu.show(path,0,path.getY());
+                            popupMenu.show(path, 0, path.getY()+15);
                             popupMenu.setVisible(true);
                         }
                     }
@@ -314,6 +359,13 @@ public class MainWindow extends JFrame {
 
         update_panel(project_path);
         update_panel(tool_bars);
+    }
+
+    private void reload_ui(){
+        update_list(list_panel1, PROJECT_SIDE_PANEL);
+        update_list(list_panel2, ROOTS_SIDE_PANEL);
+        update_history_menu();
+        update_path_toolbar();
     }
 
     private void onSelectProject(Integer id) {

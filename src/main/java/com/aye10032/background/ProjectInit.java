@@ -41,6 +41,7 @@ public class ProjectInit {
         configSet.setWINDOW_WIDTH(900);
         configSet.setUse_md5(false);
         configSet.setOpen_recent(false);
+        configSet.setDark_theme(false);
 
         saveConfig(configSet);
     }
