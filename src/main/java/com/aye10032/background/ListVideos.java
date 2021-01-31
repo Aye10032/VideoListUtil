@@ -37,26 +37,35 @@ public class ListVideos {
                 getList(f, new_id, log_area);
             }
             if (f.isFile()) {
-                log_area.append(f.getParentFile().getName() + " <-" + f.getName() + "\n");
-                logger.info(f.getParentFile().getName() + " <-" + f.getName());
+                String[] file_name = f.getName().split("\\.");
+                String type = file_name[file_name.length - 1];
+                if (type.equalsIgnoreCase("mp4")
+                        || type.equalsIgnoreCase("avi")
+                        || type.equalsIgnoreCase("wmv")
+                        || type.equalsIgnoreCase("flv")
+                        || type.equalsIgnoreCase("webm")
+                        || type.equalsIgnoreCase("mkv")) {
+                    log_area.append(f.getParentFile().getName() + " <-" + f.getName() + "\n");
+                    logger.info(f.getParentFile().getName() + " <-" + f.getName());
 
-                String md5 = null;
-                if (ConfigIO.loadConfig().isUse_md5()) {
-                    md5 = DigestUtils.md5Hex(new FileInputStream(f));
+                    String md5 = null;
+                    if (ConfigIO.loadConfig().isUse_md5()) {
+                        md5 = DigestUtils.md5Hex(new FileInputStream(f));
+                    }
+                    addVideo(dao, f.getName(), f.getParentFile().getName(), new_id,
+                            f.getParentFile().getName(), new_id, false, md5);
                 }
-                addVideo(dao, f.getName(), f.getParentFile().getName(), new_id,
-                        f.getParentFile().getName(), new_id, false, md5);
-            }
 
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                log_area.updateUI();
+                log_area.invalidate();
+                log_area.validate();
+                log_area.repaint();
             }
-            log_area.updateUI();
-            log_area.invalidate();
-            log_area.validate();
-            log_area.repaint();
         }
 
         return new_id;
@@ -87,25 +96,34 @@ public class ListVideos {
                 getList(f, new_id, log_area);
             }
             if (f.isFile()) {
+                String[] file_name = f.getName().split("\\.");
+                String type = file_name[file_name.length - 1];
+                if (type.equalsIgnoreCase("mp4")
+                        || type.equalsIgnoreCase("avi")
+                        || type.equalsIgnoreCase("wmv")
+                        || type.equalsIgnoreCase("flv")
+                        || type.equalsIgnoreCase("webm")
+                        || type.equalsIgnoreCase("mkv")) {
 //                String md5 = DigestUtils.md5Hex(new FileInputStream(f));
-                log_area.append(f.getParentFile().getName() + " <-" + f.getName() + "\n");
-                logger.info(f.getParentFile().getName() + " <-" + f.getName());
+                    log_area.append(f.getParentFile().getName() + " <-" + f.getName() + "\n");
+                    logger.info(f.getParentFile().getName() + " <-" + f.getName());
 
-                String md5 = null;
-                if (ConfigIO.loadConfig().isUse_md5()) {
-                    md5 = DigestUtils.md5Hex(new FileInputStream(f));
+                    String md5 = null;
+                    if (ConfigIO.loadConfig().isUse_md5()) {
+                        md5 = DigestUtils.md5Hex(new FileInputStream(f));
+                    }
+                    addVideo(dao, f.getName(), f.getParentFile().getName(), new_id, root, root_id, false, md5);
                 }
-                addVideo(dao, f.getName(), f.getParentFile().getName(), new_id, root, root_id, false, md5);
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                log_area.updateUI();
+                log_area.invalidate();
+                log_area.validate();
+                log_area.repaint();
             }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            log_area.updateUI();
-            log_area.invalidate();
-            log_area.validate();
-            log_area.repaint();
         }
     }
 

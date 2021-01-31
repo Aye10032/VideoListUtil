@@ -43,20 +43,17 @@ public interface IDirectoryDao {
     @Select("SELECT * FROM directory_table WHERE is_root=1 AND available=1")
     List<Directory> getRoots();
 
-    @Select("SELECT * FROM directory_table WHERE is_root=1")
+    @Select("SELECT * FROM directory_table WHERE is_root=1 ORDER BY id ASC")
     List<Directory> getAllRoots();
 
     @Select("SELECT * FROM directory_table WHERE id=#{id}")
     List<Directory> selectDirectoryWithID(Integer id);
 
-    @Select("SELECT * FROM directory_table WHERE root_id=#{id}")
+    @Select("SELECT * FROM directory_table WHERE root_id=#{id} ORDER BY id ASC")
     List<Directory> selectDirectoryWithRootID(Integer id);
 
-    @Select("SELECT * FROM directory_table WHERE parent_id=#{parent_id} AND available=1")
+    @Select("SELECT * FROM directory_table WHERE parent_id=#{parent_id} AND available=1 ORDER BY id ASC")
     List<Directory> selectDirectoryWithParentID(Integer parent_id);
-
-    @Select("UPDATE directory_table available=#{done} WHERE id={parent_id}")
-    void updateHide(Integer parent_id, boolean done);
 
     @Update("UPDATE directory_table SET available=#{available}, update_date=#{update_date} WHERE id=#{root_id} OR root_id=#{root_id}")
     void updateRootAvailable(Directory directory);

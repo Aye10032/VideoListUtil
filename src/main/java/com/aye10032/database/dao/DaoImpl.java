@@ -222,16 +222,6 @@ public class DaoImpl implements IHistoryDAO, IVideoDao, IDirectoryDao{
     }
 
     @Override
-    public void updateHide(Integer parent_id, boolean done) {
-        initSession();
-        IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
-
-        dao.updateHide(parent_id, done);
-        session.commit();
-        closeAll();
-    }
-
-    @Override
     public void updateRootAvailable(Directory directory) {
         initSession();
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);

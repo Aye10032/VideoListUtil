@@ -108,9 +108,9 @@ public class MainWindow extends JFrame {
                 theme_group.add(light_theme);
                 theme_group.add(dark_theme);
 
-                if (ConfigIO.loadConfig().isDark_theme()){
+                if (ConfigIO.loadConfig().isDark_theme()) {
                     dark_theme.setSelected(true);
-                }else {
+                } else {
                     light_theme.setSelected(true);
                 }
 
@@ -221,7 +221,7 @@ public class MainWindow extends JFrame {
             FlatAnimatedLafChange.showSnapshot();
             if (dark_theme) {
                 UIManager.setLookAndFeel(new FlatDarkLaf());
-            }else {
+            } else {
                 UIManager.setLookAndFeel(new FlatIntelliJLaf());
             }
             ConfigSet config = ConfigIO.loadConfig();
@@ -276,7 +276,8 @@ public class MainWindow extends JFrame {
 
         for (Directory directory : list) {
             Integer id = directory.getId();
-            int percent = PercentCalculate.getPercent(id);
+            int percent = panel_type ==
+                    PROJECT_SIDE_PANEL ? PercentCalculate.getPercent(id) : PercentCalculate.getProjectPercent(id);
             JPanel card_panel = cardPanel(id, directory.getName(), percent, percent == 1000);
             card_panel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -346,7 +347,7 @@ public class MainWindow extends JFrame {
                                     item.addActionListener(e1 -> onSelectParent(directory.getId()));
                                 }
                             }
-                            popupMenu.show(path, 0, path.getY()+15);
+                            popupMenu.show(path, 0, path.getY() + 15);
                             popupMenu.setVisible(true);
                         }
                     }
@@ -361,7 +362,7 @@ public class MainWindow extends JFrame {
         update_panel(tool_bars);
     }
 
-    private void reload_ui(){
+    private void reload_ui() {
         update_list(list_panel1, PROJECT_SIDE_PANEL);
         update_list(list_panel2, ROOTS_SIDE_PANEL);
         update_history_menu();
