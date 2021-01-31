@@ -1,5 +1,6 @@
 package com.aye10032;
 
+import com.aye10032.background.ListVideos;
 import com.aye10032.background.PercentCalculate;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
@@ -69,19 +70,6 @@ public class TestClass {
 
         dao.insert(directory);
 
-        List<Directory> list = dao.selectDirectoryWithName("2021计算机组成原理");
-        for (Directory dio : list) {
-            System.out.println(dio);
-        }
-
-        Video video = new Video();
-        video.setName("test name");
-        video.setParent("2021计算机组成原理");
-        video.setParent_id(list.get(0).getId());
-        video.setHas_done(false);
-        video.setMd5("aaaaaaa");
-
-        dao.insert(video);
     }
 
     @Test
@@ -132,5 +120,13 @@ public class TestClass {
     public void TestPercent(){
         int percent = PercentCalculate.getPercent(3);
         System.out.println(percent);
+    }
+
+    @Test
+    public void TestPath(){
+        List<String> list = ListVideos.getPath(40);
+        for (String path:list){
+            System.out.println(path);
+        }
     }
 }

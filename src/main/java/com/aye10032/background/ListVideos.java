@@ -11,10 +11,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @program: VideoListUtil
@@ -180,7 +177,7 @@ public class ListVideos {
         return id;
     }
 
-    public static List<Directory> getDirectory(Integer id){
+    public static List<Directory> getDirectory(Integer id) {
         List<Directory> list = null;
         DaoImpl dao = new DaoImpl();
 
@@ -189,7 +186,7 @@ public class ListVideos {
         return list;
     }
 
-    public static List<Directory> getDirectoryWithRoot(Integer id){
+    public static List<Directory> getDirectoryWithRoot(Integer id) {
         List<Video> video_list = null;
         DaoImpl dao = new DaoImpl();
 
@@ -197,22 +194,22 @@ public class ListVideos {
 
         video_list = dao.selectWithRoot(id);
 
-        for (Video video:video_list){
-            if (!temp_list.contains(video.getParent_id())){
+        for (Video video : video_list) {
+            if (!temp_list.contains(video.getParent_id())) {
                 temp_list.add(video.getParent_id());
             }
         }
 
         List<Directory> result_list = new ArrayList<>();
 
-        for (Integer ID:temp_list){
+        for (Integer ID : temp_list) {
             result_list.add(dao.selectDirectoryWithID(ID).get(0));
         }
 
         return result_list;
     }
 
-    public static List<Directory> getDirectoryWithParent(Integer parent_id){
+    public static List<Directory> getDirectoryWithParent(Integer parent_id) {
         List<Directory> list = null;
         DaoImpl dao = new DaoImpl();
 
@@ -230,7 +227,7 @@ public class ListVideos {
         return list;
     }
 
-    public static List<Video> getVideoWithParent(Integer parent_id){
+    public static List<Video> getVideoWithParent(Integer parent_id) {
         List<Video> list = null;
         DaoImpl dao = new DaoImpl();
 
@@ -259,6 +256,23 @@ public class ListVideos {
         video.setDate(new Date());
 
         dao.setRootVideoDone(video);
+    }
+
+    public static List<String> getPath(Integer id) {
+        List<String> path = new ArrayList<>();
+
+        DaoImpl dao = new DaoImpl();
+
+        Directory directory = dao.selectDirectoryWithID(id).get(0);
+        path.add(directory.getName());
+        while (!directory.isIs_root()) {
+            directory = dao.selectDirectoryWithID(directory.getParent_id()).get(0);
+            path.add(directory.getName());
+        }
+        path.add(directory.getParent());
+
+        Collections.reverse(path);
+        return path;
     }
 
 }
