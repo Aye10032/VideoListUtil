@@ -283,6 +283,9 @@ public class MainWindow extends JFrame {
             JPopupMenu menu = new JPopupMenu();
             JMenuItem hide_item = new JMenuItem("隐藏此项");
             JMenuItem done_item = new JMenuItem("全部完成");
+            if (percent == 1000){
+                done_item.setEnabled(false);
+            }
             menu.add(hide_item);
             menu.add(done_item);
 
@@ -296,7 +299,7 @@ public class MainWindow extends JFrame {
                         } else {
                             onSelectParent(id);
                         }
-                    } else if (e.getButton() == MouseEvent.BUTTON3) {
+                    } else if (e.getButton() == MouseEvent.BUTTON3 && panel_type == PROJECT_SIDE_PANEL) {
                         menu.show(card_panel, e.getX(), e.getY());
                         menu.setVisible(true);
                     }
