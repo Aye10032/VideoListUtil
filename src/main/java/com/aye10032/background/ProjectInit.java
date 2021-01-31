@@ -29,6 +29,7 @@ public class ProjectInit {
 
             dao.createVideoTable();
             dao.creatDirectoryTable();
+            dao.creatHistoryTable();
         }else {
             logger.info("已找到数据库");
         }

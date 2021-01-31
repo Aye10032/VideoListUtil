@@ -1,5 +1,6 @@
 package com.aye10032.gui;
 
+import com.aye10032.background.ListHistory;
 import com.aye10032.background.ListVideos;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
@@ -62,9 +63,8 @@ public class NewProjectWindow extends JDialog {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                ConfigSet config = ConfigIO.loadConfig();
-                config.addHistory(id);
-                ConfigIO.saveConfig(config);
+                ListHistory.addHistory(id, id);
+
                 progressBar.setIndeterminate(false);
                 progressBar.setValue(100);
                 progressBar.setString("加载完毕");
@@ -113,11 +113,11 @@ public class NewProjectWindow extends JDialog {
         close_button.addActionListener(e -> done());
     }
 
-    private void done(){
+    private void done() {
         this.dispose();
     }
 
-    public Integer getId(){
+    public Integer getId() {
         return this.id;
     }
 

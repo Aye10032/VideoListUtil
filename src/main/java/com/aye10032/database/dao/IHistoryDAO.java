@@ -1,6 +1,12 @@
 package com.aye10032.database.dao;
 
+import com.aye10032.database.pojo.History;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
 
 /**
  * @program: VideoListUtil
@@ -12,13 +18,22 @@ public interface IHistoryDAO {
 
     @Update("CREATE TABLE \"history_table\" (\n" +
             "\t\"id\"\tINTEGER NOT NULL UNIQUE,\n" +
-            "\t\"root_name\"\tTEXT NOT NULL,\n" +
             "\t\"root_id\"\tINTEGER NOT NULL,\n" +
-            "\t\"parent_name\"\tTEXT NOT NULL,\n" +
             "\t\"parent_id\"\tINTEGER NOT NULL,\n" +
             "\t\"last_date\"\tBLOB NOT NULL,\n" +
             "\tPRIMARY KEY(\"id\" AUTOINCREMENT)\n" +
             ")")
     void creatHistoryTable();
 
+    @Insert("INSERT INTO 'history_table' " +
+            "('root_id', 'parent_id', 'last_date') VALUES " +
+            "(#{root_id}, #{parent_id}, #{last_date})")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    Integer insert(History history);
+
+    @Select("SELECT * FROM history_table WHERE root_id=#{root_id}")
+    List<History> selectHistory(Integer root_id);
+
+    @Update("UPDATE history_table parent_id=#{parent_id}, last_date=#{last_date} WHERE id=#{id}")
+    void updateHistory(History history);
 }

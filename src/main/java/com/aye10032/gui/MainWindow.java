@@ -1,5 +1,6 @@
 package com.aye10032.gui;
 
+import com.aye10032.background.ListHistory;
 import com.aye10032.background.ListVideos;
 import com.aye10032.background.PercentCalculate;
 import com.aye10032.background.ProjectInit;
@@ -338,9 +339,7 @@ public class MainWindow extends JFrame {
         this.ID = id;
         this.PARENT_ID = id;
 
-        ConfigSet config = ConfigIO.loadConfig();
-        config.addHistory(ID);
-        ConfigIO.saveConfig(config);
+        ListHistory.addHistory(ID, PARENT_ID);
 
         update_list(list_panel1, PROJECT_SIDE_PANEL);
         update_history_menu();

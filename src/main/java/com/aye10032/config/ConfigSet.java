@@ -69,16 +69,4 @@ public class ConfigSet {
                 ", history_id=" + history_id +
                 '}';
     }
-
-    public void addHistory(Integer new_id) {
-
-        if (this.history_id.contains(new_id)){
-            history_id.remove(new_id);
-        }
-        if (this.history_id.size() == 6){
-            this.history_id.remove(0);
-        }
-
-        this.history_id.add(new_id);
-    }
 }

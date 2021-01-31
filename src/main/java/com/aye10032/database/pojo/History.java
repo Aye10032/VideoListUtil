@@ -10,9 +10,7 @@ import java.util.Date;
  **/
 public class History {
     private Integer id;
-    private String root_name;
     private Integer root_id;
-    private String parent_name;
     private Integer parent_id;
     private Date last_date;
 
@@ -20,16 +18,8 @@ public class History {
         this.id = id;
     }
 
-    public void setRoot_name(String root_name) {
-        this.root_name = root_name;
-    }
-
     public void setRoot_id(Integer root_id) {
         this.root_id = root_id;
-    }
-
-    public void setParent_name(String parent_name) {
-        this.parent_name = parent_name;
     }
 
     public void setParent_id(Integer parent_id) {
@@ -44,16 +34,8 @@ public class History {
         return id;
     }
 
-    public String getRoot_name() {
-        return root_name;
-    }
-
     public Integer getRoot_id() {
         return root_id;
-    }
-
-    public String getParent_name() {
-        return parent_name;
     }
 
     public Integer getParent_id() {
@@ -68,9 +50,7 @@ public class History {
     public String toString() {
         return "History{" +
                 "id=" + id +
-                ", root_name='" + root_name + '\'' +
                 ", root_id=" + root_id +
-                ", parent_name='" + parent_name + '\'' +
                 ", parent_id=" + parent_id +
                 ", last_date=" + last_date +
                 '}';

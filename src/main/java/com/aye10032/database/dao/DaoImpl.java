@@ -1,6 +1,7 @@
 package com.aye10032.database.dao;
 
 import com.aye10032.database.pojo.Directory;
+import com.aye10032.database.pojo.History;
 import com.aye10032.database.pojo.Video;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -18,7 +19,7 @@ import java.util.List;
  * @author: Aye10032
  * @create: 2021-01-21 16:17
  **/
-public class DaoImpl implements IVideoDao, IDirectoryDao{
+public class DaoImpl implements IHistoryDAO, IVideoDao, IDirectoryDao{
 
     private InputStream in;
     private SqlSession session;
@@ -241,4 +242,47 @@ public class DaoImpl implements IVideoDao, IDirectoryDao{
     }
 
 
+    @Override
+    public void creatHistoryTable() {
+        initSession();
+        IHistoryDAO dao = session.getMapper(IHistoryDAO.class);
+
+        dao.creatHistoryTable();
+        session.commit();
+        closeAll();
+    }
+
+    @Override
+    public Integer insert(History history) {
+        initSession();
+        IHistoryDAO dao = session.getMapper(IHistoryDAO.class);
+
+        dao.insert(history);
+        session.commit();
+        closeAll();
+
+        return history.getId();
+    }
+
+    @Override
+    public List<History> selectHistory(Integer root_id) {
+        List<History> list = null;
+        initSession();
+        IHistoryDAO dao = session.getMapper(IHistoryDAO.class);
+
+        list = dao.selectHistory(root_id);
+        closeAll();
+
+        return list;
+    }
+
+    @Override
+    public void updateHistory(History history) {
+        initSession();
+        IHistoryDAO dao = session.getMapper(IHistoryDAO.class);
+
+        dao.updateHistory(history);
+        session.commit();
+        closeAll();
+    }
 }

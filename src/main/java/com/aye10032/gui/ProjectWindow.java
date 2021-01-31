@@ -1,5 +1,6 @@
 package com.aye10032.gui;
 
+import com.aye10032.background.ListHistory;
 import com.aye10032.background.ListVideos;
 import com.aye10032.background.PercentCalculate;
 import com.aye10032.config.ConfigIO;
@@ -305,9 +306,7 @@ public class ProjectWindow extends JDialog {
     private void onSelectProject(String id) {
         int ID = Integer.parseInt(id);
 
-        ConfigSet config = ConfigIO.loadConfig();
-        config.addHistory(ID);
-        ConfigIO.saveConfig(config);
+        ListHistory.addHistory(ID, ID);
 
         this.select_id = ID;
         logger.debug("ID is " + ID);
