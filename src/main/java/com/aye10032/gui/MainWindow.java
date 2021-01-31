@@ -1,9 +1,6 @@
 package com.aye10032.gui;
 
-import com.aye10032.background.ListHistory;
-import com.aye10032.background.ListVideos;
-import com.aye10032.background.PercentCalculate;
-import com.aye10032.background.ProjectInit;
+import com.aye10032.background.*;
 import com.aye10032.config.ConfigIO;
 import com.aye10032.config.ConfigSet;
 import com.aye10032.database.dao.DaoImpl;
@@ -26,7 +23,9 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 import static com.aye10032.config.LocalConfig.PROJECT_SIDE_PANEL;
 import static com.aye10032.config.LocalConfig.ROOTS_SIDE_PANEL;
@@ -44,6 +43,8 @@ public class MainWindow extends JFrame {
     private Integer PARENT_ID;
     private final Logger logger;
 
+    private JToolBar project_path;
+    private JPanel tool_bars;
     private JMenu open_menu;
 
     private JSplitPane main_panel;
@@ -61,6 +62,7 @@ public class MainWindow extends JFrame {
         update_list(list_panel1, PROJECT_SIDE_PANEL);
         update_list(list_panel2, ROOTS_SIDE_PANEL);
         update_history_menu();
+        update_path_toolbar();
     }
 
     private void initFrame() {
@@ -118,14 +120,12 @@ public class MainWindow extends JFrame {
             });
         }
 
-        JToolBar project_path = new JToolBar();
+         project_path = new JToolBar();
         {
-            JLabel path = new JLabel("E:\\考研\\考虫（李良 曾芸芸 陈晓燕 吴一博）\\01.零基础\\高等数学-零基础入门课程\\07.第七章：微分方程");
-
-            project_path.add(path);
+            project_path.setFloatable(false);
         }
 
-        JPanel tool_bars = new JPanel(new GridLayout(0, 1));
+        tool_bars = new JPanel(new GridLayout(0, 1));
         tool_bars.add(toolBar);
         tool_bars.add(project_path);
 
@@ -246,11 +246,11 @@ public class MainWindow extends JFrame {
         update_panel(panel);
     }
 
-    private void update_panel(JPanel panel) {
-        panel.updateUI();
-        panel.invalidate();
-        panel.validate();
-        panel.repaint();
+    private void update_panel(JComponent component) {
+        component.updateUI();
+        component.invalidate();
+        component.validate();
+        component.repaint();
         repaint();
     }
 
@@ -271,6 +271,32 @@ public class MainWindow extends JFrame {
                 });
             }
         }
+    }
+
+    private void update_path_toolbar(){
+        project_path.removeAll();
+        Set<Map.Entry<Integer, String>> path_set = ListPath.getPath(PARENT_ID);
+        logger.info(path_set.size());
+
+        for (Map.Entry<Integer, String> entry:path_set){
+            if (entry.getKey() != -1){
+                JLabel path = new JLabel(entry.getValue());
+                path.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getButton() == MouseEvent.BUTTON1){
+                            //TODO 下拉菜单
+                        }
+                    }
+                });
+                project_path.add(new JLabel(new FlatSVGIcon("com/aye10032/icon/split.svg")));
+                project_path.add(path);
+                logger.info("add " + entry.getValue());
+            }
+        }
+
+        update_panel(project_path);
+        update_panel(tool_bars);
     }
 
     private void onSelectProject(Integer id) {
