@@ -20,10 +20,7 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -144,6 +141,14 @@ public class MainWindow extends JFrame {
 
             new_button.addActionListener(e -> CreatNewProject());
             open_button.addActionListener(e -> OpenNewProject());
+            show_hide.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    ConfigSet config = ConfigIO.loadConfig();
+                    config.setShow_hidden(show_hide.isSelected());
+                    ConfigIO.saveConfig(config);
+                }
+            });
             refresh_button.addActionListener(e -> reload_ui());
         }
 
