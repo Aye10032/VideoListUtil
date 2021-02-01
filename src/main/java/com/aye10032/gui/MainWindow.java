@@ -455,7 +455,7 @@ public class MainWindow extends JFrame {
             update_panel(project_path);
             update_panel(tool_bars);
         }catch (IndexOutOfBoundsException e){
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 

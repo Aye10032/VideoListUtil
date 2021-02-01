@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -88,6 +89,7 @@ public class ProjectWindow extends JDialog {
             for (Directory directory : roots) {
                 Integer id = directory.getId();
                 int percent = PercentCalculate.getProjectPercent(id);
+                logger.debug(directory.getName() + ":" +percent);
                 JPanel card_panel = cardPanel(id, directory.getName(), percent,
                         ListPath.getPathString(id), percent == 1000, directory.isAvailable());
                 list_panel.add(card_panel, new CC().wrap().growX().gapY("5", "5"));
@@ -148,7 +150,8 @@ public class ProjectWindow extends JDialog {
         id_label.setVisible(false);
         JProgressBar progressBar = new JProgressBar(0, 1000);
         progressBar.setValue(percent);
-        JLabel percent_label = new JLabel(percent * 0.1 + "%");
+        DecimalFormat df = new DecimalFormat("0.00");
+        JLabel percent_label = new JLabel(df.format(percent * 0.1) + "%");
         JLabel path_label = new JLabel(path);
         path_label.setForeground(Color.DARK_GRAY);
         JLabel done_label = new JLabel();
