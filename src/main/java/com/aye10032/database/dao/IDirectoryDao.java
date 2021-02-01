@@ -1,5 +1,6 @@
 package com.aye10032.database.dao;
 
+import com.aye10032.config.LocalConfig;
 import com.aye10032.database.pojo.Directory;
 import org.apache.ibatis.annotations.*;
 
@@ -49,8 +50,11 @@ public interface IDirectoryDao {
     @Select("SELECT * FROM directory_table WHERE root_id=#{id} ORDER BY id ASC")
     List<Directory> selectDirectoryWithRootID(Integer id);
 
-    @Select("SELECT * FROM directory_table WHERE parent_id=#{parent_id} AND available=1 ORDER BY id ASC")
+    @Select("SELECT * FROM directory_table WHERE parent_id=#{parent_id} ORDER BY id ASC")
     List<Directory> selectDirectoryWithParentID(Integer parent_id);
+
+    @Select("SELECT * FROM directory_table WHERE parent_id=#{parent_id} AND available=1 ORDER BY id ASC")
+    List<Directory> selectDirectoryWithParentID_H(Integer parent_id);
 
     @Update("UPDATE directory_table SET available=#{available}, update_date=#{update_date} WHERE id=#{root_id} OR root_id=#{root_id}")
     void updateRootAvailable(Directory directory);

@@ -42,6 +42,7 @@ public class ProjectInit {
         configSet.setUse_md5(false);
         configSet.setOpen_recent(false);
         configSet.setDark_theme(false);
+        configSet.setShow_hidden(false);
 
         saveConfig(configSet);
     }

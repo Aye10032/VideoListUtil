@@ -264,6 +264,18 @@ public class DaoImpl implements IHistoryDAO, IVideoDao, IDirectoryDao{
     }
 
     @Override
+    public List<Directory> selectDirectoryWithParentID_H(Integer parent_id) {
+        List<Directory> list = null;
+        initSession();
+
+        IDirectoryDao dao = session.getMapper(IDirectoryDao.class);
+        list = dao.selectDirectoryWithParentID_H(parent_id);
+
+        closeAll();
+        return list;
+    }
+
+    @Override
     public void updateRootAvailable(Directory directory) {
         initSession();
         IDirectoryDao dao = session.getMapper(IDirectoryDao.class);

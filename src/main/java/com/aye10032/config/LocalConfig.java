@@ -17,5 +17,4 @@ public class LocalConfig {
 
     public static final int PROJECT_SIDE_PANEL = 0;
     public static final int ROOTS_SIDE_PANEL = 1;
-
 }

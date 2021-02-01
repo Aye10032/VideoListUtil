@@ -231,7 +231,11 @@ public class ListVideos {
         List<Directory> list = null;
         DaoImpl dao = new DaoImpl();
 
-        list = dao.selectDirectoryWithParentID(parent_id);
+        if (ConfigIO.loadConfig().isShow_hidden()) {
+            list = dao.selectDirectoryWithParentID(parent_id);
+        }else {
+            list = dao.selectDirectoryWithParentID_H(parent_id);
+        }
 
         return list;
     }

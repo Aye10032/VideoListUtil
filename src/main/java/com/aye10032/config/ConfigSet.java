@@ -17,6 +17,7 @@ public class ConfigSet {
     private boolean use_md5;
     private boolean open_recent;
     private boolean dark_theme;
+    private boolean show_hidden;
 
     public double getWINDOW_WIDTH() {
         return WINDOW_WIDTH;
@@ -36,6 +37,10 @@ public class ConfigSet {
 
     public boolean isDark_theme() {
         return dark_theme;
+    }
+
+    public boolean isShow_hidden() {
+        return show_hidden;
     }
 
     public void setWINDOW_WIDTH(double WINDOW_WIDTH) {
@@ -58,6 +63,10 @@ public class ConfigSet {
         this.dark_theme = dark_theme;
     }
 
+    public void setShow_hidden(boolean show_hidden) {
+        this.show_hidden = show_hidden;
+    }
+
     @Override
     public String toString() {
         return "ConfigSet{" +
@@ -66,6 +75,7 @@ public class ConfigSet {
                 ", use_md5=" + use_md5 +
                 ", open_recent=" + open_recent +
                 ", dark_theme=" + dark_theme +
+                ", show_hidden=" + show_hidden +
                 '}';
     }
 }
