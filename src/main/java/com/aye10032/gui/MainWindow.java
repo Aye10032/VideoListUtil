@@ -245,8 +245,10 @@ public class MainWindow extends JFrame {
 
             JPopupMenu menu = new JPopupMenu();
             JMenuItem all_done = new JMenuItem("全部完成");
+            JMenuItem open_exp = new JMenuItem("打开文件位置");
             JMenuItem del = new JMenuItem("删除");
             menu.add(all_done);
+            menu.add(open_exp);
             menu.add(new JSeparator());
             menu.add(del);
 
@@ -261,6 +263,8 @@ public class MainWindow extends JFrame {
                     }
                 }
             });
+
+            open_exp.addActionListener(e -> openDirectory(video.getParent_id()));
 
             del.addActionListener(new AbstractAction() {
                 @Override
@@ -289,7 +293,6 @@ public class MainWindow extends JFrame {
                 list = ListVideos.getDirectoryWithParent(PARENT_ID);
                 if (list.size() == 0) {
                     update_main();
-//                    this.PARENT_ID = ListVideos.getDirectory(PARENT_ID).get(0).getParent_id();
                     list.clear();
                     Integer parent_id = ListVideos.getDirectory(PARENT_ID).get(0).getParent_id();
                     list = ListVideos.getDirectoryWithParent(parent_id);
@@ -311,13 +314,16 @@ public class MainWindow extends JFrame {
             JPanel card_panel = cardPanel(id, directory.getName(), percent, percent == 1000);
 
             JPopupMenu menu = new JPopupMenu();
-            JMenuItem hide_item = new JMenuItem("隐藏此项");
+            JCheckBoxMenuItem hide_item = new JCheckBoxMenuItem("隐藏此项");
+            hide_item.setState(!directory.isAvailable());
+            JMenuItem open_exp = new JMenuItem("打开文件位置");
             JMenuItem done_item = new JMenuItem("全部完成");
             if (percent == 1000) {
                 done_item.setEnabled(false);
             }
             menu.add(hide_item);
             menu.add(done_item);
+            menu.add(open_exp);
 
             card_panel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -339,10 +345,16 @@ public class MainWindow extends JFrame {
             hide_item.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    String msg;
+                    if (directory.isAvailable()) {
+                        msg = "将会隐藏这个项目，确定要隐藏这个项目吗？";
+                    } else {
+                        msg = "将会重新显示这个项目，确定吗？";
+                    }
                     int result = JOptionPane.showConfirmDialog(null,
-                            "将会隐藏这个项目，确定要隐藏这个项目吗？", "提示", JOptionPane.YES_NO_OPTION);
+                            msg, "提示", JOptionPane.YES_NO_OPTION);
                     if (result == JOptionPane.YES_OPTION) {
-                        ListVideos.setParentHidden(id, false);
+                        ListVideos.setParentHidden(id, !directory.isAvailable());
                     }
                 }
             });
@@ -361,6 +373,8 @@ public class MainWindow extends JFrame {
                     }
                 }
             });
+
+            open_exp.addActionListener(e -> openDirectory(directory.getId()));
             panel.add(card_panel, new CC().wrap().growX().gapY("0", "5"));
         }
         update_panel(panel);
@@ -406,7 +420,6 @@ public class MainWindow extends JFrame {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (e.getButton() == MouseEvent.BUTTON1) {
-                            //TODO 下拉菜单
                             List<Directory> list = ListVideos.getDirectoryWithParent(
                                     ListVideos.getDirectory(entry.getKey()).get(0).getParent_id());
                             JPopupMenu popupMenu = new JPopupMenu();
@@ -489,6 +502,15 @@ public class MainWindow extends JFrame {
             this.ID = open_id;
             update_list(list_panel1, PROJECT_SIDE_PANEL);
             setTitle(ListVideos.getDirectory(ID).get(0).getName());
+        }
+    }
+
+    private void openDirectory(Integer id){
+        String path = ListPath.getPathString(id);
+        try {
+            Desktop.getDesktop().open(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

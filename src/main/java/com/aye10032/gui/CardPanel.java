@@ -96,19 +96,6 @@ public class CardPanel {
 
         String name = video.getName();
         String path = ListPath.getVideoPath(video.getId());
-//        {
-//            DaoImpl dao = new DaoImpl();
-//            Directory directory;
-//
-//            directory = dao.selectDirectoryWithID(video.getParent_id()).get(0);
-//            path = "\\" + directory.getName() + "\\" + video.getName();
-//            while (!directory.isIs_root()) {
-//                Integer parent_id = directory.getParent_id();
-//                directory = dao.selectDirectoryWithID(parent_id).get(0);
-//                path = directory.getName() + path;
-//            }
-//            path = directory.getParent() + "\\" + path;
-//        }
 
         logger.debug("path is: " + path);
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -141,7 +128,6 @@ public class CardPanel {
         panel.add(play, new CC().gapLeft("15").wrap());
         panel.add(date_label, new CC().growX().split(2));
         panel.add(done_label, new CC().alignX("right"));
-
 
         play.addActionListener(e -> onSelectVideo(video, path));
 
