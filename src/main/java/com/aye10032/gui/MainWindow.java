@@ -299,8 +299,12 @@ public class MainWindow extends JFrame {
                 if (list.size() == 0) {
                     update_main();
                     list.clear();
-                    Integer parent_id = ListVideos.getDirectory(PARENT_ID).get(0).getParent_id();
-                    list = ListVideos.getDirectoryWithParent(parent_id);
+                    try {
+                        Integer parent_id = ListVideos.getDirectory(PARENT_ID).get(0).getParent_id();
+                        list = ListVideos.getDirectoryWithParent(parent_id);
+                    }catch (IndexOutOfBoundsException e){
+                        e.printStackTrace();
+                    }
                     break;
                 } else {
                     break;
@@ -414,41 +418,45 @@ public class MainWindow extends JFrame {
     }
 
     private void update_path_toolbar() {
-        project_path.removeAll();
-        Set<Map.Entry<Integer, String>> path_set = ListPath.getPath(PARENT_ID);
-        logger.info(path_set.size());
+        try {
+            project_path.removeAll();
+            Set<Map.Entry<Integer, String>> path_set = ListPath.getPath(PARENT_ID);
+            logger.info(path_set.size());
 
-        for (Map.Entry<Integer, String> entry : path_set) {
-            if (entry.getKey() != -1) {
-                JLabel path = new JLabel(entry.getValue());
-                path.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        if (e.getButton() == MouseEvent.BUTTON1) {
-                            List<Directory> list = ListVideos.getDirectoryWithParent(
-                                    ListVideos.getDirectory(entry.getKey()).get(0).getParent_id());
-                            JPopupMenu popupMenu = new JPopupMenu();
-                            for (Directory directory : list) {
-                                if (!directory.getId().equals(entry.getKey())) {
-                                    JMenuItem item = new JMenuItem(directory.getName());
-                                    popupMenu.add(item);
+            for (Map.Entry<Integer, String> entry : path_set) {
+                if (entry.getKey() != -1) {
+                    JLabel path = new JLabel(entry.getValue());
+                    path.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            if (e.getButton() == MouseEvent.BUTTON1) {
+                                List<Directory> list = ListVideos.getDirectoryWithParent(
+                                        ListVideos.getDirectory(entry.getKey()).get(0).getParent_id());
+                                JPopupMenu popupMenu = new JPopupMenu();
+                                for (Directory directory : list) {
+                                    if (!directory.getId().equals(entry.getKey())) {
+                                        JMenuItem item = new JMenuItem(directory.getName());
+                                        popupMenu.add(item);
 
-                                    item.addActionListener(e1 -> onSelectParent(directory.getId()));
+                                        item.addActionListener(e1 -> onSelectParent(directory.getId()));
+                                    }
                                 }
+                                popupMenu.show(path, 0, path.getY() + 15);
+                                popupMenu.setVisible(true);
                             }
-                            popupMenu.show(path, 0, path.getY() + 15);
-                            popupMenu.setVisible(true);
                         }
-                    }
-                });
-                project_path.add(new JLabel(new FlatSVGIcon("com/aye10032/icon/split.svg")));
-                project_path.add(path);
-                logger.info("add " + entry.getValue());
+                    });
+                    project_path.add(new JLabel(new FlatSVGIcon("com/aye10032/icon/split.svg")));
+                    project_path.add(path);
+                    logger.info("add " + entry.getValue());
+                }
             }
-        }
 
-        update_panel(project_path);
-        update_panel(tool_bars);
+            update_panel(project_path);
+            update_panel(tool_bars);
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
     }
 
     private void reload_ui() {

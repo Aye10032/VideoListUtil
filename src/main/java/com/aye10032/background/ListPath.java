@@ -14,7 +14,7 @@ import java.util.*;
  **/
 public class ListPath {
 
-    public static Set<Map.Entry<Integer, String>> getPath(Integer id) {
+    public static Set<Map.Entry<Integer, String>> getPath(Integer id) throws IndexOutOfBoundsException{
         Map<Integer, String> path = new LinkedHashMap<>();
         DaoImpl dao = new DaoImpl();
 
