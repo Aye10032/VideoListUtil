@@ -421,7 +421,7 @@ public class MainWindow extends JFrame {
         try {
             project_path.removeAll();
             Set<Map.Entry<Integer, String>> path_set = ListPath.getPath(PARENT_ID);
-            logger.info(path_set.size());
+            logger.debug(path_set.size());
 
             for (Map.Entry<Integer, String> entry : path_set) {
                 if (entry.getKey() != -1) {
@@ -448,7 +448,7 @@ public class MainWindow extends JFrame {
                     });
                     project_path.add(new JLabel(new FlatSVGIcon("com/aye10032/icon/split.svg")));
                     project_path.add(path);
-                    logger.info("add " + entry.getValue());
+                    logger.debug("add " + entry.getValue());
                 }
             }
 
@@ -481,7 +481,7 @@ public class MainWindow extends JFrame {
     }
 
     private void onSelectParent(Integer id) {
-        logger.info("选择了:" + id);
+        logger.debug("选择了:" + id);
         this.PARENT_ID = id;
         update_list(list_panel1, PROJECT_SIDE_PANEL);
         ListHistory.addHistory(ID, PARENT_ID);
