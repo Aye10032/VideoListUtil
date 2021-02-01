@@ -1,5 +1,6 @@
 package com.aye10032.gui;
 
+import com.aye10032.background.ListPath;
 import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.Video;
@@ -94,20 +95,20 @@ public class CardPanel {
         panel.setBorder(new RoundBorder());
 
         String name = video.getName();
-        String path = "";
-        {
-            DaoImpl dao = new DaoImpl();
-            Directory directory;
-
-            directory = dao.selectDirectoryWithID(video.getParent_id()).get(0);
-            path = "\\" + directory.getName() + "\\" + video.getName();
-            while (!directory.isIs_root()) {
-                Integer parent_id = directory.getParent_id();
-                directory = dao.selectDirectoryWithID(parent_id).get(0);
-                path = directory.getName() + path;
-            }
-            path = directory.getParent() + "\\" + path;
-        }
+        String path = ListPath.getVideoPath(video.getId());
+//        {
+//            DaoImpl dao = new DaoImpl();
+//            Directory directory;
+//
+//            directory = dao.selectDirectoryWithID(video.getParent_id()).get(0);
+//            path = "\\" + directory.getName() + "\\" + video.getName();
+//            while (!directory.isIs_root()) {
+//                Integer parent_id = directory.getParent_id();
+//                directory = dao.selectDirectoryWithID(parent_id).get(0);
+//                path = directory.getName() + path;
+//            }
+//            path = directory.getParent() + "\\" + path;
+//        }
 
         logger.debug("path is: " + path);
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -136,27 +137,13 @@ public class CardPanel {
             done_label.setIcon(new FlatSVGIcon("com/aye10032/icon/close.svg"));
         }
 
-        JPopupMenu set_menu = new JPopupMenu();
-        JMenuItem done_item = new JMenuItem("全部完成");
-        JCheckBoxMenuItem hide_item = new JCheckBoxMenuItem("隐藏");
-        JMenuItem del_item = new JMenuItem("删除");
-        if (video.isHas_done()) {
-            done_item.setEnabled(false);
-        }
-        set_menu.add(done_item);
-        set_menu.add(hide_item);
-        set_menu.add(new JSeparator());
-        set_menu.add(del_item);
-
         panel.add(name_label, new CC().growX().alignX("left"));
         panel.add(play, new CC().gapLeft("15").wrap());
         panel.add(date_label, new CC().growX().split(2));
         panel.add(done_label, new CC().alignX("right"));
 
-        panel.setComponentPopupMenu(set_menu);
 
-        String finalPath = path;
-        play.addActionListener(e -> onSelectVideo(video, finalPath));
+        play.addActionListener(e -> onSelectVideo(video, path));
 
         return panel;
     }

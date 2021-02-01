@@ -133,10 +133,12 @@ public class MainWindow extends JFrame {
             toolBar.setBorderPainted(true);
             JButton new_button = new JButton(UIManager.getIcon("FileChooser.newFolderIcon"));
             JButton open_button = new JButton(UIManager.getIcon("FileView.directoryIcon"));
+            JToggleButton show_hide = new JToggleButton(new FlatSVGIcon("com/aye10032/icon/show.svg"));
             JButton refresh_button = new JButton(new FlatSVGIcon("com/aye10032/icon/refresh.svg"));
 
             toolBar.add(new_button);
             toolBar.add(open_button);
+            toolBar.add(show_hide);
             toolBar.addSeparator();
             toolBar.add(refresh_button);
 

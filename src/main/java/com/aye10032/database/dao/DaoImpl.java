@@ -81,6 +81,18 @@ public class DaoImpl implements IHistoryDAO, IVideoDao, IDirectoryDao{
     }
 
     @Override
+    public List<Video> selectWithID(Integer id) {
+        List<Video> list = null;
+        initSession();
+        IVideoDao dao = session.getMapper(IVideoDao.class);
+
+        list = dao.selectWithID(id);
+        closeAll();
+
+        return list;
+    }
+
+    @Override
     public List<Video> selectWithRoot(Integer root_id) {
         List<Video> list = null;
         initSession();

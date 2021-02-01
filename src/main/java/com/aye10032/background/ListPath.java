@@ -2,6 +2,7 @@ package com.aye10032.background;
 
 import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
+import com.aye10032.database.pojo.Video;
 
 import java.util.*;
 
@@ -47,5 +48,16 @@ public class ListPath {
         }
 
         return path_builder.substring(0, path_builder.length() - 1);
+    }
+
+    public static String getVideoPath(Integer id){
+        DaoImpl dao = new DaoImpl();
+        Video video = dao.selectWithID(id).get(0);
+
+        String path = getPathString(video.getParent_id());
+
+        path += "\\" + video.getName();
+
+        return path;
     }
 }

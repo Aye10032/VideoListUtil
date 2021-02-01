@@ -36,6 +36,9 @@ public interface IVideoDao {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     Integer insert(Video video);
 
+    @Select("SELECT * FROM video_table WHERE id=#{id}")
+    List<Video> selectWithID(Integer id);
+
     @Select("SELECT * FROM video_table WHERE root_id=#{root_id}")
     List<Video> selectWithRoot(Integer root_id);
 
