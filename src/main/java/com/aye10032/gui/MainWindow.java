@@ -260,6 +260,19 @@ public class MainWindow extends JFrame {
                 }
             });
 
+            del.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int result = JOptionPane.showConfirmDialog(null,
+                            "将会从数据库中删除本视频，确定吗？", "提示", JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION) {
+                        DaoImpl dao = new DaoImpl();
+                        dao.deleteVideoWithID(video.getId());
+                        update_main();
+                    }
+                }
+            });
+
             video_card.setComponentPopupMenu(menu);
             list_panel3.add(video_card, new CC().wrap().growX().gapY("0", "5"));
         }
