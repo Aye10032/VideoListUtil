@@ -8,6 +8,7 @@ import com.aye10032.config.ConfigSet;
 import com.aye10032.database.dao.DaoImpl;
 import com.aye10032.database.pojo.Directory;
 import com.aye10032.database.pojo.Video;
+import com.aye10032.gui.DateDataWindow;
 import com.aye10032.gui.ProjectWindow;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import org.apache.log4j.Logger;
@@ -17,9 +18,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @program: VideoListUtil
@@ -114,7 +114,7 @@ public class TestClass {
         }
 
         ProjectWindow.setDefaultLookAndFeelDecorated(true);
-        ProjectWindow window = new ProjectWindow();
+        DateDataWindow window = new DateDataWindow();
 
         window.setVisible(true);
     }
@@ -134,5 +134,23 @@ public class TestClass {
         }
 
         System.out.println(ListPath.getPathString(40));
+    }
+
+    @Test
+    public void TestCalender(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+//        calendar.set(2020, Calendar.JANUARY, 1);
+//
+//        System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
+//
+//        calendar.clear();
+
+        Calendar c = new GregorianCalendar();
+
+        c.set(2020, Calendar.DECEMBER, 30, 23, 59, 59);
+        calendar.setTime(c.getTime());
+
+        System.out.println(calendar.get(Calendar.WEEK_OF_YEAR));
     }
 }
